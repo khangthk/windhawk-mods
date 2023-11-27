@@ -1,0 +1,262 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+    <id>https://windhawk.net/</id>
+    <title>Windhawk Mod Updates</title>
+    <updated>2023-11-24T19:33:54.000Z</updated>
+    <generator>https://github.com/jpmonette/feed</generator>
+    <link rel="alternate" href="https://windhawk.net/"/>
+    <subtitle>Updates in the official collection of Windhawk mods</subtitle>
+    <icon>https://windhawk.net/favicon.ico</icon>
+    <rights>Ramen Software</rights>
+    <entry>
+        <title type="html"><![CDATA[Middle click to close on the taskbar 1.0.5]]></title>
+        <id>https://windhawk.net/mods/taskbar-button-click#1f28d4e873e7790ddb44cf727fbf6d90c0a8167a</id>
+        <link href="https://windhawk.net/mods/taskbar-button-click"/>
+        <updated>2023-11-24T19:33:54.000Z</updated>
+        <content type="html"><![CDATA[<ul>
+<li>Added support for the new Windows 11 taskbar labels option.</li>
+</ul>]]></content>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Taskbar height and icon size 1.2.2]]></title>
+        <id>https://windhawk.net/mods/taskbar-icon-size#d1b9a9260c59f7f721e3439496eee9d0dafc5c2b</id>
+        <link href="https://windhawk.net/mods/taskbar-icon-size"/>
+        <updated>2023-11-24T19:08:24.000Z</updated>
+        <content type="html"><![CDATA[<ul>
+<li>Fixed displaced secondary taskbar when auto-hide is enabled.</li>
+</ul>]]></content>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Unlock Task Manager for Server 1.0.0]]></title>
+        <id>https://windhawk.net/mods/unlock-taskmgr-server#1899048c96271abe4624cf802d51e6fbc8629e1a</id>
+        <link href="https://windhawk.net/mods/unlock-taskmgr-server"/>
+        <updated>2023-11-24T08:29:18.000Z</updated>
+        <content type="html"><![CDATA[<h1 id="unlocktaskmanagerforserver">Unlock Task Manager for Server</h1>
+<p>Some features in Task Manager, such as certain columns in the Processes tab and
+the Startup tab are completely disabled in Windows Server. This mod re-enables
+those features.</p>
+<p><strong>Before</strong>:</p>
+<p><img src="https://raw.githubusercontent.com/aubymori/images/main/unlock-taskmgr-server-before.png" alt="Before" /></p>
+<p><strong>After</strong>:</p>
+<p><img src="https://raw.githubusercontent.com/aubymori/images/main/unlock-taskmgr-server-after.png" alt="After" /></p>]]></content>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Legacy Search Bar 1.0.0]]></title>
+        <id>https://windhawk.net/mods/legacy-search-bar#a71decd11c053c6bb0b8e75e7799d8e2bd7909e8</id>
+        <link href="https://windhawk.net/mods/legacy-search-bar"/>
+        <updated>2023-11-23T08:00:11.000Z</updated>
+        <content type="html"><![CDATA[<h1 id="legacysearchbar">Legacy Search Bar</h1>
+<p>Since Windows 10, version 1909, the legacy search box, which was based on DirectUI,
+was replaced by one that uses EdgeHTML. As well, when enabling the DirectUI one,
+a bug occurs where the placeholder text disappars initially and on a resize. This mod
+re-enables the DirectUI search box and fixes the bug with the placeholder.</p>
+<p><strong>This mod requires Windhawk v1.4 or greater.</strong></p>
+<p><strong>Before</strong>:</p>
+<p><img src="https://raw.githubusercontent.com/aubymori/images/main/legacy-search-bar-before.png" alt="Before" /></p>
+<p><strong>After</strong>:</p>
+<p><img src="https://raw.githubusercontent.com/aubymori/images/main/legacy-search-bar-after.png" alt="After" /></p>]]></content>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Eradicate Immersive Menus 1.0.1]]></title>
+        <id>https://windhawk.net/mods/eradicate-immersive-menus#a5027866c7b777a48063333529159778f35def19</id>
+        <link href="https://windhawk.net/mods/eradicate-immersive-menus"/>
+        <updated>2023-11-21T22:16:47.000Z</updated>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[DWM Unextend Frames 1.0.0]]></title>
+        <id>https://windhawk.net/mods/dwm-unextend-frames#73631efe39f232421878841a4fe1b543e674bbe0</id>
+        <link href="https://windhawk.net/mods/dwm-unextend-frames"/>
+        <updated>2023-11-21T04:50:56.000Z</updated>
+        <content type="html"><![CDATA[<h1 id="dwmunextendframes">DWM Unextend Frames</h1>
+<p>This mod makes applications think DWM is disabled when in reality it
+is not. This is useful for anyone doing a setup with non-DWM frames
+(Classic, XP, Vista/7 Basic).</p>
+<p><strong>This mod requires Windhawk v1.4 or greater.</strong></p>
+<p><strong>Before</strong>:</p>
+<p><img src="https://raw.githubusercontent.com/aubymori/images/main/dwm-unextend-frames-before.png" alt="Before" /></p>
+<p><strong>After</strong>:</p>
+<p><img src="https://raw.githubusercontent.com/aubymori/images/main/dwm-unextend-frames-after.png" alt="After" /></p>
+<p><em>Mod originally authored by Taniko Yamamoto.</em></p>]]></content>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[UIRibbon Caption Icon Fix 1.0]]></title>
+        <id>https://windhawk.net/mods/ribbon-caption-icon-fix#ab83165b035f899b9480a8edf43f8baeac7d479b</id>
+        <link href="https://windhawk.net/mods/ribbon-caption-icon-fix"/>
+        <updated>2023-11-20T07:45:53.000Z</updated>
+        <content type="html"><![CDATA[<h1 id="uiribboncaptioniconfix">UIRibbon Caption Icon Fix</h1>
+<p>Fixes the position of the caption icon in UIRibbon, which is ordinarily broken since Windows 10, due to
+window frames becoming only 1 pixel wide. Whenever ribbons are displayed on a custom theme with wider
+borders, the icon will have extra indentation, which is not desirable.</p>
+<p><img src="https://raw.githubusercontent.com/YukisCoffee/images/main/uiribbon%20fix.png" alt="Preview" /></p>]]></content>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Fix Basic Caption Text 1.0.0]]></title>
+        <id>https://windhawk.net/mods/fix-basic-caption-text#892afcee9adb00be9920318e13313c7d8b20d885</id>
+        <link href="https://windhawk.net/mods/fix-basic-caption-text"/>
+        <updated>2023-11-16T08:57:58.000Z</updated>
+        <content type="html"><![CDATA[<h1 id="fixbasiccaptiontext">Fix Basic Caption Text</h1>
+<p>Since Windows 10, the caption color has been hardcoded due to different accent
+colors needing dark or light text. For whatever reason, this also applies to basic
+frames, and as such, they don't pull caption color from the theme anymore. This
+results in incorrectly colored and possibly illegible caption text. This mod fixes that.</p>
+<p><strong>This mod requires Windhawk v1.4 or greater.</strong></p>
+<p><strong>Before</strong>:</p>
+<p><img src="https://raw.githubusercontent.com/aubymori/images/main/fix-basic-caption-text-before.png" alt="Before" /></p>
+<p><strong>After</strong>:</p>
+<p><img src="https://raw.githubusercontent.com/aubymori/images/main/fix-basic-caption-text-after.png" alt="After" /></p>]]></content>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Taskbar height and icon size 1.2.1]]></title>
+        <id>https://windhawk.net/mods/taskbar-icon-size#d28ad7f818078e99a4ccc492486bfcf534bf016e</id>
+        <link href="https://windhawk.net/mods/taskbar-icon-size"/>
+        <updated>2023-11-10T23:20:15.000Z</updated>
+        <content type="html"><![CDATA[<ul>
+<li>Fixed displaced clock on secondary monitors.</li>
+</ul>]]></content>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Classic Task Dialog Fix 1.1.0]]></title>
+        <id>https://windhawk.net/mods/classic-taskdlg-fix#bef171ba33bed8bcc3deeb2141a15520304c3fc8</id>
+        <link href="https://windhawk.net/mods/classic-taskdlg-fix"/>
+        <updated>2023-11-07T20:29:29.000Z</updated>
+        <content type="html"><![CDATA[<h1 id="classictaskdialogfix">Classic Task Dialog Fix</h1>
+<p>In Windows 10, the buttons in task dialogs (and some other DirectUI dialogs)
+are too small vertically. This mod fixes that, and makes them look how they did
+in Windows 8.1 and before.</p>
+<h3 id="thismodwillonlyworkonwindhawkv14andgreater">This mod will only work on Windhawk v1.4 and greater.</h3>
+<p><strong>Before</strong>:</p>
+<p><img src="https://raw.githubusercontent.com/aubymori/images/main/classic-taskdlg-fix-before.png" alt="Before" /></p>
+<p><strong>After</strong>:</p>
+<p><img src="https://raw.githubusercontent.com/aubymori/images/main/classic-taskdlg-fix-after.png" alt="After" /></p>]]></content>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Show all apps by default in start menu 1.0.2]]></title>
+        <id>https://windhawk.net/mods/start-menu-all-apps#493534f65cc0d79d076054fa4e4f3c9ac280fd28</id>
+        <link href="https://windhawk.net/mods/start-menu-all-apps"/>
+        <updated>2023-11-06T20:22:53.000Z</updated>
+        <content type="html"><![CDATA[<ul>
+<li>Fixed compatibility with Windhawk v1.4.</li>
+<li>Improved loading speed by caching symbols.</li>
+</ul>]]></content>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[No Run Icon 1.0.0]]></title>
+        <id>https://windhawk.net/mods/no-run-icon#fd365f94e745c7d206993a6c75a55eb2b2ac9c52</id>
+        <link href="https://windhawk.net/mods/no-run-icon"/>
+        <updated>2023-11-05T05:19:22.000Z</updated>
+        <content type="html"><![CDATA[<h1 id="norunicon">No Run Icon</h1>
+<p>Removes the window icon from the Run dialog, like Windows XP and before.</p>
+<p><strong>Before</strong>:</p>
+<p><img src="https://raw.githubusercontent.com/aubymori/images/main/no-run-icon-before.png" alt="Before" /></p>
+<p><strong>After</strong>:</p>
+<p><img src="https://raw.githubusercontent.com/aubymori/images/main/no-run-icon-after.png" alt="After" /></p>]]></content>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Custom Shutdown Dialog 1.0.0]]></title>
+        <id>https://windhawk.net/mods/custom-shutdown-dialog#12155847ff2b01c1e5ec16e997b6f2189115cb35</id>
+        <link href="https://windhawk.net/mods/custom-shutdown-dialog"/>
+        <updated>2023-11-05T04:42:41.000Z</updated>
+        <content type="html"><![CDATA[<h1 id="customshutdowndialog">Custom Shutdown Dialog</h1>
+<p>Override the classic shutdown dialog in Explorer
+which is invoked with <code>ALT</code>+<code>F4</code> with your own program.</p>
+<p><strong>This mod will only work on Windows 10 or greater and Windhawk v1.4 or greater.</strong></p>]]></content>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Classic Menus 1.0.0]]></title>
+        <id>https://windhawk.net/mods/classic-menus#e6b01d3dce8e4890c8314ee0aa2146bde105a432</id>
+        <link href="https://windhawk.net/mods/classic-menus"/>
+        <updated>2023-11-05T03:56:38.000Z</updated>
+        <content type="html"><![CDATA[<h1 id="classicmenus">Classic Menus</h1>
+<p>In Windows XP, menus remained unthemed even with themes enabled. This mod replicates
+that functionality.</p>
+<p><strong>This mod will only work on Windhawk v1.4 and greater.</strong></p>
+<p><strong>Before</strong>:</p>
+<p><img src="https://raw.githubusercontent.com/aubymori/images/main/classic-menus-before.png" alt="Before" /></p>
+<p><strong>After</strong>:</p>
+<p><img src="https://raw.githubusercontent.com/aubymori/images/main/classic-menus-after.png" alt="After" /></p>]]></content>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Eradicate Immersive Menus 1.0.0]]></title>
+        <id>https://windhawk.net/mods/eradicate-immersive-menus#82350656b3dbbf5fa854211ea160290e676aeed8</id>
+        <link href="https://windhawk.net/mods/eradicate-immersive-menus"/>
+        <updated>2023-11-05T03:34:23.000Z</updated>
+        <content type="html"><![CDATA[<h1 id="eradicateimmersivemenus">Eradicate Immersive Menus</h1>
+<p>Gets rid of immersive menus system-wide. This mod should work on every Windows 10 version, from 1507
+all the way up to 22H2. However, <strong>this mod will only work on Windhawk v1.4 and greater.</strong></p>
+<h2 id="preview">Preview</h2>
+<p><em>From left to right: Explorer, Taskbar, Explorer (classic), Taskbar (classic)</em></p>
+<p><strong>Before</strong>:</p>
+<p><img src="https://raw.githubusercontent.com/aubymori/images/main/eradicate-immersive-menus-before.png" alt="Before" /></p>
+<p><strong>After</strong>:
+<img src="https://raw.githubusercontent.com/aubymori/images/main/eradicate-immersive-menus-after.png" alt="After" /></p>
+<h1 id="commonproblems">Common problems</h1>
+<h2 id="freezing">Freezing</h2>
+<p>This mod will take <strong>a while</strong> to load on the first run, and if you disable and then enable it while your system is all
+already up and running with many software open.</p>
+<h2 id="stuckoninitializing">Stuck on "Initializing…"</h2>
+<p>If ever a certain process gets stuck on "Initializing…", and the "Mod tasks in progress" window does not go away,
+restart Windhawk. If that does not work, simply add it to the exclusion list in the Advanced tab of this mod.</p>]]></content>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Message Box Fix 1.4.6]]></title>
+        <id>https://windhawk.net/mods/msg-box-font-fix#a08c60fdb07f810002787e4b6bf12dd0828973ce</id>
+        <link href="https://windhawk.net/mods/msg-box-font-fix"/>
+        <updated>2023-11-05T02:19:53.000Z</updated>
+        <content type="html"><![CDATA[<ul>
+<li>Add option to fix background color for pre-Windows Vista classic theme look</li>
+</ul>]]></content>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Explorer 32px Icons 1.0.0]]></title>
+        <id>https://windhawk.net/mods/explorer-32px-icons#8f396ffb61f5f2ee0efec072e93f9003800c8be3</id>
+        <link href="https://windhawk.net/mods/explorer-32px-icons"/>
+        <updated>2023-11-05T01:45:37.000Z</updated>
+        <content type="html"><![CDATA[<h1 id="explorer32pxicons">Explorer 32px Icons</h1>
+<p>Beginning with Windows Vista, the "Medium icons" view (previous just "Icons") uses
+icons that are 48 pixels in size, instead of the previous 32 pixel size. This mod
+restores the 32 pixel size.</p>
+<p><strong>This mod will only work on Windhawk v1.4 and greater.</strong></p>
+<h1 id="important">IMPORTANT</h1>
+<p>You <strong>must</strong> be using Explorer with the SysListView32 view enabled for this mod to work.
+The default DirectUI view will not work.</p>
+<p><strong>Before</strong>:</p>
+<p><img src="https://raw.githubusercontent.com/aubymori/images/main/explorer-32px-icons-before.png" alt="Before" /></p>
+<p><strong>After</strong>:</p>
+<p><img src="https://raw.githubusercontent.com/aubymori/images/main/explorer-32px-icons-after.png" alt="After" /></p>]]></content>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Notepad Clientedge 1.0.0]]></title>
+        <id>https://windhawk.net/mods/notepad-clientedge#b84239fc7a1c98e111d1b508541ffd5c32c8158b</id>
+        <link href="https://windhawk.net/mods/notepad-clientedge"/>
+        <updated>2023-10-30T05:58:15.000Z</updated>
+        <content type="html"><![CDATA[<h1 id="notepadclientedge">Notepad Clientedge</h1>
+<p>In a Windows 10 update, the <code>WS_EX_CLIENTEDGE</code> style was removed from Notepad's
+edit control, resulting in an inaccurate appearance on classic theme or other
+themes of old Windows versions. This mod adds that back.</p>
+<p><strong>Before</strong>:</p>
+<p><img src="https://raw.githubusercontent.com/aubymori/images/main/notepad-clientedge-before.png" alt="Before" /></p>
+<p><strong>After</strong>:</p>
+<p><img src="https://raw.githubusercontent.com/aubymori/images/main/notepad-clientedge-after.png" alt="After" /></p>]]></content>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Classic Conhost 1.0.0]]></title>
+        <id>https://windhawk.net/mods/classic-conhost#ed112acfab6183748181b4922267d7cda4c45a7b</id>
+        <link href="https://windhawk.net/mods/classic-conhost"/>
+        <updated>2023-10-21T10:17:23.000Z</updated>
+        <content type="html"><![CDATA[<h1 id="classicconhost">Classic Conhost</h1>
+<p>This mod will apply classic theme and optionally client edge to console windows.</p>
+<p><strong>Before</strong>:</p>
+<p><img src="https://raw.githubusercontent.com/aubymori/images/main/classic-conhost-before.png" alt="Before" /></p>
+<p><strong>After</strong>:</p>
+<p><img src="https://raw.githubusercontent.com/aubymori/images/main/classic-conhost-after.png" alt="After" /></p>]]></content>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Fix Darkmode ListViews 1.0]]></title>
+        <id>https://windhawk.net/mods/fix-darkmode-listviews#5da8dd0cf14f45ff084df527dce909f993df84bb</id>
+        <link href="https://windhawk.net/mods/fix-darkmode-listviews"/>
+        <updated>2023-10-13T14:40:51.000Z</updated>
+        <content type="html"><![CDATA[<p>Fixes ListViews in dark mode, and outside of it</p>
+<p>Without: <img src="https://i.imgur.com/8kmOShw.png" alt="Without" /></p>
+<p>With: <img src="https://i.imgur.com/PorgfmI.png" alt="With" /></p>]]></content>
+    </entry>
+</feed>
