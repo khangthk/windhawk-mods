@@ -1,3 +1,30 @@
+## 1.2.8 ([May 31, 2024](https://github.com/ramensoftware/windhawk-mods/blob/09d81d6358f4f0fc82e59541b4f0e6daaaad19fd/mods/taskbar-icon-size.wh.cpp))
+
+* Fixed the weather icon disappearing if taskbar icons are centered.
+* Added a restart prompt when the taskbar button width is changed in settings.
+
+## 1.2.7 ([May 10, 2024](https://github.com/ramensoftware/windhawk-mods/blob/16879e75ab4846ac6eaf63c32539abc516850756/mods/taskbar-icon-size.wh.cpp))
+
+* Fixed the weather icon disappearing with the new KB5036980 update.
+
+## 1.2.6 ([May 4, 2024](https://github.com/ramensoftware/windhawk-mods/blob/76eac50ecafbe606e0840cb0c250afb8cfb7eb00/mods/taskbar-icon-size.wh.cpp))
+
+* Added an online symbol cache mechanism as a temporary workaround for the unavailable Microsoft symbols. Currently, this makes the mod work on Windows 11 versions 22631.3447 and 22631.3527. For more details, refer to [the relevant blog post](https://ramensoftware.com/windhawk-and-symbol-download-errors).
+
+## 1.2.5 ([Apr 26, 2024](https://github.com/ramensoftware/windhawk-mods/blob/159dc6e1497d197eb5613eb190f4909ef8ab667b/mods/taskbar-icon-size.wh.cpp))
+
+* Fixed incorrect search icon size, started happening after update KB5036980.
+
+## 1.2.4 ([Mar 7, 2024](https://github.com/ramensoftware/windhawk-mods/blob/23514c6d6153a7fe6a79382b37c9b2c3fbf4003c/mods/taskbar-icon-size.wh.cpp))
+
+* Fixed a possible crash caused by the weather icon resizing code.
+
+## 1.2.3 ([Mar 6, 2024](https://github.com/ramensoftware/windhawk-mods/blob/ccfedcb3f0ad1013cb821d360c6375c5cb5e3626/mods/taskbar-icon-size.wh.cpp))
+
+* Fixed taskbar height not affecting maximized windows in some cases.
+* Improved applying settings, hopefully fixing bugs where not all of the taskbar elements are updated.
+* The weather widget icon size is now adjusted as well. In previous versions, the weather icon's size wasn't affected by the mod.
+
 ## 1.2.2 ([Nov 24, 2023](https://github.com/ramensoftware/windhawk-mods/blob/d1b9a9260c59f7f721e3439496eee9d0dafc5c2b/mods/taskbar-icon-size.wh.cpp))
 
 * Fixed displaced secondary taskbar when auto-hide is enabled.

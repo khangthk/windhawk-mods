@@ -5,12 +5,12 @@
     "mods": {
         "acrylic-effect-radius-changer": {
             "details": {
-                "defaultSorting": 730,
+                "defaultSorting": 711,
                 "published": 1694438292000,
-                "rating": 10,
-                "ratingUsers": 2,
+                "rating": 0,
+                "ratingUsers": 0,
                 "updated": 1694674676000,
-                "users": 73
+                "users": 79
             },
             "metadata": {
                 "architecture": [
@@ -26,14 +26,131 @@
                 "version": "1.1.0"
             }
         },
-        "center-titlebar": {
+        "aerexplorer": {
             "details": {
-                "defaultSorting": 1430,
-                "published": 1693684488000,
+                "defaultSorting": 6130,
+                "published": 1713177639000,
+                "rating": 10,
+                "ratingUsers": 11,
+                "updated": 1718907556000,
+                "users": 613
+            },
+            "metadata": {
+                "author": "aubymori",
+                "compilerOptions": "-lgdi32 -lcomctl32 -lole32 -loleaut32 -luxtheme -ldwmapi",
+                "description": "Various tweaks for Windows Explorer to make it more like older versions.",
+                "github": "https://github.com/aubymori",
+                "include": [
+                    "*"
+                ],
+                "name": "Aerexplorer",
+                "version": "1.6.2"
+            }
+        },
+        "aero-flyout-fix": {
+            "details": {
+                "defaultSorting": 3654,
+                "published": 1702982459000,
+                "rating": 6,
+                "ratingUsers": 2,
+                "updated": 1702982459000,
+                "users": 609
+            },
+            "metadata": {
+                "architecture": [
+                    "x86-64"
+                ],
+                "author": "aubymori",
+                "compilerOptions": "-lgdi32 -lshell32",
+                "description": "Applies thick borders to legacy system flyouts and make them float",
+                "github": "https://github.com/aubymori",
+                "include": [
+                    "explorer.exe",
+                    "SndVol.exe"
+                ],
+                "name": "Aero Flyout Fix",
+                "version": "1.0.0"
+            }
+        },
+        "aero-tray": {
+            "details": {
+                "defaultSorting": 5400,
+                "published": 1702929559000,
                 "rating": 10,
                 "ratingUsers": 3,
+                "updated": 1718988570000,
+                "users": 540
+            },
+            "metadata": {
+                "architecture": [
+                    "x86-64"
+                ],
+                "author": "aubymori",
+                "compilerOptions": "-lpsapi -lgdi32 -luxtheme -lshell32 -lcomctl32",
+                "description": "Restores Windows 7/8 tray overflow",
+                "github": "https://github.com/aubymori",
+                "include": [
+                    "explorer.exe"
+                ],
+                "name": "Aero Tray",
+                "version": "1.0.2"
+            }
+        },
+        "basic-themer": {
+            "details": {
+                "defaultSorting": 250,
+                "published": 1719423839000,
+                "rating": 10,
+                "ratingUsers": 1,
+                "updated": 1719423839000,
+                "users": 25
+            },
+            "metadata": {
+                "architecture": [
+                    "x86-64"
+                ],
+                "author": "aubymori",
+                "compilerOptions": "-ldwmapi -lwtsapi32",
+                "description": "Applies the Windows Basic theme to desktop windows",
+                "github": "https://github.com/aubymori",
+                "include": [
+                    "dwm.exe"
+                ],
+                "name": "Basic Themer",
+                "version": "1.0.0"
+            }
+        },
+        "ce-disable-process-button-flashing": {
+            "details": {
+                "defaultSorting": 18,
+                "published": 1717491726000,
+                "rating": 0,
+                "ratingUsers": 0,
+                "updated": 1717498560000,
+                "users": 2
+            },
+            "metadata": {
+                "author": "ItsProfessional",
+                "compilerOptions": "-masm=intel",
+                "description": "Disables the flashing on the Open Process button in Cheat Engine",
+                "github": "https://github.com/ItsProfessional",
+                "include": [
+                    "cheatengine-x86_64.exe",
+                    "cheatengine-x86_64-SSE4-AVX2.exe",
+                    "cheatengine-i386.exe"
+                ],
+                "name": "CE Disable Process Button Flashing",
+                "version": "1.0.1"
+            }
+        },
+        "center-titlebar": {
+            "details": {
+                "defaultSorting": 2030,
+                "published": 1693684488000,
+                "rating": 10,
+                "ratingUsers": 5,
                 "updated": 1693684488000,
-                "users": 143
+                "users": 203
             },
             "metadata": {
                 "author": "rounk-ctrl",
@@ -46,14 +163,61 @@
                 "version": "1.0"
             }
         },
+        "change-explorer-default-location": {
+            "details": {
+                "defaultSorting": 126,
+                "published": 1718734451000,
+                "rating": 0,
+                "ratingUsers": 0,
+                "updated": 1718734451000,
+                "users": 14
+            },
+            "metadata": {
+                "architecture": [
+                    "x86-64"
+                ],
+                "author": "aubymori",
+                "compilerOptions": "-lshell32",
+                "description": "Allows you to change what shell location or directory Explorer starts in.",
+                "github": "https://github.com/aubymori",
+                "include": [
+                    "explorer.exe"
+                ],
+                "name": "Change Explorer Default Location",
+                "version": "1.0.0"
+            }
+        },
+        "chrome-ui-tweaks": {
+            "details": {
+                "defaultSorting": 1080,
+                "published": 1714820259000,
+                "rating": 10,
+                "ratingUsers": 6,
+                "updated": 1714820259000,
+                "users": 108
+            },
+            "metadata": {
+                "architecture": [
+                    "x86-64"
+                ],
+                "author": "Vasher",
+                "description": "Small UI tweaks to Google Chrome",
+                "github": "https://github.com/VasherMC",
+                "include": [
+                    "chrome.exe"
+                ],
+                "name": "Chrome UI Tweaks",
+                "version": "1.0.0"
+            }
+        },
         "chrome-wheel-scroll-tabs": {
             "details": {
-                "defaultSorting": 16620,
+                "defaultSorting": 19740,
                 "published": 1646604429000,
                 "rating": 10,
-                "ratingUsers": 22,
+                "ratingUsers": 27,
                 "updated": 1672509589000,
-                "users": 1662
+                "users": 1974
             },
             "featured": true,
             "metadata": {
@@ -73,14 +237,39 @@
                 "version": "1.0.3"
             }
         },
+        "classic-browser-fix": {
+            "details": {
+                "defaultSorting": 513,
+                "published": 1706897392000,
+                "rating": 0,
+                "ratingUsers": 0,
+                "updated": 1718730991000,
+                "users": 57
+            },
+            "metadata": {
+                "author": "Anixx",
+                "compilerOptions": "-luxtheme",
+                "description": "Forces the border from Aero Light theme to fix glitched border in Classic theme",
+                "github": "https://github.com/Anixx",
+                "include": [
+                    "msedge.exe",
+                    "chrome.exe",
+                    "chromium.exe",
+                    "Skype.exe",
+                    "steam.exe"
+                ],
+                "name": "Fix browsers for Windows Classic theme",
+                "version": "1.1"
+            }
+        },
         "classic-conhost": {
             "details": {
-                "defaultSorting": 830,
+                "defaultSorting": 1310,
                 "published": 1697883443000,
                 "rating": 10,
-                "ratingUsers": 1,
-                "updated": 1697883443000,
-                "users": 83
+                "ratingUsers": 2,
+                "updated": 1704232475000,
+                "users": 131
             },
             "metadata": {
                 "author": "aubymori",
@@ -88,20 +277,21 @@
                 "description": "Forces classic theme and optionally client edge on console windows",
                 "github": "https://github.com/aubymori",
                 "include": [
-                    "*"
+                    "*",
+                    "conhost.exe"
                 ],
                 "name": "Classic Conhost",
-                "version": "1.0.0"
+                "version": "1.0.2"
             }
         },
         "classic-desktop-icons": {
             "details": {
-                "defaultSorting": 1340,
+                "defaultSorting": 2050,
                 "published": 1694937060000,
                 "rating": 10,
-                "ratingUsers": 3,
+                "ratingUsers": 5,
                 "updated": 1696487454000,
-                "users": 134
+                "users": 205
             },
             "metadata": {
                 "author": "aubymori",
@@ -115,14 +305,79 @@
                 "version": "1.2.1"
             }
         },
+        "classic-explorer-treeview": {
+            "details": {
+                "defaultSorting": 1440,
+                "published": 1708354597000,
+                "rating": 10,
+                "ratingUsers": 3,
+                "updated": 1713541782000,
+                "users": 144
+            },
+            "metadata": {
+                "architecture": [
+                    "x86-64"
+                ],
+                "author": "Waldemar",
+                "compilerOptions": "-lcomctl32 -lgdi32 -loleaut32 -lole32 -lshlwapi",
+                "description": "Modifies Folder Treeview in file explorer so as to make it look more classic.",
+                "github": "https://github.com/CyprinusCarpio",
+                "include": [
+                    "explorer.exe"
+                ],
+                "name": "Classic Explorer Treeview",
+                "version": "1.1"
+            }
+        },
+        "classic-file-picker-dialog": {
+            "details": {
+                "defaultSorting": 1310,
+                "published": 1709574778000,
+                "rating": 10,
+                "ratingUsers": 1,
+                "updated": 1709713642000,
+                "users": 131
+            },
+            "metadata": {
+                "author": "Anixx",
+                "description": "Redirect the Windows Vista+ file picker to the Windows XP one",
+                "github": "https://github.com/Anixx",
+                "include": [
+                    "*"
+                ],
+                "name": "Classic File Picker dialog",
+                "version": "1.1"
+            }
+        },
+        "classic-list-group-fix": {
+            "details": {
+                "defaultSorting": 246,
+                "published": 1710657910000,
+                "rating": 6,
+                "ratingUsers": 1,
+                "updated": 1710657910000,
+                "users": 41
+            },
+            "metadata": {
+                "author": "aubymori",
+                "compilerOptions": "-lgdi32",
+                "description": "Fixes the appearance of list group headers in classic theme.",
+                "github": "https://github.com/aubymori",
+                "include": [
+                    "*"
+                ],
+                "name": "Classic List Group Fix",
+                "version": "1.0.0"
+            }
+        },
         "classic-maximized-windows-fix": {
             "details": {
-                "defaultSorting": 390,
+                "defaultSorting": 410,
                 "published": 1694245393000,
                 "rating": 10,
                 "ratingUsers": 1,
-                "updated": 1696655392000,
-                "users": 39
+                "updated": 1703577817000,
+                "users": 41
             },
             "metadata": {
                 "author": "ephemeralViolette",
@@ -136,24 +391,26 @@
                     "lsass.exe",
                     "winlogon.exe",
                     "logonui.exe",
-                    "ApplicationFrameHost.exe"
+                    "ApplicationFrameHost.exe",
+                    "gameinputsvc.exe",
+                    "svchost.exe"
                 ],
                 "github": "https://github.com/ephemeralViolette",
                 "include": [
                     "*"
                 ],
                 "name": "Fix Classic Theme Maximized Windows",
-                "version": "1.2"
+                "version": "2.1"
             }
         },
         "classic-menus": {
             "details": {
-                "defaultSorting": 990,
+                "defaultSorting": 1810,
                 "published": 1699156598000,
                 "rating": 10,
                 "ratingUsers": 1,
                 "updated": 1699156598000,
-                "users": 99
+                "users": 181
             },
             "metadata": {
                 "author": "aubymori",
@@ -167,14 +424,56 @@
                 "version": "1.0.0"
             }
         },
+        "classic-taskbar-buttons-lite": {
+            "details": {
+                "defaultSorting": 530,
+                "published": 1708239757000,
+                "rating": 10,
+                "ratingUsers": 1,
+                "updated": 1708239757000,
+                "users": 53
+            },
+            "metadata": {
+                "author": "Anixx",
+                "compilerOptions": "-lgdi32",
+                "description": "Lightweight mod, restoring the 3D buttons in classic theme",
+                "github": "https://github.com/Anixx",
+                "include": [
+                    "explorer.exe"
+                ],
+                "name": "Classic Taskbar 3D buttons Lite",
+                "version": "1.2"
+            }
+        },
+        "classic-taskbar-buttons-lite-vs-without-spacing": {
+            "details": {
+                "defaultSorting": 216,
+                "published": 1712417550000,
+                "rating": 0,
+                "ratingUsers": 0,
+                "updated": 1712417550000,
+                "users": 24
+            },
+            "metadata": {
+                "author": "OrthodoxWin32",
+                "compilerOptions": "-lgdi32 -lUxTheme",
+                "description": "Restoring the 3D taskbar buttons with support for visual styles and the taskbar without labels",
+                "github": "https://github.com/OrthodoxWindows",
+                "include": [
+                    "explorer.exe"
+                ],
+                "name": "Classic Taskbar 3D buttons with extended compatibility",
+                "version": "1.0"
+            }
+        },
         "classic-taskbar-context-menu": {
             "details": {
-                "defaultSorting": 2440,
+                "defaultSorting": 2259,
                 "published": 1676627538000,
-                "rating": 10,
-                "ratingUsers": 2,
+                "rating": 9,
+                "ratingUsers": 3,
                 "updated": 1677657525000,
-                "users": 244
+                "users": 251
             },
             "metadata": {
                 "author": "ItsProfessional",
@@ -190,12 +489,12 @@
         },
         "classic-taskdlg-fix": {
             "details": {
-                "defaultSorting": 910,
+                "defaultSorting": 1140,
                 "published": 1699388969000,
                 "rating": 10,
-                "ratingUsers": 4,
+                "ratingUsers": 2,
                 "updated": 1699388969000,
-                "users": 91
+                "users": 114
             },
             "metadata": {
                 "author": "aubymori",
@@ -208,14 +507,124 @@
                 "version": "1.1.0"
             }
         },
-        "custom-shutdown-dialog": {
+        "classic-theme-enable": {
             "details": {
-                "defaultSorting": 410,
-                "published": 1699159361000,
+                "defaultSorting": 730,
+                "published": 1706702888000,
+                "rating": 10,
+                "ratingUsers": 3,
+                "updated": 1711878979000,
+                "users": 73
+            },
+            "metadata": {
+                "author": "Anixx",
+                "compilerOptions": "-lntdll",
+                "description": "Disables theming by closing the handle",
+                "github": "https://github.com/Anixx",
+                "include": [
+                    "winlogon.exe"
+                ],
+                "name": "Enable Classic Theme by handle method",
+                "version": "1.0.3"
+            }
+        },
+        "classic-theme-explorer-lite": {
+            "details": {
+                "defaultSorting": 320,
+                "published": 1707344115000,
                 "rating": 10,
                 "ratingUsers": 1,
+                "updated": 1708969630000,
+                "users": 32
+            },
+            "metadata": {
+                "author": "Anixx",
+                "compilerOptions": "-luxtheme -lgdi32",
+                "description": "Classic Theme mitigations for Explorer ported from Explorer Patcher",
+                "github": "https://github.com/Anixx",
+                "include": [
+                    "explorer.exe"
+                ],
+                "name": "Classic Theme Explorer Lite",
+                "version": "1.1.1"
+            }
+        },
+        "classic-theme-transparency-fix": {
+            "details": {
+                "defaultSorting": 980,
+                "published": 1711437875000,
+                "rating": 10,
+                "ratingUsers": 1,
+                "updated": 1711437875000,
+                "users": 98
+            },
+            "metadata": {
+                "author": "anixx",
+                "description": "Fixes transparency glitches in Classic theme",
+                "github": "https://github.com/Anixx",
+                "include": [
+                    "*",
+                    "dllhost.exe"
+                ],
+                "name": "Classic theme transparency fix",
+                "version": "1.0"
+            }
+        },
+        "classic-uwp-fix": {
+            "details": {
+                "defaultSorting": 1240,
+                "published": 1706895197000,
+                "rating": 10,
+                "ratingUsers": 1,
+                "updated": 1709191248000,
+                "users": 124
+            },
+            "metadata": {
+                "architecture": [
+                    "x86-64"
+                ],
+                "author": "Ingan121",
+                "description": "Fix for UWPs breaking with Classic theme",
+                "github": "https://github.com/Ingan121",
+                "homepage": "https://www.ingan121.com/",
+                "include": [
+                    "ApplicationFrameHost.exe",
+                    "explorer.exe",
+                    "ShellAppRuntime.exe",
+                    "CustomShellHost.exe"
+                ],
+                "name": "Classic UWP Fix",
+                "version": "0.3"
+            }
+        },
+        "clientedge-in-apps": {
+            "details": {
+                "defaultSorting": 486,
+                "published": 1708969659000,
+                "rating": 0,
+                "ratingUsers": 0,
+                "updated": 1708969659000,
+                "users": 54
+            },
+            "metadata": {
+                "author": "anixx",
+                "description": "Adds WS_EX_CLIENTEDGE style to some apps to look better in Classic theme.",
+                "github": "https://github.com/Anixx",
+                "include": [
+                    "*"
+                ],
+                "name": "Clientedge (3D border) in choosen apps",
+                "version": "1.0.0"
+            }
+        },
+        "custom-shutdown-dialog": {
+            "details": {
+                "defaultSorting": 820,
+                "published": 1699159361000,
+                "rating": 10,
+                "ratingUsers": 2,
                 "updated": 1699159361000,
-                "users": 41
+                "users": 82
             },
             "metadata": {
                 "architecture": [
@@ -231,14 +640,37 @@
                 "version": "1.0.0"
             }
         },
+        "desktop-watermark-tweaks": {
+            "details": {
+                "defaultSorting": 560,
+                "published": 1714023231000,
+                "rating": 10,
+                "ratingUsers": 1,
+                "updated": 1714023231000,
+                "users": 56
+            },
+            "metadata": {
+                "architecture": [
+                    "x86-64"
+                ],
+                "author": "aubymori",
+                "description": "Tweaks for the desktop watermark",
+                "github": "https://github.com/aubymori",
+                "include": [
+                    "explorer.exe"
+                ],
+                "name": "Desktop Watermark Tweaks",
+                "version": "1.0.0"
+            }
+        },
         "disable-feedback-hub-hotkey": {
             "details": {
-                "defaultSorting": 5670,
+                "defaultSorting": 7260,
                 "published": 1677930361000,
                 "rating": 10,
-                "ratingUsers": 5,
+                "ratingUsers": 4,
                 "updated": 1677930361000,
-                "users": 567
+                "users": 726
             },
             "metadata": {
                 "author": "ItsProfessional",
@@ -253,12 +685,12 @@
         },
         "disable-immersive-context-menus": {
             "details": {
-                "defaultSorting": 4250,
+                "defaultSorting": 4490,
                 "published": 1678030978000,
                 "rating": 10,
-                "ratingUsers": 6,
+                "ratingUsers": 7,
                 "updated": 1678030978000,
-                "users": 425
+                "users": 449
             },
             "metadata": {
                 "author": "ItsProfessional",
@@ -273,12 +705,12 @@
         },
         "disable-navigation-bar": {
             "details": {
-                "defaultSorting": 333,
+                "defaultSorting": 423,
                 "published": 1677864781000,
                 "rating": 9,
                 "ratingUsers": 2,
                 "updated": 1677864781000,
-                "users": 37
+                "users": 47
             },
             "metadata": {
                 "author": "ItsProfessional",
@@ -293,12 +725,12 @@
         },
         "disable-office-hotkeys": {
             "details": {
-                "defaultSorting": 1728,
+                "defaultSorting": 2232,
                 "published": 1677930544000,
                 "rating": 9,
                 "ratingUsers": 3,
                 "updated": 1677930544000,
-                "users": 192
+                "users": 248
             },
             "metadata": {
                 "author": "ItsProfessional",
@@ -311,16 +743,66 @@
                 "version": "1.0.0"
             }
         },
+        "disable-rounded-corners": {
+            "details": {
+                "defaultSorting": 3480,
+                "published": 1702842224000,
+                "rating": 10,
+                "ratingUsers": 4,
+                "updated": 1703085867000,
+                "users": 348
+            },
+            "metadata": {
+                "architecture": [
+                    "x86-64"
+                ],
+                "author": "m417z",
+                "description": "A simple mod to disable window rounded corners in Windows 11",
+                "github": "https://github.com/m417z",
+                "homepage": "https://m417z.com/",
+                "include": [
+                    "dwm.exe"
+                ],
+                "name": "Disable rounded corners in Windows 11",
+                "twitter": "https://twitter.com/m417z",
+                "version": "1.0.1"
+            }
+        },
+        "dot-hide": {
+            "details": {
+                "defaultSorting": 960,
+                "published": 1705055192000,
+                "rating": 10,
+                "ratingUsers": 3,
+                "updated": 1705055192000,
+                "users": 96
+            },
+            "metadata": {
+                "author": "Tomer Zait (realgam3)",
+                "description": "Keep dot files and directories out of sight, Because it wouldn't happen in Linux...",
+                "github": "https://github.com/realgam3",
+                "homepage": "https://realgam3.com/",
+                "include": [
+                    "*"
+                ],
+                "name": "Dot Hide",
+                "twitter": "https://twitter.com/realgam3",
+                "version": "1.0.0"
+            }
+        },
         "dwm-ghost-mods": {
             "details": {
-                "defaultSorting": 710,
+                "defaultSorting": 990,
                 "published": 1690150313000,
                 "rating": 10,
                 "ratingUsers": 4,
-                "updated": 1690150313000,
-                "users": 71
+                "updated": 1703564688000,
+                "users": 99
             },
             "metadata": {
+                "architecture": [
+                    "x86-64"
+                ],
                 "author": "ephemeralViolette",
                 "compilerOptions": "-ldwmapi -luxtheme",
                 "description": "Allows you to use basic or classic theme with your DWM ghost windows and more!",
@@ -329,16 +811,16 @@
                     "dwm.exe"
                 ],
                 "name": "DWM Ghost Mods",
-                "version": "1.1"
+                "version": "1.2"
             }
         },
         "dwm-unextend-frames": {
             "details": {
-                "defaultSorting": 536,
+                "defaultSorting": 670,
                 "published": 1700542256000,
-                "rating": 8,
-                "ratingUsers": 3,
-                "updated": 1700542256000,
+                "rating": 10,
+                "ratingUsers": 1,
+                "updated": 1703571978000,
                 "users": 67
             },
             "metadata": {
@@ -349,17 +831,17 @@
                     "*"
                 ],
                 "name": "DWM Unextend Frames",
-                "version": "1.0.0"
+                "version": "1.2.0"
             }
         },
         "eradicate-immersive-menus": {
             "details": {
-                "defaultSorting": 3690,
+                "defaultSorting": 7130,
                 "published": 1699155263000,
                 "rating": 10,
-                "ratingUsers": 9,
-                "updated": 1700605007000,
-                "users": 369
+                "ratingUsers": 7,
+                "updated": 1713243502000,
+                "users": 713
             },
             "metadata": {
                 "author": "aubymori",
@@ -379,17 +861,17 @@
                     "*"
                 ],
                 "name": "Eradicate Immersive Menus",
-                "version": "1.0.1"
+                "version": "1.1.0"
             }
         },
         "explorer-32px-icons": {
             "details": {
-                "defaultSorting": 910,
+                "defaultSorting": 1680,
                 "published": 1699148737000,
                 "rating": 10,
                 "ratingUsers": 2,
                 "updated": 1699148737000,
-                "users": 91
+                "users": 168
             },
             "metadata": {
                 "author": "aubymori",
@@ -404,12 +886,12 @@
         },
         "explorer-frame-classic": {
             "details": {
-                "defaultSorting": 6190,
+                "defaultSorting": 11160,
                 "published": 1696691422000,
                 "rating": 10,
-                "ratingUsers": 17,
-                "updated": 1696691422000,
-                "users": 619
+                "ratingUsers": 29,
+                "updated": 1717179907000,
+                "users": 1116
             },
             "metadata": {
                 "architecture": [
@@ -425,17 +907,87 @@
                 ],
                 "name": "Classic Explorer navigation bar",
                 "twitter": "https://twitter.com/m417z",
+                "version": "1.0.3"
+            }
+        },
+        "explorer-name-windows": {
+            "details": {
+                "defaultSorting": 910,
+                "published": 1712874444000,
+                "rating": 10,
+                "ratingUsers": 1,
+                "updated": 1712874444000,
+                "users": 91
+            },
+            "metadata": {
+                "author": "m417z",
+                "compilerOptions": "-lcomctl32 -lgdi32",
+                "description": "Assign custom names to explorer windows, just like in Chrome",
+                "github": "https://github.com/m417z",
+                "homepage": "https://m417z.com/",
+                "include": [
+                    "explorer.exe"
+                ],
+                "name": "Name explorer windows",
+                "twitter": "https://twitter.com/m417z",
                 "version": "1.0"
+            }
+        },
+        "extension-change-no-warning": {
+            "details": {
+                "defaultSorting": 3700,
+                "published": 1713878371000,
+                "rating": 10,
+                "ratingUsers": 10,
+                "updated": 1713878371000,
+                "users": 370
+            },
+            "metadata": {
+                "author": "m417z",
+                "description": "When a file is renamed and its extension is changed, a confirmation warning appears, this mod turns it off",
+                "github": "https://github.com/m417z",
+                "homepage": "https://m417z.com/",
+                "include": [
+                    "explorer.exe"
+                ],
+                "name": "Turn off change file extension warning",
+                "twitter": "https://twitter.com/m417z",
+                "version": "1.0"
+            }
+        },
+        "fake-high-contrast": {
+            "details": {
+                "defaultSorting": 90,
+                "published": 1707753405000,
+                "rating": 0,
+                "ratingUsers": 0,
+                "updated": 1707753405000,
+                "users": 10
+            },
+            "metadata": {
+                "author": "Ingan121",
+                "description": "Fake High Contrast status for apps",
+                "exclude": [
+                    "explorer.exe",
+                    "dwm.exe"
+                ],
+                "github": "https://github.com/Ingan121",
+                "homepage": "https://www.ingan121.com/",
+                "include": [
+                    "*"
+                ],
+                "name": "Fake High Contrast",
+                "version": "1.0.0"
             }
         },
         "fix-basic-caption-text": {
             "details": {
-                "defaultSorting": 1220,
+                "defaultSorting": 1980,
                 "published": 1700125078000,
-                "rating": 10,
-                "ratingUsers": 3,
+                "rating": 0,
+                "ratingUsers": 0,
                 "updated": 1700125078000,
-                "users": 122
+                "users": 220
             },
             "metadata": {
                 "author": "aubymori",
@@ -451,12 +1003,12 @@
         },
         "fix-darkmode-listviews": {
             "details": {
-                "defaultSorting": 1850,
+                "defaultSorting": 3030,
                 "published": 1697208051000,
                 "rating": 10,
-                "ratingUsers": 1,
+                "ratingUsers": 3,
                 "updated": 1697208051000,
-                "users": 185
+                "users": 303
             },
             "metadata": {
                 "author": "Reabstraction",
@@ -472,12 +1024,12 @@
         },
         "flight-simulator-focus-helper": {
             "details": {
-                "defaultSorting": 135,
+                "defaultSorting": 81,
                 "published": 1688766152000,
                 "rating": 0,
                 "ratingUsers": 0,
                 "updated": 1689709104000,
-                "users": 15
+                "users": 9
             },
             "metadata": {
                 "author": "m417z",
@@ -495,12 +1047,12 @@
         },
         "force-thick-frames": {
             "details": {
-                "defaultSorting": 2151,
+                "defaultSorting": 4338,
                 "published": 1688844521000,
                 "rating": 9,
-                "ratingUsers": 6,
+                "ratingUsers": 5,
                 "updated": 1688844521000,
-                "users": 239
+                "users": 482
             },
             "metadata": {
                 "author": "Alcatel",
@@ -516,14 +1068,34 @@
                 "version": "2"
             }
         },
+        "hide-action-center-icon": {
+            "details": {
+                "defaultSorting": 252,
+                "published": 1710579606000,
+                "rating": 0,
+                "ratingUsers": 0,
+                "updated": 1710579606000,
+                "users": 28
+            },
+            "metadata": {
+                "author": "anixx",
+                "description": "Hides Action Center icon from Win10 taskbar",
+                "github": "https://github.com/Anixx",
+                "include": [
+                    "explorer.exe"
+                ],
+                "name": "Hide Action Center icon",
+                "version": "1.0.0"
+            }
+        },
         "hide-search-bar": {
             "details": {
-                "defaultSorting": 1269,
+                "defaultSorting": 1570,
                 "published": 1676481572000,
-                "rating": 9,
+                "rating": 10,
                 "ratingUsers": 3,
                 "updated": 1677950123000,
-                "users": 141
+                "users": 157
             },
             "metadata": {
                 "author": "ItsProfessional",
@@ -537,14 +1109,57 @@
                 "version": "1.0.2"
             }
         },
+        "icon-resource-redirect": {
+            "details": {
+                "defaultSorting": 990,
+                "published": 1713005692000,
+                "rating": 10,
+                "ratingUsers": 2,
+                "updated": 1717840073000,
+                "users": 99
+            },
+            "metadata": {
+                "author": "m417z",
+                "compilerOptions": "-lshlwapi",
+                "description": "Define alternative files for loading various resources (e.g. instead of icons in imageres.dll) for simple theming without having to modify system files",
+                "github": "https://github.com/m417z",
+                "homepage": "https://m417z.com/",
+                "include": [
+                    "*"
+                ],
+                "name": "Resource Redirect",
+                "twitter": "https://twitter.com/m417z",
+                "version": "1.1.4"
+            }
+        },
+        "icon16bitfix": {
+            "details": {
+                "defaultSorting": 1300,
+                "published": 1708239950000,
+                "rating": 10,
+                "ratingUsers": 2,
+                "updated": 1708280471000,
+                "users": 130
+            },
+            "metadata": {
+                "author": "anixx",
+                "description": "Adds support for icons of 16-bit (Win16) applications in File Explorer",
+                "github": "https://github.com/Anixx",
+                "include": [
+                    "explorer.exe"
+                ],
+                "name": "Icons of Win16 apps in Explorer",
+                "version": "1.0.1"
+            }
+        },
         "ignore-focus-loss": {
             "details": {
-                "defaultSorting": 1530,
+                "defaultSorting": 2400,
                 "published": 1673179779000,
-                "rating": 0,
-                "ratingUsers": 0,
+                "rating": 10,
+                "ratingUsers": 2,
                 "updated": 1673179779000,
-                "users": 170
+                "users": 240
             },
             "metadata": {
                 "author": "Vasher",
@@ -555,14 +1170,34 @@
                 "version": "1.0.0"
             }
         },
+        "isretailready-false": {
+            "details": {
+                "defaultSorting": 81,
+                "published": 1718890611000,
+                "rating": 0,
+                "ratingUsers": 0,
+                "updated": 1718890611000,
+                "users": 9
+            },
+            "metadata": {
+                "author": "Jevil7452",
+                "description": "Enables the normally hidden \"SecureBoot isn't configured correctly\" watermark",
+                "github": "https://github.com/Jevil7452",
+                "include": [
+                    "explorer.exe"
+                ],
+                "name": "SecureBoot Warning Watermark Enabler",
+                "version": "1"
+            }
+        },
         "legacy-file-copy": {
             "details": {
-                "defaultSorting": 4390,
+                "defaultSorting": 7710,
                 "published": 1675346734000,
                 "rating": 10,
-                "ratingUsers": 4,
+                "ratingUsers": 2,
                 "updated": 1675346734000,
-                "users": 439
+                "users": 771
             },
             "metadata": {
                 "architecture": [
@@ -581,12 +1216,12 @@
         },
         "legacy-search-bar": {
             "details": {
-                "defaultSorting": 470,
+                "defaultSorting": 780,
                 "published": 1700726411000,
                 "rating": 10,
-                "ratingUsers": 2,
+                "ratingUsers": 1,
                 "updated": 1700726411000,
-                "users": 47
+                "users": 78
             },
             "metadata": {
                 "author": "aubymori",
@@ -601,12 +1236,12 @@
         },
         "lm-close-windbg-file-changed": {
             "details": {
-                "defaultSorting": 190,
+                "defaultSorting": 90,
                 "published": 1650561701000,
-                "rating": 10,
-                "ratingUsers": 2,
+                "rating": 0,
+                "ratingUsers": 0,
                 "updated": 1650561701000,
-                "users": 19
+                "users": 10
             },
             "metadata": {
                 "author": "Mark Jansen",
@@ -622,12 +1257,12 @@
         },
         "lm-mediakey-explorer-fix": {
             "details": {
-                "defaultSorting": 1570,
+                "defaultSorting": 1830,
                 "published": 1664663103000,
                 "rating": 10,
-                "ratingUsers": 6,
+                "ratingUsers": 3,
                 "updated": 1664663103000,
-                "users": 157
+                "users": 183
             },
             "metadata": {
                 "author": "Mark Jansen",
@@ -644,12 +1279,12 @@
         },
         "lm-ppee-wow64": {
             "details": {
-                "defaultSorting": 360,
+                "defaultSorting": 480,
                 "published": 1696362574000,
                 "rating": 10,
-                "ratingUsers": 3,
+                "ratingUsers": 1,
                 "updated": 1696852054000,
-                "users": 36
+                "users": 48
             },
             "metadata": {
                 "author": "Mark Jansen",
@@ -666,12 +1301,12 @@
         },
         "lm-regedit-multi-instance": {
             "details": {
-                "defaultSorting": 832,
+                "defaultSorting": 1420,
                 "published": 1686183999000,
-                "rating": 8,
-                "ratingUsers": 5,
+                "rating": 10,
+                "ratingUsers": 4,
                 "updated": 1686183999000,
-                "users": 104
+                "users": 142
             },
             "metadata": {
                 "author": "Mark Jansen",
@@ -687,12 +1322,12 @@
         },
         "lm-vmplayer-vnc": {
             "details": {
-                "defaultSorting": 261,
+                "defaultSorting": 240,
                 "published": 1672692734000,
-                "rating": 0,
-                "ratingUsers": 0,
+                "rating": 10,
+                "ratingUsers": 1,
                 "updated": 1672692734000,
-                "users": 29
+                "users": 24
             },
             "metadata": {
                 "author": "Mark Jansen",
@@ -708,12 +1343,12 @@
         },
         "lm-vs-solution-icon": {
             "details": {
-                "defaultSorting": 870,
+                "defaultSorting": 910,
                 "published": 1650743841000,
                 "rating": 10,
-                "ratingUsers": 8,
+                "ratingUsers": 5,
                 "updated": 1660152079000,
-                "users": 87
+                "users": 91
             },
             "metadata": {
                 "author": "Mark Jansen",
@@ -728,14 +1363,35 @@
                 "version": "0.7"
             }
         },
+        "modernize-folder-picker-dialog": {
+            "details": {
+                "defaultSorting": 4620,
+                "published": 1716835371000,
+                "rating": 10,
+                "ratingUsers": 12,
+                "updated": 1716835371000,
+                "users": 462
+            },
+            "metadata": {
+                "author": "aubymori",
+                "compilerOptions": "-lole32 -loleaut32",
+                "description": "Replaces the classic \"Browse For Folder\" dialog",
+                "github": "https://github.com/aubymori",
+                "include": [
+                    "*"
+                ],
+                "name": "Modernize Folder Picker Dialog",
+                "version": "1.0.0"
+            }
+        },
         "more-space-in-language-indicator": {
             "details": {
-                "defaultSorting": 490,
+                "defaultSorting": 324,
                 "published": 1680351727000,
-                "rating": 10,
-                "ratingUsers": 1,
+                "rating": 0,
+                "ratingUsers": 0,
                 "updated": 1680351727000,
-                "users": 49
+                "users": 36
             },
             "metadata": {
                 "author": "m417z",
@@ -752,12 +1408,12 @@
         },
         "msg-box-font-fix": {
             "details": {
-                "defaultSorting": 3080,
+                "defaultSorting": 4600,
                 "published": 1693642476000,
                 "rating": 10,
-                "ratingUsers": 5,
-                "updated": 1699150793000,
-                "users": 308
+                "ratingUsers": 3,
+                "updated": 1703245739000,
+                "users": 460
             },
             "metadata": {
                 "author": "aubymori",
@@ -768,17 +1424,17 @@
                     "*"
                 ],
                 "name": "Message Box Fix",
-                "version": "1.4.6"
+                "version": "1.5.0"
             }
         },
         "mspaint-dark": {
             "details": {
-                "defaultSorting": 8487,
+                "defaultSorting": 7936,
                 "published": 1675042345000,
-                "rating": 9,
-                "ratingUsers": 11,
+                "rating": 8,
+                "ratingUsers": 9,
                 "updated": 1675107343000,
-                "users": 943
+                "users": 992
             },
             "metadata": {
                 "architecture": [
@@ -797,14 +1453,36 @@
                 "version": "1.0.1"
             }
         },
+        "no-flash-window": {
+            "details": {
+                "defaultSorting": 486,
+                "published": 1702607629000,
+                "rating": 0,
+                "ratingUsers": 0,
+                "updated": 1702607629000,
+                "users": 54
+            },
+            "metadata": {
+                "author": "m417z",
+                "description": "Prevent programs from flashing their windows on the taskbar",
+                "github": "https://github.com/m417z",
+                "homepage": "https://m417z.com/",
+                "include": [
+                    "*"
+                ],
+                "name": "NoFlashWindow",
+                "twitter": "https://twitter.com/m417z",
+                "version": "1.0"
+            }
+        },
         "no-focus-rectangle": {
             "details": {
-                "defaultSorting": 7000,
+                "defaultSorting": 9520,
                 "published": 1676392345000,
                 "rating": 10,
-                "ratingUsers": 20,
+                "ratingUsers": 27,
                 "updated": 1677162292000,
-                "users": 700
+                "users": 952
             },
             "metadata": {
                 "author": "ItsProfessional",
@@ -820,12 +1498,12 @@
         },
         "no-hidden-cursor": {
             "details": {
-                "defaultSorting": 390,
+                "defaultSorting": 369,
                 "published": 1677399865000,
-                "rating": 10,
-                "ratingUsers": 1,
+                "rating": 0,
+                "ratingUsers": 0,
                 "updated": 1677399865000,
-                "users": 39
+                "users": 41
             },
             "metadata": {
                 "author": "ItsProfessional",
@@ -837,12 +1515,12 @@
         },
         "no-run-icon": {
             "details": {
-                "defaultSorting": 840,
+                "defaultSorting": 1330,
                 "published": 1699161562000,
                 "rating": 10,
-                "ratingUsers": 2,
+                "ratingUsers": 3,
                 "updated": 1699161562000,
-                "users": 84
+                "users": 133
             },
             "metadata": {
                 "author": "aubymori",
@@ -857,12 +1535,12 @@
         },
         "no-taskbar-item-glow": {
             "details": {
-                "defaultSorting": 210,
+                "defaultSorting": 225,
                 "published": 1695580544000,
-                "rating": 10,
-                "ratingUsers": 1,
+                "rating": 0,
+                "ratingUsers": 0,
                 "updated": 1695580544000,
-                "users": 21
+                "users": 25
             },
             "metadata": {
                 "architecture": [
@@ -880,12 +1558,12 @@
         },
         "notepad-clientedge": {
             "details": {
-                "defaultSorting": 780,
+                "defaultSorting": 1100,
                 "published": 1698645495000,
                 "rating": 10,
-                "ratingUsers": 3,
+                "ratingUsers": 1,
                 "updated": 1698645495000,
-                "users": 78
+                "users": 110
             },
             "metadata": {
                 "author": "aubymori",
@@ -900,12 +1578,12 @@
         },
         "notepad-dark-mode": {
             "details": {
-                "defaultSorting": 18060,
+                "defaultSorting": 25620,
                 "published": 1646604429000,
                 "rating": 10,
-                "ratingUsers": 25,
+                "ratingUsers": 32,
                 "updated": 1646604429000,
-                "users": 1806
+                "users": 2562
             },
             "metadata": {
                 "author": "m417z",
@@ -921,21 +1599,45 @@
                 "version": "1.0"
             }
         },
+        "old-this-pc-commands": {
+            "details": {
+                "defaultSorting": 3770,
+                "published": 1702159772000,
+                "rating": 10,
+                "ratingUsers": 1,
+                "updated": 1702159772000,
+                "users": 377
+            },
+            "metadata": {
+                "architecture": [
+                    "x86-64"
+                ],
+                "author": "aubymori",
+                "compilerOptions": "-lole32",
+                "description": "Makes \"Open Settings\", \"System properties\", etc. in This PC use Control Panel instead of Settings",
+                "github": "https://github.com/aubymori",
+                "include": [
+                    "explorer.exe"
+                ],
+                "name": "Old This PC Commands",
+                "version": "1.0.0"
+            }
+        },
         "pinned-items-double-click": {
             "details": {
-                "defaultSorting": 1760,
+                "defaultSorting": 1881,
                 "published": 1682167233000,
-                "rating": 10,
-                "ratingUsers": 7,
-                "updated": 1682167233000,
-                "users": 176
+                "rating": 9,
+                "ratingUsers": 11,
+                "updated": 1714856366000,
+                "users": 209
             },
             "metadata": {
                 "architecture": [
                     "x86-64"
                 ],
                 "author": "m417z",
-                "compilerOptions": "-lversion",
+                "compilerOptions": "-lversion -lwininet",
                 "description": "Only open pinned items when double clicking on them to avoid accidental clicks",
                 "github": "https://github.com/m417z",
                 "homepage": "https://m417z.com/",
@@ -944,17 +1646,120 @@
                 ],
                 "name": "Open pinned items with double click",
                 "twitter": "https://twitter.com/m417z",
+                "version": "1.0.1"
+            }
+        },
+        "regedit-auto-trim-whitespace-on-navigation-bar": {
+            "details": {
+                "defaultSorting": 252,
+                "published": 1717097416000,
+                "rating": 0,
+                "ratingUsers": 0,
+                "updated": 1717097416000,
+                "users": 28
+            },
+            "metadata": {
+                "author": "ItsProfessional",
+                "compilerOptions": "-lshlwapi",
+                "description": "Automatically trims whitespace on the navigation bar",
+                "github": "https://github.com/ItsProfessional",
+                "include": [
+                    "regedit.exe"
+                ],
+                "name": "RegEdit Auto Trim Whitespace on Navigation Bar",
+                "version": "1.0.0"
+            }
+        },
+        "regedit-disable-beep": {
+            "details": {
+                "defaultSorting": 108,
+                "published": 1717144071000,
+                "rating": 0,
+                "ratingUsers": 0,
+                "updated": 1717144071000,
+                "users": 12
+            },
+            "metadata": {
+                "author": "ItsProfessional",
+                "compilerOptions": "-lshlwapi",
+                "description": "Prevents RegEdit from beeping when an invalid key is entered to the navigation bar",
+                "github": "https://github.com/ItsProfessional",
+                "include": [
+                    "regedit.exe"
+                ],
+                "name": "RegEdit Disable Beep",
+                "version": "1.0.0"
+            }
+        },
+        "regedit-fix-copy-key-name": {
+            "details": {
+                "defaultSorting": 207,
+                "published": 1717097524000,
+                "rating": 0,
+                "ratingUsers": 0,
+                "updated": 1717097524000,
+                "users": 23
+            },
+            "metadata": {
+                "author": "ItsProfessional",
+                "description": "Makes the \"Copy Key Name\" context menu option actually copy the name of the key instead of the path.",
+                "github": "https://github.com/ItsProfessional",
+                "include": [
+                    "regedit.exe"
+                ],
+                "name": "RegEdit Fix \"Copy Key Name\"",
+                "version": "1.0.0"
+            }
+        },
+        "remove-command-bar": {
+            "details": {
+                "defaultSorting": 344,
+                "published": 1713423953000,
+                "rating": 8,
+                "ratingUsers": 3,
+                "updated": 1713423953000,
+                "users": 43
+            },
+            "metadata": {
+                "author": "Waldemar",
+                "description": "Removes the Command Bar from file explorer.",
+                "github": "https://github.com/CyprinusCarpio",
+                "include": [
+                    "explorer.exe"
+                ],
+                "name": "Remove Command Bar",
                 "version": "1.0"
+            }
+        },
+        "remove-ms-store-open-with": {
+            "details": {
+                "defaultSorting": 1300,
+                "published": 1718733038000,
+                "rating": 10,
+                "ratingUsers": 4,
+                "updated": 1718733038000,
+                "users": 130
+            },
+            "metadata": {
+                "author": "aubymori",
+                "compilerOptions": "-lshell32",
+                "description": "Removes the \"Search with Microsoft Store\" menu item from the \"Open with\" submenu",
+                "github": "https://github.com/aubymori",
+                "include": [
+                    "*"
+                ],
+                "name": "Open With - Remove Microsoft Store Menu Item",
+                "version": "1.0.0"
             }
         },
         "ribbon-caption-icon-fix": {
             "details": {
-                "defaultSorting": 1380,
+                "defaultSorting": 1860,
                 "published": 1700466353000,
                 "rating": 10,
-                "ratingUsers": 3,
+                "ratingUsers": 2,
                 "updated": 1700466353000,
-                "users": 138
+                "users": 186
             },
             "metadata": {
                 "author": "Taniko Yamamoto",
@@ -971,12 +1776,12 @@
         },
         "shrink-address-bar-height": {
             "details": {
-                "defaultSorting": 5418,
+                "defaultSorting": 6030,
                 "published": 1677861723000,
-                "rating": 9,
-                "ratingUsers": 3,
+                "rating": 10,
+                "ratingUsers": 4,
                 "updated": 1679051738000,
-                "users": 602
+                "users": 603
             },
             "metadata": {
                 "author": "ItsProfessional",
@@ -989,14 +1794,38 @@
                 "version": "1.0.1"
             }
         },
+        "sib-plusplus-tweaker": {
+            "details": {
+                "defaultSorting": 18,
+                "published": 1719611831000,
+                "rating": 0,
+                "ratingUsers": 0,
+                "updated": 1719623492000,
+                "users": 2
+            },
+            "metadata": {
+                "architecture": [
+                    "x86-64"
+                ],
+                "author": "Erizur",
+                "compilerOptions": "-lcomdlg32 -luser32 -lole32 -lgdi32 -lshell32",
+                "description": "Modify StartIsBack++'s features (2.9.20)",
+                "github": "https://github.com/Erizur",
+                "include": [
+                    "explorer.exe"
+                ],
+                "name": "StartIsBack++ Tweaker",
+                "version": "0.5"
+            }
+        },
         "slick-window-arrangement": {
             "details": {
-                "defaultSorting": 31250,
+                "defaultSorting": 39610,
                 "published": 1646604429000,
                 "rating": 10,
-                "ratingUsers": 69,
+                "ratingUsers": 90,
                 "updated": 1647122066000,
-                "users": 3125
+                "users": 3961
             },
             "featured": true,
             "metadata": {
@@ -1015,12 +1844,12 @@
         },
         "start-menu-all-apps": {
             "details": {
-                "defaultSorting": 9830,
+                "defaultSorting": 11980,
                 "published": 1647604671000,
                 "rating": 10,
-                "ratingUsers": 7,
+                "ratingUsers": 10,
                 "updated": 1699302173000,
-                "users": 983
+                "users": 1198
             },
             "metadata": {
                 "architecture": [
@@ -1038,14 +1867,54 @@
                 "version": "1.0.2"
             }
         },
+        "suppress-run-box-error-message": {
+            "details": {
+                "defaultSorting": 210,
+                "published": 1716742333000,
+                "rating": 10,
+                "ratingUsers": 2,
+                "updated": 1716742333000,
+                "users": 21
+            },
+            "metadata": {
+                "author": "ItsProfessional",
+                "description": "Prevents the error message from opening if invalid input is entered into the Run box",
+                "github": "https://github.com/ItsProfessional",
+                "include": [
+                    "explorer.exe"
+                ],
+                "name": "Suppress Run Box Error Message",
+                "version": "1.0.0"
+            }
+        },
+        "syslistview32-enabler": {
+            "details": {
+                "defaultSorting": 1040,
+                "published": 1706689199000,
+                "rating": 10,
+                "ratingUsers": 1,
+                "updated": 1707130904000,
+                "users": 104
+            },
+            "metadata": {
+                "author": "anixx",
+                "description": "Enables SysListView32 folder layout in Explorer",
+                "github": "https://github.com/Anixx",
+                "include": [
+                    "explorer.exe"
+                ],
+                "name": "Enable SyslistView32",
+                "version": "1.0.2"
+            }
+        },
         "taskbar-autohide-better": {
             "details": {
-                "defaultSorting": 1566,
+                "defaultSorting": 3400,
                 "published": 1696232707000,
-                "rating": 9,
-                "ratingUsers": 7,
+                "rating": 10,
+                "ratingUsers": 4,
                 "updated": 1697199404000,
-                "users": 174
+                "users": 340
             },
             "metadata": {
                 "author": "Cirn09",
@@ -1062,12 +1931,12 @@
         },
         "taskbar-button-click": {
             "details": {
-                "defaultSorting": 24680,
+                "defaultSorting": 30920,
                 "published": 1646604429000,
                 "rating": 10,
-                "ratingUsers": 38,
-                "updated": 1700854434000,
-                "users": 2468
+                "ratingUsers": 58,
+                "updated": 1714851700000,
+                "users": 3092
             },
             "featured": true,
             "metadata": {
@@ -1075,7 +1944,7 @@
                     "x86-64"
                 ],
                 "author": "m417z",
-                "compilerOptions": "-lversion",
+                "compilerOptions": "-lversion -lwininet",
                 "description": "Close programs with a middle click on the taskbar instead of creating a new instance",
                 "github": "https://github.com/m417z",
                 "homepage": "https://m417z.com/",
@@ -1084,24 +1953,24 @@
                 ],
                 "name": "Middle click to close on the taskbar",
                 "twitter": "https://twitter.com/m417z",
-                "version": "1.0.5"
+                "version": "1.0.6"
             }
         },
         "taskbar-button-scroll": {
             "details": {
-                "defaultSorting": 3730,
+                "defaultSorting": 3933,
                 "published": 1682233932000,
-                "rating": 10,
-                "ratingUsers": 9,
-                "updated": 1696065866000,
-                "users": 373
+                "rating": 9,
+                "ratingUsers": 13,
+                "updated": 1714856027000,
+                "users": 437
             },
             "metadata": {
                 "architecture": [
                     "x86-64"
                 ],
                 "author": "m417z",
-                "compilerOptions": "-lcomctl32 -loleaut32 -lole32",
+                "compilerOptions": "-lcomctl32 -loleaut32 -lole32 -lwininet",
                 "description": "Minimize/restore by scrolling the mouse wheel over taskbar buttons and thumbnail previews (Windows 11 only)",
                 "github": "https://github.com/m417z",
                 "homepage": "https://m417z.com/",
@@ -1110,17 +1979,17 @@
                 ],
                 "name": "Taskbar minimize/restore on scroll",
                 "twitter": "https://twitter.com/m417z",
-                "version": "1.0.5"
+                "version": "1.0.6"
             }
         },
         "taskbar-clock-customization": {
             "details": {
-                "defaultSorting": 34360,
+                "defaultSorting": 43070,
                 "published": 1646604429000,
                 "rating": 10,
-                "ratingUsers": 93,
-                "updated": 1696192482000,
-                "users": 3436
+                "ratingUsers": 111,
+                "updated": 1714850682000,
+                "users": 4307
             },
             "featured": true,
             "metadata": {
@@ -1137,24 +2006,45 @@
                 ],
                 "name": "Taskbar Clock Customization",
                 "twitter": "https://twitter.com/m417z",
-                "version": "1.3.2"
+                "version": "1.3.3"
+            }
+        },
+        "taskbar-empty-space-clicks": {
+            "details": {
+                "defaultSorting": 6910,
+                "published": 1704123810000,
+                "rating": 10,
+                "ratingUsers": 22,
+                "updated": 1707334808000,
+                "users": 691
+            },
+            "metadata": {
+                "author": "m1lhaus",
+                "compilerOptions": "-DWINVER=0x0602 -D_WIN32_WINNT=0x0602 -lcomctl32 -loleaut32 -lole32 -lversion",
+                "description": "Trigger custom action when empty space on a taskbar is double/middle clicked",
+                "github": "https://github.com/m1lhaus",
+                "include": [
+                    "explorer.exe"
+                ],
+                "name": "Click on empty taskbar space",
+                "version": "1.3"
             }
         },
         "taskbar-grouping": {
             "details": {
-                "defaultSorting": 53950,
+                "defaultSorting": 57390,
                 "published": 1646604429000,
                 "rating": 10,
-                "ratingUsers": 116,
-                "updated": 1683581240000,
-                "users": 5395
+                "ratingUsers": 138,
+                "updated": 1718200067000,
+                "users": 5739
             },
             "metadata": {
                 "architecture": [
                     "x86-64"
                 ],
                 "author": "m417z",
-                "compilerOptions": "-D__USE_MINGW_ANSI_STDIO=0 -lcomctl32 -loleaut32 -lole32 -lshlwapi -lversion",
+                "compilerOptions": "-D__USE_MINGW_ANSI_STDIO=0 -lcomctl32 -loleaut32 -lole32 -lshlwapi -lversion -lwininet",
                 "description": "Causes a separate button to be created on the taskbar for each new window",
                 "github": "https://github.com/m417z",
                 "homepage": "https://m417z.com/",
@@ -1163,17 +2053,17 @@
                 ],
                 "name": "Disable grouping on the taskbar",
                 "twitter": "https://twitter.com/m417z",
-                "version": "1.2.2"
+                "version": "1.3.4"
             }
         },
         "taskbar-icon-size": {
             "details": {
-                "defaultSorting": 129910,
+                "defaultSorting": 191680,
                 "published": 1657984524000,
                 "rating": 10,
-                "ratingUsers": 279,
-                "updated": 1700852904000,
-                "users": 12991
+                "ratingUsers": 450,
+                "updated": 1717166842000,
+                "users": 19168
             },
             "featured": true,
             "metadata": {
@@ -1181,7 +2071,7 @@
                     "x86-64"
                 ],
                 "author": "m417z",
-                "compilerOptions": "-DWINVER=0x0605 -lole32 -loleaut32 -lshcore",
+                "compilerOptions": "-DWINVER=0x0605 -lcomctl32 -lole32 -loleaut32 -lshcore -lwininet",
                 "description": "Control the taskbar height and icon size, improve icon quality (Windows 11 only)",
                 "github": "https://github.com/m417z",
                 "homepage": "https://m417z.com/",
@@ -1190,17 +2080,17 @@
                 ],
                 "name": "Taskbar height and icon size",
                 "twitter": "https://twitter.com/m417z",
-                "version": "1.2.2"
+                "version": "1.2.8"
             }
         },
         "taskbar-labels": {
             "details": {
-                "defaultSorting": 42340,
+                "defaultSorting": 44770,
                 "published": 1661149953000,
                 "rating": 10,
-                "ratingUsers": 86,
-                "updated": 1696370827000,
-                "users": 4234
+                "ratingUsers": 108,
+                "updated": 1714848571000,
+                "users": 4477
             },
             "featured": true,
             "metadata": {
@@ -1208,8 +2098,8 @@
                     "x86-64"
                 ],
                 "author": "m417z",
-                "compilerOptions": "-DWINVER=0x0605 -loleaut32 -lole32 -lruntimeobject",
-                "description": "Show text labels for running programs on the taskbar (Windows 11 only)",
+                "compilerOptions": "-DWINVER=0x0605 -loleaut32 -lole32 -lruntimeobject -lwininet",
+                "description": "Show and customize text labels for running programs on the taskbar (Windows 11 only)",
                 "github": "https://github.com/m417z",
                 "homepage": "https://m417z.com/",
                 "include": [
@@ -1217,17 +2107,43 @@
                 ],
                 "name": "Taskbar Labels for Windows 11",
                 "twitter": "https://twitter.com/m417z",
-                "version": "1.1.5"
+                "version": "1.2.5"
+            }
+        },
+        "taskbar-notification-icon-spacing": {
+            "details": {
+                "defaultSorting": 10420,
+                "published": 1706376839000,
+                "rating": 10,
+                "ratingUsers": 23,
+                "updated": 1714853687000,
+                "users": 1042
+            },
+            "metadata": {
+                "architecture": [
+                    "x86-64"
+                ],
+                "author": "m417z",
+                "compilerOptions": "-lole32 -loleaut32 -lwininet",
+                "description": "Reduce or increase the spacing between notification (tray) icons on the taskbar (Windows 11 only)",
+                "github": "https://github.com/m417z",
+                "homepage": "https://m417z.com/",
+                "include": [
+                    "explorer.exe"
+                ],
+                "name": "Taskbar notification icon spacing",
+                "twitter": "https://twitter.com/m417z",
+                "version": "1.0.2"
             }
         },
         "taskbar-scroll-actions": {
             "details": {
-                "defaultSorting": 800,
+                "defaultSorting": 1310,
                 "published": 1693239523000,
                 "rating": 10,
                 "ratingUsers": 3,
-                "updated": 1693239523000,
-                "users": 80
+                "updated": 1713981885000,
+                "users": 131
             },
             "metadata": {
                 "author": "m417z",
@@ -1240,17 +2156,17 @@
                 ],
                 "name": "Taskbar Scroll Actions",
                 "twitter": "https://twitter.com/m417z",
-                "version": "1.0"
+                "version": "1.0.1"
             }
         },
         "taskbar-thumbnail-reorder": {
             "details": {
-                "defaultSorting": 27870,
+                "defaultSorting": 34480,
                 "published": 1657401939000,
                 "rating": 10,
-                "ratingUsers": 80,
-                "updated": 1672518473000,
-                "users": 2787
+                "ratingUsers": 93,
+                "updated": 1714851173000,
+                "users": 3448
             },
             "featured": true,
             "metadata": {
@@ -1258,7 +2174,7 @@
                     "x86-64"
                 ],
                 "author": "m417z",
-                "compilerOptions": "-lcomctl32 -lversion",
+                "compilerOptions": "-lcomctl32 -lversion -lwininet",
                 "description": "Reorder taskbar thumbnails with the left mouse button",
                 "github": "https://github.com/m417z",
                 "homepage": "https://m417z.com/",
@@ -1267,17 +2183,43 @@
                 ],
                 "name": "Taskbar Thumbnail Reorder",
                 "twitter": "https://twitter.com/m417z",
-                "version": "1.0.3"
+                "version": "1.0.7"
+            }
+        },
+        "taskbar-vertical": {
+            "details": {
+                "defaultSorting": 1881,
+                "published": 1718190574000,
+                "rating": 9,
+                "ratingUsers": 4,
+                "updated": 1718190574000,
+                "users": 209
+            },
+            "metadata": {
+                "architecture": [
+                    "x86-64"
+                ],
+                "author": "m417z",
+                "compilerOptions": "-DWINVER=0x0605 -lgdi32 -lole32 -loleaut32 -lshcore -lwininet",
+                "description": "Finally, the missing vertical taskbar option for Windows 11!",
+                "github": "https://github.com/m417z",
+                "homepage": "https://m417z.com/",
+                "include": [
+                    "explorer.exe"
+                ],
+                "name": "Vertical Taskbar for Windows 11",
+                "twitter": "https://twitter.com/m417z",
+                "version": "1.0"
             }
         },
         "taskbar-volume-control": {
             "details": {
-                "defaultSorting": 40940,
+                "defaultSorting": 58610,
                 "published": 1652940665000,
                 "rating": 10,
-                "ratingUsers": 77,
-                "updated": 1689416807000,
-                "users": 4094
+                "ratingUsers": 108,
+                "updated": 1716744702000,
+                "users": 5861
             },
             "featured": true,
             "metadata": {
@@ -1291,24 +2233,24 @@
                 ],
                 "name": "Taskbar Volume Control",
                 "twitter": "https://twitter.com/m417z",
-                "version": "1.2"
+                "version": "1.2.1"
             }
         },
         "taskbar-wheel-cycle": {
             "details": {
-                "defaultSorting": 3410,
+                "defaultSorting": 4360,
                 "published": 1682527457000,
                 "rating": 10,
-                "ratingUsers": 6,
-                "updated": 1696065719000,
-                "users": 341
+                "ratingUsers": 10,
+                "updated": 1714855433000,
+                "users": 436
             },
             "metadata": {
                 "architecture": [
                     "x86-64"
                 ],
                 "author": "m417z",
-                "compilerOptions": "-lcomctl32 -loleaut32 -lole32",
+                "compilerOptions": "-lcomctl32 -loleaut32 -lole32 -lwininet",
                 "description": "Use the mouse wheel while hovering over the taskbar to cycle between taskbar buttons (Windows 11 only)",
                 "github": "https://github.com/m417z",
                 "homepage": "https://m417z.com/",
@@ -1317,17 +2259,17 @@
                 ],
                 "name": "Cycle taskbar buttons with mouse wheel",
                 "twitter": "https://twitter.com/m417z",
-                "version": "1.1.2"
+                "version": "1.1.3"
             }
         },
         "text-replace": {
             "details": {
-                "defaultSorting": 1950,
+                "defaultSorting": 3015,
                 "published": 1646604429000,
-                "rating": 10,
+                "rating": 9,
                 "ratingUsers": 3,
                 "updated": 1646604429000,
-                "users": 195
+                "users": 335
             },
             "metadata": {
                 "author": "m417z",
@@ -1345,12 +2287,12 @@
         },
         "themed-regedit-listview": {
             "details": {
-                "defaultSorting": 2400,
+                "defaultSorting": 3730,
                 "published": 1695597864000,
                 "rating": 10,
-                "ratingUsers": 6,
+                "ratingUsers": 7,
                 "updated": 1695597864000,
-                "users": 240
+                "users": 373
             },
             "metadata": {
                 "author": "aubymori",
@@ -1366,12 +2308,12 @@
         },
         "timer-resolution-control": {
             "details": {
-                "defaultSorting": 1520,
+                "defaultSorting": 1750,
                 "published": 1646604429000,
                 "rating": 10,
-                "ratingUsers": 1,
+                "ratingUsers": 2,
                 "updated": 1646604429000,
-                "users": 152
+                "users": 175
             },
             "metadata": {
                 "author": "m417z",
@@ -1388,12 +2330,12 @@
         },
         "unlock-taskmgr-server": {
             "details": {
-                "defaultSorting": 210,
+                "defaultSorting": 225,
                 "published": 1700814558000,
-                "rating": 10,
-                "ratingUsers": 1,
+                "rating": 0,
+                "ratingUsers": 0,
                 "updated": 1700814558000,
-                "users": 21
+                "users": 25
             },
             "metadata": {
                 "author": "aubymori",
@@ -1406,21 +2348,46 @@
                 "version": "1.0.0"
             }
         },
+        "uwp-clean": {
+            "details": {
+                "defaultSorting": 870,
+                "published": 1714023124000,
+                "rating": 10,
+                "ratingUsers": 2,
+                "updated": 1714023124000,
+                "users": 87
+            },
+            "metadata": {
+                "author": "Alcatel",
+                "compilerOptions": "-lcomdlg32",
+                "description": "Automatically end UWP processes when no UWP apps are open.",
+                "github": "https://github.com/arukateru",
+                "include": [
+                    "ApplicationFrameHost.exe",
+                    "RuntimeBroker.exe",
+                    "TextInputHost.exe",
+                    "SystemSettingsAdminFlows.exe",
+                    "ctfmon.exe"
+                ],
+                "name": "Clean up UWP processes",
+                "version": "0.1"
+            }
+        },
         "virtual-desktop-taskbar-order": {
             "details": {
-                "defaultSorting": 4080,
+                "defaultSorting": 4896,
                 "published": 1677867923000,
-                "rating": 10,
-                "ratingUsers": 9,
-                "updated": 1678174096000,
-                "users": 408
+                "rating": 9,
+                "ratingUsers": 13,
+                "updated": 1714854884000,
+                "users": 544
             },
             "metadata": {
                 "architecture": [
                     "x86-64"
                 ],
                 "author": "m417z",
-                "compilerOptions": "-lcomctl32 -lversion",
+                "compilerOptions": "-lcomctl32 -lversion -lwininet",
                 "description": "The order on the taskbar isn't preserved between virtual desktop switches, this mod fixes it",
                 "github": "https://github.com/m417z",
                 "homepage": "https://m417z.com/",
@@ -1429,17 +2396,17 @@
                 ],
                 "name": "Virtual Desktop Preserve Taskbar Order",
                 "twitter": "https://twitter.com/m417z",
-                "version": "1.0.1"
+                "version": "1.0.2"
             }
         },
         "visual-studio-anti-rich-header": {
             "details": {
-                "defaultSorting": 140,
+                "defaultSorting": 153,
                 "published": 1646604429000,
-                "rating": 10,
-                "ratingUsers": 1,
+                "rating": 0,
+                "ratingUsers": 0,
                 "updated": 1660853592000,
-                "users": 14
+                "users": 17
             },
             "metadata": {
                 "author": "m417z",
@@ -1454,14 +2421,39 @@
                 "version": "1.0.2"
             }
         },
+        "vmware-disable-upgrade-dialog": {
+            "details": {
+                "defaultSorting": 72,
+                "published": 1703322554000,
+                "rating": 0,
+                "ratingUsers": 0,
+                "updated": 1703322554000,
+                "users": 8
+            },
+            "metadata": {
+                "architecture": [
+                    "x86"
+                ],
+                "author": "m417z",
+                "description": "Disable the VMware Workstation \"old encryption algorithm\" upgrade dialog",
+                "github": "https://github.com/m417z",
+                "homepage": "https://m417z.com/",
+                "include": [
+                    "vmware.exe"
+                ],
+                "name": "Disable VMware upgrade dialog",
+                "twitter": "https://twitter.com/m417z",
+                "version": "1.0"
+            }
+        },
         "vscode-tweaker": {
             "details": {
-                "defaultSorting": 460,
+                "defaultSorting": 580,
                 "published": 1646604429000,
                 "rating": 10,
-                "ratingUsers": 2,
+                "ratingUsers": 3,
                 "updated": 1659090573000,
-                "users": 46
+                "users": 58
             },
             "metadata": {
                 "author": "m417z",
@@ -1477,14 +2469,63 @@
                 "version": "1.0.1"
             }
         },
+        "w11-dwm-fix": {
+            "details": {
+                "defaultSorting": 459,
+                "published": 1707592711000,
+                "rating": 0,
+                "ratingUsers": 0,
+                "updated": 1707592711000,
+                "users": 51
+            },
+            "metadata": {
+                "architecture": [
+                    "x86-64"
+                ],
+                "author": "teknixstuff",
+                "description": "Restores borders and corners",
+                "github": "https://github.com/teknixstuff",
+                "homepage": "https://teknixstuff.github.io/",
+                "include": [
+                    "dwm.exe"
+                ],
+                "name": "Bring Back the Borders!",
+                "twitter": "https://twitter.com/teknixstuff",
+                "version": "1.1.0"
+            }
+        },
+        "win32-tray-clock-experience": {
+            "details": {
+                "defaultSorting": 4400,
+                "published": 1703494264000,
+                "rating": 10,
+                "ratingUsers": 3,
+                "updated": 1703494264000,
+                "users": 440
+            },
+            "metadata": {
+                "architecture": [
+                    "x86-64"
+                ],
+                "author": "aubymori",
+                "compilerOptions": "-lole32",
+                "description": "Use the Win32 clock flyout instead of the XAML one",
+                "github": "https://github.com/aubymori",
+                "include": [
+                    "explorer.exe"
+                ],
+                "name": "Win32 Tray Clock Experience",
+                "version": "1.0.0"
+            }
+        },
         "win7-alttab-loader": {
             "details": {
-                "defaultSorting": 1548,
+                "defaultSorting": 2940,
                 "published": 1690590362000,
-                "rating": 9,
-                "ratingUsers": 2,
-                "updated": 1691529954000,
-                "users": 172
+                "rating": 10,
+                "ratingUsers": 4,
+                "updated": 1719198375000,
+                "users": 294
             },
             "metadata": {
                 "architecture": [
@@ -1498,17 +2539,17 @@
                     "explorer.exe"
                 ],
                 "name": "Windows 7 Alt+Tab Loader",
-                "version": "1.0.1"
+                "version": "1.0.2"
             }
         },
         "win7-command-bar": {
             "details": {
-                "defaultSorting": 1233,
+                "defaultSorting": 1640,
                 "published": 1677843666000,
-                "rating": 9,
+                "rating": 10,
                 "ratingUsers": 2,
                 "updated": 1677843666000,
-                "users": 137
+                "users": 164
             },
             "metadata": {
                 "architecture": [
@@ -1524,14 +2565,108 @@
                 "version": "1.0.0"
             }
         },
+        "win7-dwm-disable": {
+            "details": {
+                "defaultSorting": 9,
+                "published": 1718802077000,
+                "rating": 0,
+                "ratingUsers": 0,
+                "updated": 1718802077000,
+                "users": 1
+            },
+            "metadata": {
+                "author": "Jevil7452",
+                "compilerOptions": "-ldwmapi",
+                "description": "Disables desktop composition when a certain process is running",
+                "github": "https://github.com/Jevil7452",
+                "name": "Win7 Disable Composition for process",
+                "version": "1.0"
+            }
+        },
+        "win7-style-uac-dim": {
+            "details": {
+                "defaultSorting": 550,
+                "published": 1719416300000,
+                "rating": 10,
+                "ratingUsers": 1,
+                "updated": 1719436894000,
+                "users": 55
+            },
+            "metadata": {
+                "architecture": [
+                    "x86-64"
+                ],
+                "author": "aubymori",
+                "compilerOptions": "-lgdi32 -lgdiplus",
+                "description": "Restores the desktop screenshot on the User Account Control screen",
+                "github": "https://github.com/aubymori",
+                "include": [
+                    "consent.exe"
+                ],
+                "name": "Windows 7 Style UAC Dim",
+                "version": "1.0.1"
+            }
+        },
+        "windows-11-notification-center-styler": {
+            "details": {
+                "defaultSorting": 1810,
+                "published": 1715436273000,
+                "rating": 10,
+                "ratingUsers": 6,
+                "updated": 1719489546000,
+                "users": 181
+            },
+            "metadata": {
+                "architecture": [
+                    "x86-64"
+                ],
+                "author": "m417z",
+                "compilerOptions": "-lcomctl32 -lole32 -loleaut32 -lruntimeobject -Wl,--export-all-symbols",
+                "description": "An advanced mod to override style attributes of the Notification Center",
+                "github": "https://github.com/m417z",
+                "homepage": "https://m417z.com/",
+                "include": [
+                    "ShellExperienceHost.exe"
+                ],
+                "name": "Windows 11 Notification Center Styler",
+                "twitter": "https://twitter.com/m417z",
+                "version": "1.1"
+            }
+        },
+        "windows-11-start-menu-styler": {
+            "details": {
+                "defaultSorting": 39720,
+                "published": 1703013948000,
+                "rating": 10,
+                "ratingUsers": 83,
+                "updated": 1716841286000,
+                "users": 3972
+            },
+            "metadata": {
+                "architecture": [
+                    "x86-64"
+                ],
+                "author": "m417z",
+                "compilerOptions": "-lcomctl32 -lole32 -loleaut32 -lruntimeobject -Wl,--export-all-symbols",
+                "description": "An advanced mod to override style attributes of the start menu control elements",
+                "github": "https://github.com/m417z",
+                "homepage": "https://m417z.com/",
+                "include": [
+                    "StartMenuExperienceHost.exe"
+                ],
+                "name": "Windows 11 Start Menu Styler",
+                "twitter": "https://twitter.com/m417z",
+                "version": "1.1.3"
+            }
+        },
         "windows-11-taskbar-styler": {
             "details": {
-                "defaultSorting": 8040,
+                "defaultSorting": 26790,
                 "published": 1684509250000,
                 "rating": 10,
-                "ratingUsers": 26,
-                "updated": 1695279304000,
-                "users": 804
+                "ratingUsers": 46,
+                "updated": 1719594048000,
+                "users": 2679
             },
             "metadata": {
                 "architecture": [
@@ -1547,7 +2682,31 @@
                 ],
                 "name": "Windows 11 Taskbar Styler",
                 "twitter": "https://twitter.com/m417z",
-                "version": "1.1.3"
+                "version": "1.3.5"
+            }
+        },
+        "windows-7-clock-spacing": {
+            "details": {
+                "defaultSorting": 3240,
+                "published": 1703050709000,
+                "rating": 10,
+                "ratingUsers": 2,
+                "updated": 1703050709000,
+                "users": 324
+            },
+            "metadata": {
+                "architecture": [
+                    "x86-64"
+                ],
+                "author": "aubymori",
+                "compilerOptions": "-lgdi32 -lshell32 -lcomctl32",
+                "description": "Makes the taskbar clock in Windows 10 use the spacing from Windows 7",
+                "github": "https://github.com/aubymori",
+                "include": [
+                    "explorer.exe"
+                ],
+                "name": "Windows 7 Clock Spacing",
+                "version": "1.0.0"
             }
         }
     }

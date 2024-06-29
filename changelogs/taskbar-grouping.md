@@ -1,3 +1,28 @@
+## 1.3.4 ([Jun 12, 2024](https://github.com/ramensoftware/windhawk-mods/blob/2b6d67dad8cc2a2eb66f52202f7e0495252e8921/mods/taskbar-grouping.wh.cpp))
+
+* Fixed the "Pinned items remain in place" pinned items modes, for which the pinned items disappeared when running the program.
+
+## 1.3.3 ([Jun 8, 2024](https://github.com/ramensoftware/windhawk-mods/blob/dd54a40e9c8dd461d01ea9b1ef38bfa9436e533e/mods/taskbar-grouping.wh.cpp))
+
+* Improved handling of pinned items in several cases such as virtual desktop switching and moving items between monitors.
+* Made the "Place ungrouped items together" option work on Windows 10.
+* Fixed icon not being restored after a window is closed if the "Use window icons" option is enabled.
+
+## 1.3.2 ([May 4, 2024](https://github.com/ramensoftware/windhawk-mods/blob/63c5908556e699a14f3e007e9a7e709745f33224/mods/taskbar-grouping.wh.cpp))
+
+* Added an online symbol cache mechanism as a temporary workaround for the unavailable Microsoft symbols. Currently, this makes the mod work on Windows 11 versions 22631.3447 and 22631.3527. For more details, refer to [the relevant blog post](https://ramensoftware.com/windhawk-and-symbol-download-errors).
+
+## 1.3.1 ([Dec 27, 2023](https://github.com/ramensoftware/windhawk-mods/blob/a378597db91ccbf3a5bdbfbee7f3c3dd437010d7/mods/taskbar-grouping.wh.cpp))
+
+* Fixed a regression which caused pinned items to be separated when they shouldn't be (introduced in v1.3).
+
+## 1.3 ([Dec 24, 2023](https://github.com/ramensoftware/windhawk-mods/blob/f80c31b2a02a858d585c01b85fb3d5d5f1789555/mods/taskbar-grouping.wh.cpp))
+
+* Added a new mode: Pinned items remain in place, group running instances.
+* Added an option to only disable grouping for listed programs.
+* Custom groups and excluded programs can now be specified with an application ID.
+* Fixed some cases of taskbar item recreation.
+
 ## 1.2.2 ([May 8, 2023](https://github.com/ramensoftware/windhawk-mods/blob/fe7c3b4be6113f48dcdd876ed401e5ce104335da/mods/taskbar-grouping.wh.cpp))
 
 * Fixed a rare crash.
