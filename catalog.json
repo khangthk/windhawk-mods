@@ -3,6 +3,31 @@
         "version": "1.5.1"
     },
     "mods": {
+        "accent-color-sync": {
+            "details": {
+                "defaultSorting": 510,
+                "published": 1721392103000,
+                "rating": 10,
+                "ratingUsers": 1,
+                "updated": 1722041854000,
+                "users": 51
+            },
+            "metadata": {
+                "architecture": [
+                    "x86",
+                    "x86-64"
+                ],
+                "author": "CatmanFan / Mr._Lechkar",
+                "compilerOptions": "-lcomdlg32",
+                "description": "Synchronises OpenGlass and Control Panel color settings",
+                "github": "https://github.com/CatmanFan",
+                "include": [
+                    "explorer.exe"
+                ],
+                "name": "Accent Color Sync",
+                "version": "1.31"
+            }
+        },
         "acrylic-effect-radius-changer": {
             "details": {
                 "defaultSorting": 738,
@@ -102,7 +127,7 @@
                 "published": 1719423839000,
                 "rating": 9,
                 "ratingUsers": 2,
-                "updated": 1719423839000,
+                "updated": 1720265128000,
                 "users": 127
             },
             "metadata": {
@@ -117,7 +142,7 @@
                     "dwm.exe"
                 ],
                 "name": "Basic Themer",
-                "version": "1.0.0"
+                "version": "1.1.0"
             }
         },
         "ce-disable-process-button-flashing": {
@@ -243,7 +268,7 @@
                 "published": 1706897392000,
                 "rating": 0,
                 "ratingUsers": 0,
-                "updated": 1718730991000,
+                "updated": 1720265506000,
                 "users": 70
             },
             "metadata": {
@@ -256,10 +281,11 @@
                     "chrome.exe",
                     "chromium.exe",
                     "Skype.exe",
-                    "steam.exe"
+                    "steam.exe",
+                    "brave.exe"
                 ],
                 "name": "Fix browsers for Windows Classic theme",
-                "version": "1.1"
+                "version": "1.2"
             }
         },
         "classic-conhost": {
@@ -290,10 +316,13 @@
                 "published": 1694937060000,
                 "rating": 10,
                 "ratingUsers": 3,
-                "updated": 1696487454000,
+                "updated": 1719771477000,
                 "users": 277
             },
             "metadata": {
+                "architecture": [
+                    "x86-64"
+                ],
                 "author": "aubymori",
                 "compilerOptions": "-luser32 -luxtheme -lcomctl32",
                 "description": "Enables the classic selection style on desktop icons.",
@@ -302,7 +331,7 @@
                     "explorer.exe"
                 ],
                 "name": "Classic Desktop Icons",
-                "version": "1.2.1"
+                "version": "1.3.0"
             }
         },
         "classic-explorer-treeview": {
@@ -335,7 +364,7 @@
                 "published": 1709574778000,
                 "rating": 10,
                 "ratingUsers": 2,
-                "updated": 1709713642000,
+                "updated": 1722767007000,
                 "users": 174
             },
             "metadata": {
@@ -346,7 +375,7 @@
                     "*"
                 ],
                 "name": "Classic File Picker dialog",
-                "version": "1.1"
+                "version": "1.1.1"
             }
         },
         "classic-list-group-fix": {
@@ -603,18 +632,18 @@
                 "published": 1708969659000,
                 "rating": 0,
                 "ratingUsers": 0,
-                "updated": 1708969659000,
+                "updated": 1720265473000,
                 "users": 76
             },
             "metadata": {
                 "author": "anixx",
-                "description": "Adds WS_EX_CLIENTEDGE style to some apps to look better in Classic theme.",
+                "description": "Adds 3D border (WS_EX_CLIENTEDGE style) to some windows to look better in Classic theme.",
                 "github": "https://github.com/Anixx",
                 "include": [
                     "*"
                 ],
-                "name": "Clientedge (3D border) in choosen apps",
-                "version": "1.0.0"
+                "name": "Clientedge Everywhere",
+                "version": "1.1.0"
             }
         },
         "custom-shutdown-dialog": {
@@ -820,7 +849,7 @@
                 "published": 1700542256000,
                 "rating": 10,
                 "ratingUsers": 1,
-                "updated": 1703571978000,
+                "updated": 1720203182000,
                 "users": 119
             },
             "metadata": {
@@ -831,7 +860,29 @@
                     "*"
                 ],
                 "name": "DWM Unextend Frames",
-                "version": "1.2.0"
+                "version": "1.3.0"
+            }
+        },
+        "edge-window-tab-manager-block": {
+            "details": {
+                "defaultSorting": 880,
+                "published": 1720468060000,
+                "rating": 10,
+                "ratingUsers": 1,
+                "updated": 1720468060000,
+                "users": 88
+            },
+            "metadata": {
+                "author": "Roland Pihlakas",
+                "compilerOptions": "-lkernel32",
+                "description": "Blocks Edge window Alt-Tab manager",
+                "github": "https://github.com/levitation",
+                "homepage": "https://www.simplify.ee/",
+                "include": [
+                    "msedge.exe"
+                ],
+                "name": "Prevent Edge from lagging your Taskbar process",
+                "version": "1.0"
             }
         },
         "eradicate-immersive-menus": {
@@ -890,7 +941,7 @@
                 "published": 1696691422000,
                 "rating": 10,
                 "ratingUsers": 33,
-                "updated": 1717179907000,
+                "updated": 1722276351000,
                 "users": 1237
             },
             "metadata": {
@@ -898,7 +949,7 @@
                     "x86-64"
                 ],
                 "author": "m417z",
-                "compilerOptions": "-lole32 -loleaut32",
+                "compilerOptions": "-lole32 -loleaut32 -lversion",
                 "description": "Restores the classic Explorer navigation bar to the version before the Windows 11 \"Moments 4\" update",
                 "github": "https://github.com/m417z",
                 "homepage": "https://m417z.com/",
@@ -907,7 +958,7 @@
                 ],
                 "name": "Classic Explorer navigation bar",
                 "twitter": "https://twitter.com/m417z",
-                "version": "1.0.3"
+                "version": "1.0.4"
             }
         },
         "explorer-name-windows": {
@@ -1019,6 +1070,30 @@
                     "*"
                 ],
                 "name": "Fix Darkmode ListViews",
+                "version": "1.0"
+            }
+        },
+        "fix-qt-scrollbar-grippers": {
+            "details": {
+                "defaultSorting": 63,
+                "published": 1722712367000,
+                "rating": 0,
+                "ratingUsers": 0,
+                "updated": 1722712367000,
+                "users": 7
+            },
+            "metadata": {
+                "author": "kawapure",
+                "compilerOptions": "-lcomdlg32 -luxtheme",
+                "description": "Fixes scrollbar grippers in Qt 6.1+",
+                "github": "https://github.com/kawapure",
+                "homepage": "https://kawapure.github.io",
+                "include": [
+                    "ida64.exe",
+                    "ida.exe"
+                ],
+                "name": "Fix Qt scrollbar grippers",
+                "twitter": "https://twitter.com/kawaipure",
                 "version": "1.0"
             }
         },
@@ -1363,6 +1438,28 @@
                 "version": "0.7"
             }
         },
+        "maintain-flux-colour-temperature": {
+            "details": {
+                "defaultSorting": 63,
+                "published": 1720345866000,
+                "rating": 0,
+                "ratingUsers": 0,
+                "updated": 1720345866000,
+                "users": 7
+            },
+            "metadata": {
+                "author": "Roland Pihlakas",
+                "compilerOptions": "-lkernel32",
+                "description": "Keeps your preferred f.lux colour temperature settings, eliminating automatic changes",
+                "github": "https://github.com/levitation",
+                "homepage": "https://www.simplify.ee/",
+                "include": [
+                    "flux.exe"
+                ],
+                "name": "Maintain colour temperature of f.lux",
+                "version": "1.0"
+            }
+        },
         "modernize-folder-picker-dialog": {
             "details": {
                 "defaultSorting": 12620,
@@ -1599,6 +1696,28 @@
                 "version": "1.0"
             }
         },
+        "notepad-remove-launch-new-app-banner": {
+            "details": {
+                "defaultSorting": 99,
+                "published": 1719859404000,
+                "rating": 0,
+                "ratingUsers": 0,
+                "updated": 1719859404000,
+                "users": 11
+            },
+            "metadata": {
+                "author": "ItsProfessional",
+                "description": "Removes the banner in classic notepad that tells you to launch the new app.",
+                "github": "https://github.com/ItsProfessional",
+                "include": [
+                    "%SystemRoot%\\System32\\notepad.exe",
+                    "%SystemRoot%\\SysWOW64\\notepad.exe",
+                    "%SystemRoot%\\notepad.exe"
+                ],
+                "name": "Notepad Remove Launch New App Banner",
+                "version": "1.0.0"
+            }
+        },
         "old-this-pc-commands": {
             "details": {
                 "defaultSorting": 4340,
@@ -1758,7 +1877,7 @@
                 "published": 1700466353000,
                 "rating": 10,
                 "ratingUsers": 4,
-                "updated": 1700466353000,
+                "updated": 1722203317000,
                 "users": 220
             },
             "metadata": {
@@ -1771,7 +1890,7 @@
                     "wordpad.exe"
                 ],
                 "name": "UIRibbon Caption Icon Fix",
-                "version": "1.0"
+                "version": "1.0.1"
             }
         },
         "shrink-address-bar-height": {
@@ -1800,7 +1919,7 @@
                 "published": 1719611831000,
                 "rating": 9,
                 "ratingUsers": 3,
-                "updated": 1719623492000,
+                "updated": 1719729928000,
                 "users": 121
             },
             "metadata": {
@@ -1815,7 +1934,7 @@
                     "explorer.exe"
                 ],
                 "name": "StartIsBack++ Tweaker",
-                "version": "0.5"
+                "version": "0.7"
             }
         },
         "slick-window-arrangement": {
@@ -2009,6 +2128,30 @@
                 "version": "1.3.3"
             }
         },
+        "taskbar-disappearing-icon-fix-win11": {
+            "details": {
+                "defaultSorting": 490,
+                "published": 1722243342000,
+                "rating": 10,
+                "ratingUsers": 1,
+                "updated": 1722243342000,
+                "users": 49
+            },
+            "metadata": {
+                "architecture": [
+                    "x86-64"
+                ],
+                "author": "yezhiyi9670",
+                "compilerOptions": "-DWINVER=0x0605 -loleaut32 -lole32 -lruntimeobject -lwininet",
+                "description": "Tries to fix disappearing icon in Windows 11 taskbar while switching virtual desktops.",
+                "github": "https://github.com/yezhiyi9670",
+                "include": [
+                    "explorer.exe"
+                ],
+                "name": "Taskbar Disappearing Icon Fix for Windows 11",
+                "version": "1.0"
+            }
+        },
         "taskbar-empty-space-clicks": {
             "details": {
                 "defaultSorting": 9120,
@@ -2063,7 +2206,7 @@
                 "published": 1657984524000,
                 "rating": 10,
                 "ratingUsers": 544,
-                "updated": 1717166842000,
+                "updated": 1722081679000,
                 "users": 22579
             },
             "featured": true,
@@ -2072,7 +2215,7 @@
                     "x86-64"
                 ],
                 "author": "m417z",
-                "compilerOptions": "-DWINVER=0x0605 -lcomctl32 -lole32 -loleaut32 -lshcore -lwininet",
+                "compilerOptions": "-DWINVER=0x0605 -lcomctl32 -lole32 -loleaut32 -lruntimeobject -lshcore -lwininet",
                 "description": "Control the taskbar height and icon size, improve icon quality (Windows 11 only)",
                 "github": "https://github.com/m417z",
                 "homepage": "https://m417z.com/",
@@ -2081,7 +2224,7 @@
                 ],
                 "name": "Taskbar height and icon size",
                 "twitter": "https://twitter.com/m417z",
-                "version": "1.2.8"
+                "version": "1.2.9"
             }
         },
         "taskbar-labels": {
@@ -2243,7 +2386,7 @@
                 "published": 1682527457000,
                 "rating": 10,
                 "ratingUsers": 11,
-                "updated": 1714855433000,
+                "updated": 1722365902000,
                 "users": 458
             },
             "metadata": {
@@ -2251,7 +2394,7 @@
                     "x86-64"
                 ],
                 "author": "m417z",
-                "compilerOptions": "-lcomctl32 -loleaut32 -lole32 -lwininet",
+                "compilerOptions": "-lcomctl32 -loleaut32 -lole32 -lruntimeobject -lwininet",
                 "description": "Use the mouse wheel while hovering over the taskbar to cycle between taskbar buttons (Windows 11 only)",
                 "github": "https://github.com/m417z",
                 "homepage": "https://m417z.com/",
@@ -2260,7 +2403,7 @@
                 ],
                 "name": "Cycle taskbar buttons with mouse wheel",
                 "twitter": "https://twitter.com/m417z",
-                "version": "1.1.3"
+                "version": "1.1.4"
             }
         },
         "text-replace": {
@@ -2329,6 +2472,27 @@
                 "version": "1.0"
             }
         },
+        "uifile-override": {
+            "details": {
+                "defaultSorting": 189,
+                "published": 1720335390000,
+                "rating": 0,
+                "ratingUsers": 0,
+                "updated": 1720335390000,
+                "users": 21
+            },
+            "metadata": {
+                "author": "xalejandro",
+                "compilerOptions": "-luxtheme -lshlwapi",
+                "description": "Override UIFILE resources",
+                "github": "https://github.com/tetawaves",
+                "include": [
+                    "*"
+                ],
+                "name": "UIFILE Override",
+                "version": "1.0"
+            }
+        },
         "unlock-taskmgr-server": {
             "details": {
                 "defaultSorting": 225,
@@ -2372,6 +2536,31 @@
                 ],
                 "name": "Clean up UWP processes",
                 "version": "0.1"
+            }
+        },
+        "uxtheme-hook": {
+            "details": {
+                "defaultSorting": 830,
+                "published": 1720341593000,
+                "rating": 10,
+                "ratingUsers": 3,
+                "updated": 1720422047000,
+                "users": 83
+            },
+            "metadata": {
+                "author": "rounk-ctrl",
+                "compilerOptions": "-luxtheme -lgdi32",
+                "description": "Allows you to apply custom themes",
+                "github": "https://github.com/rounk-ctrl",
+                "include": [
+                    "winlogon.exe",
+                    "explorer.exe",
+                    "systemsettings.exe",
+                    "logonui.exe",
+                    "rundll32.exe"
+                ],
+                "name": "UXTheme hook",
+                "version": "1.1"
             }
         },
         "virtual-desktop-taskbar-order": {
@@ -2614,7 +2803,7 @@
                 "published": 1715436273000,
                 "rating": 10,
                 "ratingUsers": 24,
-                "updated": 1719489546000,
+                "updated": 1722155130000,
                 "users": 1429
             },
             "metadata": {
@@ -2623,7 +2812,7 @@
                 ],
                 "author": "m417z",
                 "compilerOptions": "-lcomctl32 -lole32 -loleaut32 -lruntimeobject -Wl,--export-all-symbols",
-                "description": "An advanced mod to override style attributes of the Notification Center",
+                "description": "Customize the Notification Center with themes contributed by others or create your own",
                 "github": "https://github.com/m417z",
                 "homepage": "https://m417z.com/",
                 "include": [
@@ -2631,7 +2820,7 @@
                 ],
                 "name": "Windows 11 Notification Center Styler",
                 "twitter": "https://twitter.com/m417z",
-                "version": "1.1"
+                "version": "1.1.1"
             }
         },
         "windows-11-start-menu-styler": {
@@ -2640,7 +2829,7 @@
                 "published": 1703013948000,
                 "rating": 10,
                 "ratingUsers": 157,
-                "updated": 1716841286000,
+                "updated": 1722190006000,
                 "users": 8214
             },
             "featured": true,
@@ -2649,8 +2838,8 @@
                     "x86-64"
                 ],
                 "author": "m417z",
-                "compilerOptions": "-lcomctl32 -lole32 -loleaut32 -lruntimeobject -Wl,--export-all-symbols",
-                "description": "An advanced mod to override style attributes of the start menu control elements",
+                "compilerOptions": "-lcomctl32 -lole32 -loleaut32 -lruntimeobject -lversion -Wl,--export-all-symbols",
+                "description": "Customize the start menu with themes contributed by others or create your own",
                 "github": "https://github.com/m417z",
                 "homepage": "https://m417z.com/",
                 "include": [
@@ -2658,7 +2847,7 @@
                 ],
                 "name": "Windows 11 Start Menu Styler",
                 "twitter": "https://twitter.com/m417z",
-                "version": "1.1.3"
+                "version": "1.1.5"
             }
         },
         "windows-11-taskbar-styler": {
@@ -2667,7 +2856,7 @@
                 "published": 1684509250000,
                 "rating": 10,
                 "ratingUsers": 120,
-                "updated": 1719594048000,
+                "updated": 1722155241000,
                 "users": 6352
             },
             "featured": true,
@@ -2677,7 +2866,7 @@
                 ],
                 "author": "m417z",
                 "compilerOptions": "-lcomctl32 -lole32 -loleaut32 -lruntimeobject -Wl,--export-all-symbols",
-                "description": "An advanced mod to override style attributes of the taskbar control elements",
+                "description": "Customize the taskbar with themes contributed by others or create your own",
                 "github": "https://github.com/m417z",
                 "homepage": "https://m417z.com/",
                 "include": [
@@ -2685,7 +2874,7 @@
                 ],
                 "name": "Windows 11 Taskbar Styler",
                 "twitter": "https://twitter.com/m417z",
-                "version": "1.3.5"
+                "version": "1.3.7"
             }
         },
         "windows-7-clock-spacing": {
