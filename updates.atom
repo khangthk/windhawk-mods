@@ -2,250 +2,229 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
     <id>https://windhawk.net/</id>
     <title>Windhawk Mod Updates</title>
-    <updated>2024-08-04T10:23:27.000Z</updated>
+    <updated>2024-09-19T05:23:09.000Z</updated>
     <generator>https://github.com/jpmonette/feed</generator>
     <link rel="alternate" href="https://windhawk.net/"/>
     <subtitle>Updates in the official collection of Windhawk mods</subtitle>
     <icon>https://windhawk.net/favicon.ico</icon>
     <rights>Ramen Software</rights>
     <entry>
-        <title type="html"><![CDATA[Classic File Picker dialog 1.1.1]]></title>
-        <id>https://windhawk.net/mods/classic-file-picker-dialog#1b2a786aeb208e28f3aec941300c7710d20c403e</id>
-        <link href="https://windhawk.net/mods/classic-file-picker-dialog"/>
-        <updated>2024-08-04T10:23:27.000Z</updated>
-        <content type="html"><![CDATA[<p>Fix reference to another mod</p>]]></content>
+        <title type="html"><![CDATA[Custom Desktop Watermark 1.0.1]]></title>
+        <id>https://windhawk.net/mods/custom-desktop-watermark#7b9cc220e6128fbdbd9f95e8588b674f98e407e7</id>
+        <link href="https://windhawk.net/mods/custom-desktop-watermark"/>
+        <updated>2024-09-19T05:23:09.000Z</updated>
+        <content type="html"><![CDATA[<p>Ensure transparent text background</p>]]></content>
     </entry>
     <entry>
-        <title type="html"><![CDATA[Fix Qt scrollbar grippers 1.0]]></title>
-        <id>https://windhawk.net/mods/fix-qt-scrollbar-grippers#ad2ad2e2f07630fcdefb96a16bcc53695bb97490</id>
-        <link href="https://windhawk.net/mods/fix-qt-scrollbar-grippers"/>
-        <updated>2024-08-03T19:12:47.000Z</updated>
-        <content type="html"><![CDATA[<h1 id="fixqtscrollbargrippers">Fix Qt scrollbar grippers</h1>
-<p><img src="https://raw.githubusercontent.com/kawapure/images/main/fix-qt-scrollbar-grippers.png" alt="Preview" /></p>
-<p>Qt applications compiled after 2021 (against Qt 6.1+) lack the scrollbar grippers (the lines in the middle),
-visible on custom visual styles, because the responsible drawing code was removed. Here is a lazy hack around
-that.</p>
-<p>These were removed in Qt <a href="https://github.com/qt/qtbase/commit/5f5c342924a0d9a2856b2f2d6db373e25723f2b0">because the developers thought that these changes wouldn't affect Windows 10</a>.
-They were wrong.</p>
-<h2 id="howtoenablethemodforaprogram">How to enable the mod for a program</h2>
-<p>This mod targets the Interactive Disassembler (IDA) by default. Other applications must be manually specified
-for injection.</p>
-<p>In Windhawk, go to the "Advanced" tab and scroll down to 
-"Custom process inclusion list". In that box, put the filename of the <code>.exe</code>. 
-The mod will immediately apply to those programs after you click "Save".</p>]]></content>
+        <title type="html"><![CDATA[Custom Desktop Watermark 1.0.0]]></title>
+        <id>https://windhawk.net/mods/custom-desktop-watermark#5caa900cecb8fd17107363c40fdc102d6f68c512</id>
+        <link href="https://windhawk.net/mods/custom-desktop-watermark"/>
+        <updated>2024-09-18T22:19:15.000Z</updated>
+        <content type="html"><![CDATA[<h1 id="customdesktopwatermark">Custom Desktop Watermark</h1>
+<p>This mod allows you to completely customize the desktop watermark,
+putting in your own lines of text.</p>
+<h2 id="examples">Examples</h2>
+<p><strong>Windows 7 (not genuine)</strong>:
+<img src="https://raw.githubusercontent.com/aubymori/images/main/custom-desktop-watermark-win7.png" alt="Windows 7 (not genuine)" /></p>
+<p><strong>Windows XP Professional x64 Edition</strong>:
+<img src="https://raw.githubusercontent.com/aubymori/images/main/custom-desktop-watermark-winxp.png" alt="Windows XP Professional x64 Edition" /></p>]]></content>
     </entry>
     <entry>
-        <title type="html"><![CDATA[Cycle taskbar buttons with mouse wheel 1.1.4]]></title>
-        <id>https://windhawk.net/mods/taskbar-wheel-cycle#a480102c52e3cd16e1cea214913e1395155c82c0</id>
+        <title type="html"><![CDATA[Message Box Fix 2.0.0]]></title>
+        <id>https://windhawk.net/mods/msg-box-font-fix#e7a03d627c3bc66756e9748a987d484863153397</id>
+        <link href="https://windhawk.net/mods/msg-box-font-fix"/>
+        <updated>2024-09-16T20:55:40.000Z</updated>
+        <content type="html"><![CDATA[<ul>
+<li>Restructure code to match modern conventions</li>
+<li>Remove option to fix the font and make it always fix it; there's
+not much use to having it disabled.</li>
+<li>Revamp "Remove background" option</li>
+<li>Renamed to "Classic style"</li>
+<li>Now shows message boxes with Windows XP positioning and scaling</li>
+<li>May break with per-monitor DPI, have not tested. Regardless, I don't
+think anyone using a Windows XP/2000 theme would want per-monitor DPI.</li>
+</ul>]]></content>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Cycle through taskbar windows on click 1.0]]></title>
+        <id>https://windhawk.net/mods/taskbar-left-click-cycle#2588c1bd9fb279ee7a7b982ee8a9e8405459299c</id>
+        <link href="https://windhawk.net/mods/taskbar-left-click-cycle"/>
+        <updated>2024-09-13T12:02:09.000Z</updated>
+        <content type="html"><![CDATA[<h1 id="cyclethroughtaskbarwindowsonclick">Cycle through taskbar windows on click</h1>
+<p>Makes clicking on combined taskbar items cycle through windows instead of
+opening thumbnail previews. It's still possible to open thumbnail previews by
+holding the Ctrl key while clicking.</p>
+<p>Only Windows 10 64-bit and Windows 11 are supported. For other Windows versions
+check out <a href="https://tweaker.ramensoftware.com/">7+ Taskbar Tweaker</a>.</p>
+<p><strong>Note:</strong> To customize the old taskbar on Windows 11 (if using ExplorerPatcher
+or a similar tool), enable the relevant option in the mod's settings.</p>
+<p><img src="https://i.imgur.com/ecYYtGU.gif" alt="Demonstration" /></p>]]></content>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Logon, Logoff & Shutdown Sounds Restored 1.0.1]]></title>
+        <id>https://windhawk.net/mods/logon-logoff-shutdown-sounds#e3bf280ec5e53bc81d83312320394e70bc7b9899</id>
+        <link href="https://windhawk.net/mods/logon-logoff-shutdown-sounds"/>
+        <updated>2024-09-13T07:50:01.000Z</updated>
+        <content type="html"><![CDATA[<ul>
+<li><p>Fix bug where the logon sound needs user to have write access to HKLM in order to play</p></li>
+<li><p>State that it's likely redundant with explorer7</p></li>
+</ul>]]></content>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[FixStrips WH Port 1.0]]></title>
+        <id>https://windhawk.net/mods/fix-strips#93793152290b764989cd5f1f1ae4f0dd156bee36</id>
+        <link href="https://windhawk.net/mods/fix-strips"/>
+        <updated>2024-09-11T05:38:25.000Z</updated>
+        <content type="html"><![CDATA[<h2 id="note">NOTE:</h2>
+<p>This mod fixes the presence of the DWM window frame around the taskbar when using classic theme with <a href="https://winclassic.net/thread/2588/explorer7-windows-explorer-10-11">Explorer7</a>. You may need to restart explorer.exe when enabling the mod to see the changes take effect.</p>
+<h2 id="before">Before</h2>
+<p><img src="https://raw.githubusercontent.com/OliviaIsTyping/images/main/fixstrips-before.png" alt="Before" /></p>
+<h2 id="after">After</h2>
+<p><img src="https://raw.githubusercontent.com/OliviaIsTyping/images/main/fixstrips-after.png" alt="After" /></p>
+<p>Credits to <a href="https://github.com/Anixx">@Anixx</a> for the original AHK Script</p>]]></content>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Virtual Desktop Preserve Taskbar Order 1.0.4]]></title>
+        <id>https://windhawk.net/mods/virtual-desktop-taskbar-order#89b7248389967e412f6de6213e320adbfee9ad89</id>
+        <link href="https://windhawk.net/mods/virtual-desktop-taskbar-order"/>
+        <updated>2024-09-09T19:23:13.000Z</updated>
+        <content type="html"><![CDATA[<ul>
+<li>Added support for Windows 11 version 24H2.</li>
+</ul>]]></content>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Cycle taskbar buttons with mouse wheel 1.1.5]]></title>
+        <id>https://windhawk.net/mods/taskbar-wheel-cycle#d2ebc37c2e5b3b8c2cda9d391238b7ac3879fd63</id>
         <link href="https://windhawk.net/mods/taskbar-wheel-cycle"/>
-        <updated>2024-07-30T18:58:22.000Z</updated>
+        <updated>2024-09-09T18:32:03.000Z</updated>
         <content type="html"><![CDATA[<ul>
-<li>Fixed compatibility with update KB5040527.</li>
+<li>Added support for Windows 11 version 24H2.</li>
 </ul>]]></content>
     </entry>
     <entry>
-        <title type="html"><![CDATA[Classic Explorer navigation bar 1.0.4]]></title>
-        <id>https://windhawk.net/mods/explorer-frame-classic#8c10530a488a7c65b7b0815ee9c19131faece5b9</id>
-        <link href="https://windhawk.net/mods/explorer-frame-classic"/>
-        <updated>2024-07-29T18:05:51.000Z</updated>
-        <content type="html"><![CDATA[<ul>
-<li>Adjusted spacing for Windows 11 update KB5040527.</li>
-</ul>]]></content>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[Taskbar Disappearing Icon Fix for Windows 11 1.0]]></title>
-        <id>https://windhawk.net/mods/taskbar-disappearing-icon-fix-win11#329b6d6f4c8cbfbe7ee5aaafd53dc3922cd67a1c</id>
-        <link href="https://windhawk.net/mods/taskbar-disappearing-icon-fix-win11"/>
-        <updated>2024-07-29T08:55:42.000Z</updated>
-        <content type="html"><![CDATA[<h1 id="taskbardisappearingiconfixforwindows11">Taskbar Disappearing Icon Fix for Windows 11</h1>
-<p>Tries to fix disappearing icon bug in Windows 11 taskbar while switching virtual desktops.</p>
-<p>Since I cannot reproduce this bug very reliably, this mod may not have fixed the bug entirely. Let me know if it still persists.</p>
-<p>Takeaway message:</p>
+        <title type="html"><![CDATA[Old This PC Commands 1.0.1]]></title>
+        <id>https://windhawk.net/mods/old-this-pc-commands#f00161757c50921c354688dd50fd0ef968fe36ac</id>
+        <link href="https://windhawk.net/mods/old-this-pc-commands"/>
+        <updated>2024-09-08T18:09:57.000Z</updated>
+        <content type="html"><![CDATA[<p>Codebase cleanup</p>
 <ul>
-<li>It is observed that hiding (<code>Visibility: Collapsed</code>) the invisible icon and then making it visible after a while will fix it.</li>
-<li>However, hiding the icon for a while results in flickering.</li>
-<li>The mod tries to flicker the icon only when the system tries to change its display name, typically while switching virtual desktops, making the flicker hardly visible.</li>
+<li>Remove unnecessary <code>#include</code> and <code>DEFINE_GUID</code> statements</li>
+<li>Rely on public <code>IOpenControlPanel</code> interface instead of finding <code>COpenControlPanel::Open</code> from symbols</li>
+<li>Move symbol hook definitions and update the name to match modern convention</li>
+<li>Properly free memory in <code>OpenCplPage</code></li>
 </ul>]]></content>
     </entry>
     <entry>
-        <title type="html"><![CDATA[UIRibbon Caption Icon Fix 1.0.1]]></title>
-        <id>https://windhawk.net/mods/ribbon-caption-icon-fix#826bbbc6eae09d97930483a2c62a5062f548e94c</id>
-        <link href="https://windhawk.net/mods/ribbon-caption-icon-fix"/>
-        <updated>2024-07-28T21:48:37.000Z</updated>
-        <content type="html"><![CDATA[<p>Changed the license.</p>]]></content>
+        <title type="html"><![CDATA[Logon, Logoff & Shutdown Sounds Restored 1.0.0]]></title>
+        <id>https://windhawk.net/mods/logon-logoff-shutdown-sounds#40c94993b0e85ef8ed053f5b5b0e06b16380e42d</id>
+        <link href="https://windhawk.net/mods/logon-logoff-shutdown-sounds"/>
+        <updated>2024-09-08T10:42:30.000Z</updated>
+        <content type="html"><![CDATA[<h1 id="logonsoundsrestored">Logon Sounds Restored</h1>
+<p>Restores the logon, logoff and shutdown sounds from earlier versions of Windows, simple as.</p>
+<p>It is recommended to use <a href="https://www.howtogeek.com/wp-content/uploads/2016/09/Shutdown-Logoff-Logon-Sound-Hacks.zip">these reg files</a> to restore the sound events to the Sound control panel applet.</p>]]></content>
     </entry>
     <entry>
-        <title type="html"><![CDATA[Windows 11 Start Menu Styler 1.1.5]]></title>
-        <id>https://windhawk.net/mods/windows-11-start-menu-styler#b6c907a723f18b738c615933ec1834ef9009f18d</id>
-        <link href="https://windhawk.net/mods/windows-11-start-menu-styler"/>
-        <updated>2024-07-28T18:06:46.000Z</updated>
+        <title type="html"><![CDATA[Customize Windows notifications placement 1.0.1]]></title>
+        <id>https://windhawk.net/mods/notifications-placement#2914b84cba2528701e51fcb904fe379e9bfd982d</id>
+        <link href="https://windhawk.net/mods/notifications-placement"/>
+        <updated>2024-09-08T07:08:16.000Z</updated>
         <content type="html"><![CDATA[<ul>
-<li>Updated SideBySide2 theme with several fixes.</li>
+<li>The mod was tested on Windows 10 and was found to be working correctly. The mod name and description were updated accordingly.</li>
+<li>Made the mod work on non-English Windows versions.</li>
 </ul>]]></content>
     </entry>
     <entry>
-        <title type="html"><![CDATA[Windows 11 Taskbar Styler 1.3.7]]></title>
-        <id>https://windhawk.net/mods/windows-11-taskbar-styler#5ceffe5133b88ab09b00e41a846cd7a4bcb4e4c0</id>
-        <link href="https://windhawk.net/mods/windows-11-taskbar-styler"/>
-        <updated>2024-07-28T08:27:21.000Z</updated>
-        <content type="html"><![CDATA[<ul>
-<li>Added themes: DockLike, WinVista.</li>
-<li>Updated themes: TranslucentTaskbar, Squircle, RosePine, Bubbles.</li>
-</ul>]]></content>
+        <title type="html"><![CDATA[Classic Clock Button Behavior 1.0.0]]></title>
+        <id>https://windhawk.net/mods/classic-clock-button-behavior#ce129c4525faef315041ebdba6cf363fd64fe991</id>
+        <link href="https://windhawk.net/mods/classic-clock-button-behavior"/>
+        <updated>2024-09-07T15:47:10.000Z</updated>
+        <content type="html"><![CDATA[<h1 id="classicclockbuttonbehavior">Classic Clock Button Behavior</h1>
+<p>In Windows XP and before, the tray clock did nothing on single click, and opened
+the Date and Time CPL on double click. This mod makes the Windows 10 tray clock
+button do that.</p>]]></content>
     </entry>
     <entry>
-        <title type="html"><![CDATA[Windows 11 Start Menu Styler 1.1.4]]></title>
-        <id>https://windhawk.net/mods/windows-11-start-menu-styler#2007927c9158132859b6d559104a7539742c74d7</id>
-        <link href="https://windhawk.net/mods/windows-11-start-menu-styler"/>
-        <updated>2024-07-28T08:26:51.000Z</updated>
-        <content type="html"><![CDATA[<ul>
-<li>Added themes: Fluent2Inspired, Windows10, Windows11_Metro10.</li>
-<li>Updated themes: SideBySide, SideBySide2, TranslucentStartMenu.</li>
-</ul>]]></content>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[Windows 11 Notification Center Styler 1.1.1]]></title>
-        <id>https://windhawk.net/mods/windows-11-notification-center-styler#931b937d1cfa9782375c939c104de17bf0b5047a</id>
+        <title type="html"><![CDATA[Windows 11 Notification Center Styler 1.1.2]]></title>
+        <id>https://windhawk.net/mods/windows-11-notification-center-styler#bf5b0746e2cb9d22e109b664ca3a63c430199f18</id>
         <link href="https://windhawk.net/mods/windows-11-notification-center-styler"/>
-        <updated>2024-07-28T08:25:30.000Z</updated>
+        <updated>2024-09-07T11:41:08.000Z</updated>
         <content type="html"><![CDATA[<ul>
-<li>Updated the TranslucentShell theme.</li>
+<li>Added a new theme: Unified.</li>
+<li>Added a workaround for hanging the notification center process on Windows 10. Although the available themes and example styles are designed for Windows 11, it should now be possible to use the mod on Windows 10 too.</li>
 </ul>]]></content>
     </entry>
     <entry>
-        <title type="html"><![CDATA[Taskbar height and icon size 1.2.9]]></title>
-        <id>https://windhawk.net/mods/taskbar-icon-size#7e0bd27ae1d12ae639497fbc9b48bb791f98b078</id>
-        <link href="https://windhawk.net/mods/taskbar-icon-size"/>
-        <updated>2024-07-27T12:01:19.000Z</updated>
+        <title type="html"><![CDATA[UIFILE Override 1.0.2]]></title>
+        <id>https://windhawk.net/mods/uifile-override#64075c826be2989a7d02742caa12efe29c40bd1f</id>
+        <link href="https://windhawk.net/mods/uifile-override"/>
+        <updated>2024-09-07T07:51:55.000Z</updated>
         <content type="html"><![CDATA[<ul>
-<li>Fixed compatibility with update KB5040527 for Windows 11 version 23H2.</li>
+<li>Check executable name instead of full path for explorer hooking</li>
 </ul>]]></content>
     </entry>
     <entry>
-        <title type="html"><![CDATA[Accent Color Sync 1.31]]></title>
-        <id>https://windhawk.net/mods/accent-color-sync#940c28ba0fb4ccebb782988516dd6bb5a7f23de0</id>
+        <title type="html"><![CDATA[Accent Color Sync 1.4]]></title>
+        <id>https://windhawk.net/mods/accent-color-sync#7292f722244cd19dc93c4438270bcc600b4bf2ec</id>
         <link href="https://windhawk.net/mods/accent-color-sync"/>
-        <updated>2024-07-27T00:57:34.000Z</updated>
+        <updated>2024-09-07T00:32:30.000Z</updated>
         <content type="html"><![CDATA[<ul>
-<li>Set <em>Sync with DWM</em> option to enabled by default, and added notice for updating regarding this option in the readme.</li>
-<li>Update French and Spanish translation.</li>
+<li>Replaced DWM Colorization Parameters calculation formula with <a href="https://github.com/ALTaleX531/dwm_colorization_calculator">ALTaleX's method</a>.</li>
+<li>Compatibility check now returns the actual Windows version instead of the version returned from Explorer. This fixes the issue of the mod not being compatible with <a href="https://github.com/Erizur/explorer7-releases/">explorer7</a>.</li>
+<li>Updated readme.</li>
 </ul>]]></content>
     </entry>
     <entry>
-        <title type="html"><![CDATA[Accent Color Sync 1.3]]></title>
-        <id>https://windhawk.net/mods/accent-color-sync#7c4df7d217e3e09907079ed0d5a13df0cf64d5f0</id>
-        <link href="https://windhawk.net/mods/accent-color-sync"/>
-        <updated>2024-07-23T06:47:42.000Z</updated>
+        <title type="html"><![CDATA[Customize Windows 11 notifications placement 1.0]]></title>
+        <id>https://windhawk.net/mods/notifications-placement#2bc5971618b258d5d262c1327fba3491bdf9798b</id>
+        <link href="https://windhawk.net/mods/notifications-placement"/>
+        <updated>2024-09-06T17:31:45.000Z</updated>
+        <content type="html"><![CDATA[<h1 id="customizewindows11notificationsplacement">Customize Windows 11 notifications placement</h1>
+<p>Move notifications to another monitor or another corner of the screen.</p>
+<p>Only Windows 11 is supported.</p>
+<p><img src="https://i.imgur.com/4PxMvLg.png" alt="Screenshot" /></p>]]></content>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Classic Taskbar background fix 1.0.3]]></title>
+        <id>https://windhawk.net/mods/classic-taskbar-background-fix#fc6e85e377c3948bcf182bd71fe74f5f0afea3b5</id>
+        <link href="https://windhawk.net/mods/classic-taskbar-background-fix"/>
+        <updated>2024-09-05T06:26:42.000Z</updated>
         <content type="html"><![CDATA[<ul>
-<li>Fixed bugs in which OpenGlass opacity did not update when changing theme or clicking "Cancel" on the 'Color &amp; Appearance' page.</li>
-<li>Tweaked color balance calculation to be more accurate, including adding hotfixes for forcing certain values to match Windows 7's.</li>
-<li>Fixed crash bug from the default opacity value using the wrong calculation.</li>
-<li>Removed transparency option as OpenGlass-legacy still does not yet support opaque rendering.</li>
-<li>Added Spanish &amp; French translation (partial).</li>
+<li>Fixed a small resource leak related to the "Show desktop" button</li>
 </ul>]]></content>
     </entry>
     <entry>
-        <title type="html"><![CDATA[Accent Color Sync 1.2]]></title>
-        <id>https://windhawk.net/mods/accent-color-sync#120bd157b2a8eb1c99a1ebd8363686cbc40de906</id>
-        <link href="https://windhawk.net/mods/accent-color-sync"/>
-        <updated>2024-07-21T18:54:36.000Z</updated>
+        <title type="html"><![CDATA[Enables Win10 taskbar on Win11 24H2 0.1]]></title>
+        <id>https://windhawk.net/mods/win10-taskbar-on-win11-24h2#15b8878e02343f715b24376701b5f15b5dfb2d33</id>
+        <link href="https://windhawk.net/mods/win10-taskbar-on-win11-24h2"/>
+        <updated>2024-09-04T10:47:10.000Z</updated>
+        <content type="html"><![CDATA[<p>Enables Windows 10 taskbar on Windows 11 version 24H2, Windows Server 2025 and Windows 11 IoT Enterprise LTSC 2024.
+If you are on Windows 11 version 21H2 to 23H2, you should not use this mod, but rather install the mod "Windows 10 taskbar on
+Windows 11".
+Important! Before enabling this mod, install the mod "Fake Explorer path".
+Since this mod downloads the Windows 10 taskbar from Microsoft's symbols server and stores it in the Windhawk data directory, 
+it won't work in the portable version of Windhawk.
+If you are using Classic theme, you should also install mods "Classic Theme Explorer Lite" and "Non Immersive Taskbar Context Menu".
+The mod "Eradicate immersive menus" will not work.
+You also can use 7+ Taskbar Tweaker. 
+Explorer Patcher by default will have no effect, ask at EP forums for support.
+To customize the clock and tray area, launch legacy tray setup dialog:
+<code>explorer shell:::{05d7b0f4-2121-4eff-bf6b-ed3f69b894d9}</code></p>]]></content>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Classic Theme Enable with extended compatibility 1.2.1]]></title>
+        <id>https://windhawk.net/mods/classic-theme-enable-with-extended-compatibility#1e62db06cc972d776be64ab8a0276348a8132b06</id>
+        <link href="https://windhawk.net/mods/classic-theme-enable-with-extended-compatibility"/>
+        <updated>2024-09-03T10:07:09.000Z</updated>
         <content type="html"><![CDATA[<ul>
-<li>Add option to sync with DWM's opacity value.</li>
-<li>Add support for x86 Windows.</li>
+<li><p>Updated the readme instruction for triggering early / system start of Windhawk service, which is necessary to ensure that classic theme is properly applied before any programs including Taskbar run. The mod code is same, only readme instruction has changed. Also added one more classic theme related mod to the recommended mods list in the readme.</p></li>
+<li><p>Added instruction for making a service dependent on Windhawk</p></li>
 </ul>]]></content>
     </entry>
     <entry>
-        <title type="html"><![CDATA[Accent Color Sync 1.1]]></title>
-        <id>https://windhawk.net/mods/accent-color-sync#45b792a63461caa9ac8c5864b83fcf26d724e549</id>
-        <link href="https://windhawk.net/mods/accent-color-sync"/>
-        <updated>2024-07-21T13:05:06.000Z</updated>
-        <content type="html"><![CDATA[<ul>
-<li><p>Add files via upload</p></li>
-<li><p>Update fix</p></li>
-<li><p>Add files via upload</p></li>
-</ul>]]></content>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[Windows 11 Taskbar Styler 1.3.6]]></title>
-        <id>https://windhawk.net/mods/windows-11-taskbar-styler#b16412c8ab6de3303ecb179ddcb39a2fe8b28e25</id>
-        <link href="https://windhawk.net/mods/windows-11-taskbar-styler"/>
-        <updated>2024-07-19T22:20:20.000Z</updated>
-        <content type="html"><![CDATA[<ul>
-<li>Added the RosePine theme.</li>
-<li>Updated the Squircle theme.</li>
-</ul>]]></content>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[Accent color sync 1.0]]></title>
-        <id>https://windhawk.net/mods/accent-color-sync#7bc74ba3694b934452c45f010dda182d70c1e222</id>
-        <link href="https://windhawk.net/mods/accent-color-sync"/>
-        <updated>2024-07-19T12:28:23.000Z</updated>
-        <content type="html"><![CDATA[<p>This mod syncs accent colors used by OpenGlass and StartIsBack++ (if found) with that of the DWM every time a change to the latter is effectuated.
-It does this by hooking to DefWindowProc and listening for any changes to the accent color.</p>
-<p>It also changes the color opacity based on the value that has been set in the Mod Settings.</p>
-<p><strong><em>This will not function properly without OpenGlass installed.</em></strong></p>
-<h3 id="bugssofar">Bugs so far</h3>
-<ul>
-<li>When changing the mod settings, the SIB taskbar and start menu opacity may occassionally not match that of the window titlebar. This can be fixed by changing the theme color from Windows itself.</li>
-</ul>]]></content>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[Prevent Edge from lagging your Taskbar process 1.0]]></title>
-        <id>https://windhawk.net/mods/edge-window-tab-manager-block#3100a61198d0238712e2e303fe366a1d7aa3ac08</id>
-        <link href="https://windhawk.net/mods/edge-window-tab-manager-block"/>
-        <updated>2024-07-08T19:47:40.000Z</updated>
-        <content type="html"><![CDATA[<h1 id="preventedgefromlaggingyourtaskbarprocess">Prevent Edge from lagging your Taskbar process</h1>
-<p>This mod is for tab hoarders using Edge browser. </p>
-<p>When you set Alt-Tab to show open windows only (and not individual tabs), it should turn off a problematic feature in the Taskbar process. However, in reality, when you have many tabs open in Edge, the existence of this "Alt-Tab showing browser tabs" feature in Windows still causes issues - the Taskbar will lag and start to consume lot of CPU. This regardless whether the browser tabs are shown in Alt-Tab. There was an experimental Edge flag <code>#edge-window-tab-manager</code> that you could set to "off" in order to disable the problematic feature. However, the flag has been removed. This mod solves the issue in a different way.</p>
-<h2 id="installation">Installation</h2>
-<p>The mod takes effect next time you launch Edge. In order for the mod to take effect immediately, ensure that no Edge processes remain in memory when first installing this mod. Alternatively, restart your computer after installing the mod.</p>
-<h2 id="troubleshooting">Troubleshooting</h2>
-<p>If the above installation procedure does not help, look in Edge's system settings at the following url:\
-<code>edge://settings/system</code>\
-Ensure that the following options are disabled:</p>
-<ul>
-<li>"Startup boost" </li>
-<li>"Continue running background extensions and apps when Microsoft Edge is closed"</li>
-</ul>
-<h2 id="howitworks">How it works</h2>
-<p>It operates by blocking the problematic Edge window Alt-Tab manager functionality, which in turn would affect the Taskbar operation. For time being, only Edge needs this mod, other Chromium-based browsers do not need it.</p>
-<h2 id="whatwouldbethealternativestousingedgealtogether">What would be the alternatives to using Edge altogether?</h2>
-<p>As a problem-free alternative, I recommend Brave browser. It has same vertical tabs functionality as Edge does, so they are quite similar. Brave does not hog the Taskbar process.</p>
-<h2 id="moreinfo">More info</h2>
-<p>See also the following Reddit post:
-<a href="https://www.reddit.com/r/edge/comments/1090h93/having_too_many_1000_microsoft_edge_tabs_open_can/">Having too many (1,000+) Microsoft Edge tabs open can break File Explorer in Windows 10</a>.</p>
-<p>This mod is built as a variation of the code of a loader program developed by gexgd0419:
-<a href="https://github.com/gexgd0419/EdgeWindowTabManagerBlock">EdgeWindowTabManagerBlock: A program that blocks the WindowTabManager feature of Microsoft Edge</a>.</p>
-<p>The benefit of this small mod is that you can conveniently install or uninstall the fix directly via Windhawk UI with fewer steps and less attention to technical details.</p>]]></content>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[UXTheme hook 1.1]]></title>
-        <id>https://windhawk.net/mods/uxtheme-hook#ed8141fe586e4fccc124b2ced4063f248aa38179</id>
-        <link href="https://windhawk.net/mods/uxtheme-hook"/>
-        <updated>2024-07-08T07:00:47.000Z</updated>
-        <content type="html"><![CDATA[<ul>
-<li>fix calling conventions</li>
-<li>works when directly applying .theme files</li>
-</ul>]]></content>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[Maintain colour temperature of f.lux 1.0]]></title>
-        <id>https://windhawk.net/mods/maintain-flux-colour-temperature#3ebfcc35a494cc2c1cc0f65c11728a5badd6e1bb</id>
-        <link href="https://windhawk.net/mods/maintain-flux-colour-temperature"/>
-        <updated>2024-07-07T09:51:06.000Z</updated>
-        <content type="html"><![CDATA[<h1 id="maintaincolourtemperatureofflux">Maintain colour temperature of f.lux</h1>
-<p>Keeps your preferred f.lux colour temperature settings, eliminating automatic changes. You can choose the desired colour temperature from f.lux dropdown menu, and f.lux will not change it later automatically.</p>
-<p>The mod operates by providing f.lux always with a fixed day and time. This fixed day and time can be adjusted by the user in the settings panel of this mod, if necessary, though the default setting should be usually suitable. By default the noon of approximately midsummer day of Northern Hemisphere is chosen as the fixed day and time. The particular day and time are not very important, what matters is that the fixed time is not near the time points where f.lux would usually get triggered to adjust the screen colour on its own.</p>
-<p>There are many posts in f.lux forum asking for this functionality since 2016. Unfortunately there were no solutions provided so far:</p>
-<ul>
-<li><a href="https://forum.justgetflux.com/topic/3012/disable-f-lux-s-automatic-adjustments-based-on-time-location/">Disable f.lux's automatic adjustments based on time/location</a></li>
-<li><a href="https://forum.justgetflux.com/topic/6162/can-automatic-timer-settings-be-disabled">Can automatic timer settings be disabled?</a></li>
-<li><a href="https://forum.justgetflux.com/topic/6228/disabling-all-automatic-functions">Disabling all automatic functions.</a></li>
-<li><a href="https://forum.justgetflux.com/topic/7904/how-to-disable-automatic-change-based-on-time-location">How To Disable Automatic Change Based On Time / Location ?</a></li>
-<li><a href="https://forum.justgetflux.com/topic/8404/how-do-i-stop-flux-to-stop-changing-colors-arbitrary-force-always-on-mode-force-coupling-day-and-night-colors">How do I stop flux to stop changing colors arbitrary / Force always on mode / Force coupling day and night colors?</a></li>
-<li><a href="https://forum.justgetflux.com/topic/8431/sleeping-during-the-day">Sleeping during the day</a></li>
-<li><a href="https://forum.justgetflux.com/topic/8475/how-do-i-make-my-own-permanent-preset">How do I make my own Permanent preset?</a></li>
-<li><a href="https://forum.justgetflux.com/topic/8502/disable-circadian-response-only/">Disable Circadian Response Only</a></li>
-</ul>]]></content>
+        <title type="html"><![CDATA[Fake Explorer path 1.0.1]]></title>
+        <id>https://windhawk.net/mods/fake-explorer-path#ebdfc3b11e6dedeb63bf66dd75ed00cc7a8ceb47</id>
+        <link href="https://windhawk.net/mods/fake-explorer-path"/>
+        <updated>2024-09-01T13:05:55.000Z</updated>
+        <content type="html"><![CDATA[<p>More clarity</p>]]></content>
     </entry>
 </feed>
