@@ -9,7 +9,7 @@
                 "published": 1721392103000,
                 "rating": 10,
                 "ratingUsers": 3,
-                "updated": 1725669150000,
+                "updated": 1727855397000,
                 "users": 142
             },
             "metadata": {
@@ -25,7 +25,7 @@
                     "explorer.exe"
                 ],
                 "name": "Accent Color Sync",
-                "version": "1.4"
+                "version": "1.41"
             }
         },
         "acrylic-effect-radius-changer": {
@@ -363,7 +363,7 @@
                 "published": 1708354597000,
                 "rating": 10,
                 "ratingUsers": 3,
-                "updated": 1713541782000,
+                "updated": 1728230545000,
                 "users": 249
             },
             "metadata": {
@@ -371,14 +371,14 @@
                     "x86-64"
                 ],
                 "author": "Waldemar",
-                "compilerOptions": "-lcomctl32 -lgdi32 -loleaut32 -lole32 -lshlwapi",
+                "compilerOptions": "-lcomctl32 -lgdi32 -loleaut32 -lole32 -lshlwapi -lruntimeobject -luxtheme",
                 "description": "Modifies Folder Treeview in file explorer so as to make it look more classic.",
                 "github": "https://github.com/CyprinusCarpio",
                 "include": [
                     "explorer.exe"
                 ],
                 "name": "Classic Explorer Treeview",
-                "version": "1.1"
+                "version": "1.1.1"
             }
         },
         "classic-file-picker-dialog": {
@@ -461,7 +461,7 @@
                 "published": 1699156598000,
                 "rating": 10,
                 "ratingUsers": 4,
-                "updated": 1699156598000,
+                "updated": 1726951327000,
                 "users": 365
             },
             "metadata": {
@@ -473,7 +473,7 @@
                     "*"
                 ],
                 "name": "Classic Menus",
-                "version": "1.0.0"
+                "version": "1.1.0"
             }
         },
         "classic-taskbar-background-fix": {
@@ -630,7 +630,7 @@
                 "published": 1707344115000,
                 "rating": 0,
                 "ratingUsers": 0,
-                "updated": 1708969630000,
+                "updated": 1728198395000,
                 "users": 46
             },
             "metadata": {
@@ -642,7 +642,7 @@
                     "explorer.exe"
                 ],
                 "name": "Classic Theme Explorer Lite",
-                "version": "1.1.1"
+                "version": "1.1.2"
             }
         },
         "classic-theme-transparency-fix": {
@@ -1532,12 +1532,11 @@
                 "published": 1664663103000,
                 "rating": 10,
                 "ratingUsers": 6,
-                "updated": 1664663103000,
+                "updated": 1728139542000,
                 "users": 256
             },
             "metadata": {
                 "author": "Mark Jansen",
-                "compilerOptions": "-luuid -lole32",
                 "description": "Fix the Media 'play' key being suppressed in Explorer when a file is selected.",
                 "github": "https://github.com/learn-more",
                 "include": [
@@ -1545,7 +1544,7 @@
                 ],
                 "name": "Play-Media-Key fix in Explorer",
                 "twitter": "https://twitter.com/learn_more",
-                "version": "1.0"
+                "version": "1.1"
             }
         },
         "lm-ppee-wow64": {
@@ -2081,10 +2080,13 @@
                 "published": 1713423953000,
                 "rating": 9,
                 "ratingUsers": 3,
-                "updated": 1713423953000,
+                "updated": 1728231790000,
                 "users": 79
             },
             "metadata": {
+                "architecture": [
+                    "x86-64"
+                ],
                 "author": "Waldemar",
                 "description": "Removes the Command Bar from file explorer.",
                 "github": "https://github.com/CyprinusCarpio",
@@ -2092,7 +2094,7 @@
                     "explorer.exe"
                 ],
                 "name": "Remove Command Bar",
-                "version": "1.0"
+                "version": "1.0.1"
             }
         },
         "remove-ms-store-open-with": {
@@ -2164,7 +2166,7 @@
                 "published": 1719611831000,
                 "rating": 10,
                 "ratingUsers": 3,
-                "updated": 1719729928000,
+                "updated": 1727647480000,
                 "users": 223
             },
             "metadata": {
@@ -2172,14 +2174,14 @@
                     "x86-64"
                 ],
                 "author": "Erizur",
-                "compilerOptions": "-lcomdlg32 -luser32 -lole32 -lgdi32 -lshell32",
+                "compilerOptions": "-lcomctl32 -lcomdlg32 -luser32 -lole32 -lgdi32 -lshell32 -luxtheme",
                 "description": "Modify StartIsBack++'s features (2.9.20)",
                 "github": "https://github.com/Erizur",
                 "include": [
                     "explorer.exe"
                 ],
                 "name": "StartIsBack++ Tweaker",
-                "version": "0.7"
+                "version": "0.7.1"
             }
         },
         "slick-window-arrangement": {
@@ -2188,7 +2190,7 @@
                 "published": 1646604429000,
                 "rating": 10,
                 "ratingUsers": 133,
-                "updated": 1647122066000,
+                "updated": 1727762644000,
                 "users": 7357
             },
             "featured": true,
@@ -2203,7 +2205,7 @@
                 ],
                 "name": "Slick Window Arrangement",
                 "twitter": "https://twitter.com/m417z",
-                "version": "1.0.1"
+                "version": "1.0.2"
             }
         },
         "start-menu-all-apps": {
@@ -2291,6 +2293,32 @@
                 ],
                 "name": "Better Taskbar Autohide",
                 "version": "1.2"
+            }
+        },
+        "taskbar-background-helper": {
+            "details": {
+                "defaultSorting": 790,
+                "published": 1727557304000,
+                "rating": 10,
+                "ratingUsers": 3,
+                "updated": 1728064921000,
+                "users": 79
+            },
+            "metadata": {
+                "architecture": [
+                    "x86-64"
+                ],
+                "author": "m417z",
+                "compilerOptions": "-ldwmapi",
+                "description": "Sets the taskbar background for the transparent parts, always or only when there's a maximized window, designed to be used with Windows 11 Taskbar Styler",
+                "github": "https://github.com/m417z",
+                "homepage": "https://m417z.com/",
+                "include": [
+                    "explorer.exe"
+                ],
+                "name": "Taskbar Background Helper",
+                "twitter": "https://twitter.com/m417z",
+                "version": "1.0.1"
             }
         },
         "taskbar-button-click": {
@@ -2403,19 +2431,19 @@
                 "published": 1704123810000,
                 "rating": 10,
                 "ratingUsers": 41,
-                "updated": 1707334808000,
+                "updated": 1727106989000,
                 "users": 1840
             },
             "metadata": {
                 "author": "m1lhaus",
-                "compilerOptions": "-DWINVER=0x0602 -D_WIN32_WINNT=0x0602 -lcomctl32 -loleaut32 -lole32 -lversion",
+                "compilerOptions": "-DWINVER=0x0A00 -lcomctl32 -loleaut32 -lole32 -lversion",
                 "description": "Trigger custom action when empty space on a taskbar is double/middle clicked",
                 "github": "https://github.com/m1lhaus",
                 "include": [
                     "explorer.exe"
                 ],
                 "name": "Click on empty taskbar space",
-                "version": "1.3"
+                "version": "1.4"
             }
         },
         "taskbar-grouping": {
@@ -2478,7 +2506,7 @@
                 "published": 1661149953000,
                 "rating": 10,
                 "ratingUsers": 127,
-                "updated": 1714848571000,
+                "updated": 1727592655000,
                 "users": 6707
             },
             "featured": true,
@@ -2487,8 +2515,8 @@
                     "x86-64"
                 ],
                 "author": "m417z",
-                "compilerOptions": "-DWINVER=0x0605 -loleaut32 -lole32 -lruntimeobject -lwininet",
-                "description": "Show and customize text labels for running programs on the taskbar (Windows 11 only)",
+                "compilerOptions": "-DWINVER=0x0A00 -loleaut32 -lole32 -lruntimeobject -lwininet",
+                "description": "Customize text labels and combining for running programs on the taskbar (Windows 11 only)",
                 "github": "https://github.com/m417z",
                 "homepage": "https://m417z.com/",
                 "include": [
@@ -2496,7 +2524,7 @@
                 ],
                 "name": "Taskbar Labels for Windows 11",
                 "twitter": "https://twitter.com/m417z",
-                "version": "1.2.5"
+                "version": "1.3.1"
             }
         },
         "taskbar-left-click-cycle": {
@@ -2576,6 +2604,32 @@
                 "version": "1.0"
             }
         },
+        "taskbar-on-top": {
+            "details": {
+                "defaultSorting": 1420,
+                "published": 1728056002000,
+                "rating": 10,
+                "ratingUsers": 11,
+                "updated": 1728138088000,
+                "users": 142
+            },
+            "metadata": {
+                "architecture": [
+                    "x86-64"
+                ],
+                "author": "m417z",
+                "compilerOptions": "-DWINVER=0x0A00 -ldwmapi -lole32 -loleaut32 -lruntimeobject -lshcore",
+                "description": "Moves the Windows 11 taskbar to the top of the screen",
+                "github": "https://github.com/m417z",
+                "homepage": "https://m417z.com/",
+                "include": [
+                    "explorer.exe"
+                ],
+                "name": "Taskbar on top for Windows 11",
+                "twitter": "https://twitter.com/m417z",
+                "version": "1.0.1"
+            }
+        },
         "taskbar-scroll-actions": {
             "details": {
                 "defaultSorting": 3030,
@@ -2605,7 +2659,7 @@
                 "published": 1724520144000,
                 "rating": 10,
                 "ratingUsers": 1,
-                "updated": 1724520144000,
+                "updated": 1727721442000,
                 "users": 212
             },
             "metadata": {
@@ -2613,16 +2667,18 @@
                     "x86-64"
                 ],
                 "author": "m417z",
-                "compilerOptions": "-lole32 -loleaut32 -lruntimeobject",
+                "compilerOptions": "-lole32 -loleaut32 -lruntimeobject -lshcore",
                 "description": "Forces the start button to be on the left of the taskbar, even when taskbar icons are centered (Windows 11 only)",
                 "github": "https://github.com/m417z",
                 "homepage": "https://m417z.com/",
                 "include": [
-                    "explorer.exe"
+                    "explorer.exe",
+                    "StartMenuExperienceHost.exe",
+                    "SearchHost.exe"
                 ],
                 "name": "Start button always on the left",
                 "twitter": "https://twitter.com/m417z",
-                "version": "1.0"
+                "version": "1.1.1"
             }
         },
         "taskbar-thumbnail-reorder": {
@@ -2652,13 +2708,39 @@
                 "version": "1.0.8"
             }
         },
+        "taskbar-thumbnails": {
+            "details": {
+                "defaultSorting": 9,
+                "published": 1728339473000,
+                "rating": 0,
+                "ratingUsers": 0,
+                "updated": 1728339473000,
+                "users": 1
+            },
+            "metadata": {
+                "architecture": [
+                    "x86-64"
+                ],
+                "author": "m417z",
+                "compilerOptions": "-lversion",
+                "description": "Disable taskbar thumbnails on hover, or replace them with a list",
+                "github": "https://github.com/m417z",
+                "homepage": "https://m417z.com/",
+                "include": [
+                    "explorer.exe"
+                ],
+                "name": "Disable Taskbar Thumbnails",
+                "twitter": "https://twitter.com/m417z",
+                "version": "1.0"
+            }
+        },
         "taskbar-vertical": {
             "details": {
                 "defaultSorting": 10400,
                 "published": 1718190574000,
                 "rating": 10,
                 "ratingUsers": 30,
-                "updated": 1725128663000,
+                "updated": 1728084320000,
                 "users": 1040
             },
             "metadata": {
@@ -2666,7 +2748,7 @@
                     "x86-64"
                 ],
                 "author": "m417z",
-                "compilerOptions": "-DWINVER=0x0605 -lgdi32 -lole32 -loleaut32 -lruntimeobject -lshcore",
+                "compilerOptions": "-DWINVER=0x0A00 -lole32 -loleaut32 -lruntimeobject -lshcore",
                 "description": "Finally, the missing vertical taskbar option for Windows 11!",
                 "github": "https://github.com/m417z",
                 "homepage": "https://m417z.com/",
@@ -2674,11 +2756,12 @@
                     "explorer.exe",
                     "StartMenuExperienceHost.exe",
                     "SearchHost.exe",
-                    "ShellExperienceHost.exe"
+                    "ShellExperienceHost.exe",
+                    "ShellHost.exe"
                 ],
                 "name": "Vertical Taskbar for Windows 11",
                 "twitter": "https://twitter.com/m417z",
-                "version": "1.1"
+                "version": "1.2.5"
             }
         },
         "taskbar-volume-control": {
@@ -3038,7 +3121,7 @@
                 "published": 1723291741000,
                 "rating": 0,
                 "ratingUsers": 0,
-                "updated": 1723471859000,
+                "updated": 1726745627000,
                 "users": 41
             },
             "metadata": {
@@ -3049,7 +3132,7 @@
                     "explorer.exe"
                 ],
                 "name": "Windows 10 taskbar on Windows 11",
-                "version": "1.0.1"
+                "version": "1.0.2"
             }
         },
         "win10-taskbar-on-win11-24h2": {
@@ -3195,7 +3278,7 @@
                 "published": 1715436273000,
                 "rating": 10,
                 "ratingUsers": 81,
-                "updated": 1725709268000,
+                "updated": 1727879659000,
                 "users": 8204
             },
             "metadata": {
@@ -3208,11 +3291,12 @@
                 "github": "https://github.com/m417z",
                 "homepage": "https://m417z.com/",
                 "include": [
-                    "ShellExperienceHost.exe"
+                    "ShellExperienceHost.exe",
+                    "ShellHost.exe"
                 ],
                 "name": "Windows 11 Notification Center Styler",
                 "twitter": "https://twitter.com/m417z",
-                "version": "1.1.2"
+                "version": "1.1.3"
             }
         },
         "windows-11-start-menu-styler": {
