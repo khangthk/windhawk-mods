@@ -2,7 +2,7 @@
 // @id              custom-shutdown-dialog
 // @name            Custom Shutdown Dialog
 // @description     Override the classic shutdown dialog in Explorer with your own
-// @version         1.0.0
+// @version         1.2.0
 // @author          aubymori
 // @github          https://github.com/aubymori
 // @include         explorer.exe
@@ -15,82 +15,122 @@
 Override the classic shutdown dialog in Explorer
 which is invoked with `ALT`+`F4` with your own program.
 
-**This mod will only work on Windows 10 or greater and Windhawk v1.4 or greater.**
+This also lets you override the action of the "Log Off" button
+in Windows XP's Explorer, which on Windows 10 normally instantly logs
+the user out.
 */
 // ==/WindhawkModReadme==
 
 // ==WindhawkModSettings==
 /*
 - exe: C:\Classic\ClassicShutdown\ClassicShutdown.exe
-  $name: Executable
-  $description: Path to executable to open instead of dialog.
-- args: /style classic
-  $name: Arguments
-  $description: Arguments to pass to the executable, if any.
+  $name: Shutdown executable
+  $description: Path to executable to open instead of shutdown dialog.
+- args: ""
+  $name: Shutdown arguments
+  $description: Arguments to pass to the shutdown executable, if any.
+- logoffexe: C:\Classic\ClassicShutdown\ClassicShutdown.exe
+  $name: Logoff executable
+  $description: Path to executable to open instead of logoff dialog.
+- logoffargs: /logoff
+  $name: Logoff arguments
+  $description: Arguments to pass to the logoff executable, if any.
+- disconnectexe: C:\Classic\ClassicShutdown\ClassicShutdown.exe
+  $name: Disconnect executable
+  $description: Path to executable to open instead of disconnect dialog.
+- disconnectargs: /disconnect
+  $name: Disconnect arguments
+  $description: Arguments to pass to the disconnect executable, if any.
 */
 // ==/WindhawkModSettings==
 
 #include <windhawk_utils.h>
-#include <versionhelpers.h>
 
-WindhawkUtils::StringSetting g_szExe, g_szArgs;
+WindhawkUtils::StringSetting g_spszShutdownExe,   g_spszShutdownArgs;
+WindhawkUtils::StringSetting g_spszLogoffExe,     g_spszLogoffArgs;
+WindhawkUtils::StringSetting g_spszDisconnectExe, g_spszDisconnectArgs;
 
-typedef __int64 (* _ShutdownDialogEx_t)(HWND, int, int, UINT);
-_ShutdownDialogEx_t _ShutdownDialogEx_orig;
-__int64 _ShutdownDialogEx_hook(
-    HWND hWndParent,
-    int  i1,
-    int  i2,
-    UINT i3
-)
+void (*ExitWindowsDialog_orig)(HWND);
+void ExitWindowsDialog_hook(HWND hwndParent)
 {
     ShellExecuteW(
-        hWndParent,
+        hwndParent,
         L"open",
-        g_szExe,
-        g_szArgs,
+        g_spszShutdownExe,
+        g_spszShutdownArgs,
         NULL,
         SW_NORMAL
     );
-    return 0;
+}
+
+void (*LogoffWindowsDialog_orig)(HWND);
+void LogoffWindowsDialog_hook(HWND hwndParent)
+{
+    ShellExecuteW(
+        hwndParent,
+        L"open",
+        g_spszLogoffExe,
+        g_spszLogoffArgs,
+        NULL,
+        SW_NORMAL
+    );
+}
+
+void (*DisconnectWindowsDialog_orig)(HWND);
+void DisconnectWindowsDialog_hook(HWND hwndParent)
+{
+    ShellExecuteW(
+        hwndParent,
+        L"open",
+        g_spszDisconnectExe,
+        g_spszDisconnectArgs,
+        NULL,
+        SW_NORMAL
+    );
 }
 
 void LoadSettings(void)
 {
-    g_szExe = WindhawkUtils::StringSetting::make(L"exe");
-    g_szArgs = WindhawkUtils::StringSetting::make(L"args");
+    g_spszShutdownExe    = WindhawkUtils::StringSetting::make(L"exe");
+    g_spszShutdownArgs   = WindhawkUtils::StringSetting::make(L"args");
+    g_spszLogoffExe      = WindhawkUtils::StringSetting::make(L"logoffexe");
+    g_spszLogoffArgs     = WindhawkUtils::StringSetting::make(L"logoffargs");
+    g_spszDisconnectExe  = WindhawkUtils::StringSetting::make(L"disconnectexe");
+    g_spszDisconnectArgs = WindhawkUtils::StringSetting::make(L"disconnectargs");
 }
+
+#define HOOK(NAME, ORDINAL)                                   \
+    FARPROC NAME = GetProcAddress(hShell32, (LPCSTR)ORDINAL); \
+    if (!NAME)                                                \
+    {                                                         \
+        Wh_Log(L"Failed to get address of %s", L ## #NAME);   \
+        return FALSE;                                         \
+    }                                                         \
+                                                              \
+    if (!Wh_SetFunctionHook(                                  \
+        (void *)NAME,                                         \
+        (void *)NAME ## _hook,                                \
+        (void **)&NAME ## _orig                               \
+    ))                                                        \
+    {                                                         \
+        Wh_Log(L"Failed to hook %s", L ## #NAME);             \
+        return FALSE;                                         \
+    }
 
 BOOL Wh_ModInit(void)
 {
-    if (!IsWindows10OrGreater())
-    {
-        Wh_Log(L"This mod was designed for Windows 10 and up.");
-        return FALSE;
-    }
-
     LoadSettings();
 
-    HMODULE hShutdownUx = LoadLibraryW(L"shutdownux.dll");
-    if (!hShutdownUx)
+    HMODULE hShell32 = LoadLibraryExW(L"shell32.dll", NULL, LOAD_LIBRARY_SEARCH_SYSTEM32);
+    if (!hShell32)
     {
-        Wh_Log(L"Failed to load shutdownux.dll");
+        Wh_Log(L"Failed to load shell32.dll");
         return FALSE;
     }
 
-    WindhawkUtils::SYMBOL_HOOK hook = {
-        {
-            L"static  _ShutdownDialogEx()"
-        },
-        &_ShutdownDialogEx_orig,
-        _ShutdownDialogEx_hook
-    };
-
-    if (!HookSymbols(hShutdownUx, &hook, 1))
-    {
-        Wh_Log(L"Failed to hook _ShutdownDialogEx");
-        return FALSE;
-    }
+    HOOK(ExitWindowsDialog,        60);
+    HOOK(LogoffWindowsDialog,      54);
+    HOOK(DisconnectWindowsDialog, 254);
 
     return TRUE;
 }
