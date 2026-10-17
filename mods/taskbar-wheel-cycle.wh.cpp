@@ -1,15 +1,15 @@
 // ==WindhawkMod==
 // @id              taskbar-wheel-cycle
 // @name            Cycle taskbar buttons with mouse wheel
-// @description     Use the mouse wheel while hovering over the taskbar to cycle between taskbar buttons (Windows 11 only)
-// @version         1.1.5
+// @description     Use the mouse wheel and/or keyboard shortcuts to cycle between taskbar buttons
+// @version         1.1.11
 // @author          m417z
 // @github          https://github.com/m417z
 // @twitter         https://twitter.com/m417z
 // @homepage        https://m417z.com/
 // @include         explorer.exe
 // @architecture    x86-64
-// @compilerOptions -lcomctl32 -loleaut32 -lole32 -lruntimeobject -lwininet
+// @compilerOptions -lcomctl32 -lgdi32 -lole32 -loleaut32 -lruntimeobject -lversion
 // ==/WindhawkMod==
 
 // Source code is published under The GNU General Public License v3.0.
@@ -30,8 +30,8 @@ buttons.
 In addition, keyboard shortcuts can be used. The default shortcuts are `Alt+[`
 and `Alt+]`, but they can be changed in the mod settings.
 
-Only Windows 11 is currently supported. For older Windows versions check out [7+
-Taskbar Tweaker](https://tweaker.ramensoftware.com/).
+Only Windows 10 64-bit and Windows 11 are supported. For older Windows versions
+check out [7+ Taskbar Tweaker](https://tweaker.ramensoftware.com/).
 
 ![Demonstration](https://i.imgur.com/FtpUjt1.gif)
 */
@@ -45,30 +45,50 @@ Taskbar Tweaker](https://tweaker.ramensoftware.com/).
   $name: Wrap around
 - reverseScrollingDirection: false
   $name: Reverse scrolling direction
+- enableMouseWheelCycling: true
+  $name: Enable mouse wheel cycling
+  $description: >-
+    Disable to only use keyboard shortcuts for cycling between taskbar buttons.
+- customScrollRegions: ""
+  $name: Custom scroll regions
+  $description: >-
+    A comma-separated list of custom regions along the taskbar where scrolling
+    will cycle between taskbar buttons. If set, it will override the default
+    behavior of using the task list area for scrolling. Each region is a range
+    like "100-200" (pixels) or "20%-50%" (percentage of taskbar length).
 - cycleLeftKeyboardShortcut: Alt+VK_OEM_4
   $name: Cycle left keyboard shortcut
   $description: >-
     Possible modifier keys: Alt, Ctrl, Shift, Win. For possible shortcut keys,
     refer to the following page:
     https://learn.microsoft.com/en-us/windows/win32/inputdev/virtual-key-codes
+
+    Set to an empty string to disable.
 - cycleRightKeyboardShortcut: Alt+VK_OEM_6
   $name: Cycle right keyboard shortcut
+- oldTaskbarOnWin11: false
+  $name: Customize the old taskbar on Windows 11
+  $description: >-
+    Enable this option to customize the old taskbar on Windows 11 (if using
+    ExplorerPatcher or a similar tool).
 */
 // ==/WindhawkModSettings==
 
-#undef GetCurrentTime
+#include <windhawk_utils.h>
 
 #include <commctrl.h>
+#include <psapi.h>
 #include <windowsx.h>
-#include <wininet.h>
+
+#undef GetCurrentTime
 
 #include <winrt/Windows.UI.Input.h>
 #include <winrt/Windows.UI.Xaml.Controls.h>
 #include <winrt/Windows.UI.Xaml.Input.h>
 
 #include <algorithm>
-#include <memory>
-#include <regex>
+#include <atomic>
+#include <optional>
 #include <string>
 #include <string_view>
 #include <unordered_map>
@@ -76,30 +96,42 @@ Taskbar Tweaker](https://tweaker.ramensoftware.com/).
 
 using namespace winrt::Windows::UI::Xaml;
 
-// https://stackoverflow.com/a/51274008
-template <auto fn>
-struct deleter_from_fn {
-    template <typename T>
-    constexpr void operator()(T* arg) const {
-        fn(arg);
-    }
+struct Region {
+    bool isPercentage;
+    int start;
+    int end;
 };
-using string_setting_unique_ptr =
-    std::unique_ptr<const WCHAR[], deleter_from_fn<Wh_FreeStringSetting>>;
 
 struct {
     bool skipMinimizedWindows;
     bool wrapAround;
     bool reverseScrollingDirection;
-    string_setting_unique_ptr cycleLeftKeyboardShortcut;
-    string_setting_unique_ptr cycleRightKeyboardShortcut;
+    bool enableMouseWheelCycling;
+    std::vector<Region> customScrollRegions;
+    WindhawkUtils::StringSetting cycleLeftKeyboardShortcut;
+    WindhawkUtils::StringSetting cycleRightKeyboardShortcut;
+    bool oldTaskbarOnWin11;
 } g_settings;
+
+enum class WinVersion {
+    Unsupported,
+    Win10,
+    Win11,
+    Win11_24H2,
+};
+
+WinVersion g_winVersion;
+
+std::atomic<bool> g_taskbarViewDllLoaded;
+std::atomic<bool> g_initialized;
+std::atomic<bool> g_explorerPatcherInitialized;
+
+std::unordered_map<void*, void*> g_lastTaskListActiveTaskItem;
 
 HWND g_lastScrollTarget = nullptr;
 DWORD g_lastScrollTime;
 short g_lastScrollDeltaRemainder;
 
-HWND g_hTaskbarWnd;
 bool g_hotkeyLeftRegistered = false;
 bool g_hotkeyRightRegistered = false;
 
@@ -107,6 +139,48 @@ enum {
     kHotkeyIdLeft = 1682530408,  // From epochconverter.com
     kHotkeyIdRight,
 };
+
+HWND FindCurrentProcessTaskbarWnd() {
+    HWND hTaskbarWnd = nullptr;
+
+    EnumWindows(
+        [](HWND hWnd, LPARAM lParam) -> BOOL {
+            DWORD dwProcessId;
+            WCHAR className[32];
+            if (GetWindowThreadProcessId(hWnd, &dwProcessId) &&
+                dwProcessId == GetCurrentProcessId() &&
+                GetClassName(hWnd, className, ARRAYSIZE(className)) &&
+                _wcsicmp(className, L"Shell_TrayWnd") == 0) {
+                *reinterpret_cast<HWND*>(lParam) = hWnd;
+                return FALSE;
+            }
+            return TRUE;
+        },
+        reinterpret_cast<LPARAM>(&hTaskbarWnd));
+
+    return hTaskbarWnd;
+}
+
+HWND GetTaskBandWnd() {
+    HWND hTaskbarWnd = FindCurrentProcessTaskbarWnd();
+    if (hTaskbarWnd) {
+        return (HWND)GetProp(hTaskbarWnd, L"TaskbandHWND");
+    }
+
+    return nullptr;
+}
+
+void* CTaskListWnd_vftable_ITaskListUI;
+void* CTaskListWnd_vftable_ITaskListSite;
+void* CImmersiveTaskItem_vftable;
+
+using CTaskListWnd_GetButtonGroupCount_t = int(WINAPI*)(void* pThis);
+CTaskListWnd_GetButtonGroupCount_t CTaskListWnd_GetButtonGroupCount;
+
+using CTaskListWnd__GetTBGroupFromGroup_t = void*(WINAPI*)(void* pThis,
+                                                           void* taskGroup,
+                                                           int* index);
+CTaskListWnd__GetTBGroupFromGroup_t CTaskListWnd__GetTBGroupFromGroup;
 
 using CTaskBtnGroup_GetGroupType_t = int(WINAPI*)(void* pThis);
 CTaskBtnGroup_GetGroupType_t CTaskBtnGroup_GetGroupType;
@@ -123,100 +197,32 @@ CWindowTaskItem_GetWindow_t CWindowTaskItem_GetWindow_Original;
 using CImmersiveTaskItem_GetWindow_t = HWND(WINAPI*)(PVOID pThis);
 CImmersiveTaskItem_GetWindow_t CImmersiveTaskItem_GetWindow_Original;
 
-void* CImmersiveTaskItem_vftable;
+using CTaskListWnd_SwitchToItem_t = void(WINAPI*)(void* pThis, void* taskItem);
+CTaskListWnd_SwitchToItem_t CTaskListWnd_SwitchToItem_Original;
 
-using CTaskBand_SwitchTo_t =
-    HRESULT(WINAPI*)(PVOID pThis,
-                     PVOID taskItem,
-                     BOOL trueMeansBringToFrontFalseMeansToggleMinimizeRestore);
-CTaskBand_SwitchTo_t CTaskBand_SwitchTo_Original;
-
-#pragma region offsets
-
-void* CTaskListWnd_GetFocusedBtn;
-void* CTaskListWnd__FixupTaskIndicies;
-
-size_t OffsetFromAssembly(void* func,
-                          size_t defValue,
-                          std::string opcode = "mov",
-                          int limit = 30) {
-    // Example: mov rax, [rcx+0xE0]
-    std::regex regex(
-        opcode +
-        R"( r(?:[a-z]{2}|\d{1,2}), \[r(?:[a-z]{2}|\d{1,2})\+(0x[0-9A-F]+)\])");
-
-    BYTE* p = (BYTE*)func;
-    for (int i = 0; i < limit; i++) {
-        WH_DISASM_RESULT result;
-        if (!Wh_Disasm(p, &result)) {
-            break;
-        }
-
-        p += result.length;
-
-        std::string_view s = result.text;
-        if (s == "ret") {
-            break;
-        }
-
-        std::match_results<std::string_view::const_iterator> match;
-        if (std::regex_match(s.begin(), s.end(), match, regex)) {
-            // Wh_Log(L"%S", result.text);
-            return std::stoull(match[1], nullptr, 16);
-        }
+void* QueryViaVtable(void* object, void* vtable) {
+    void* ptr = object;
+    while (*(void**)ptr != vtable) {
+        ptr = (void**)ptr + 1;
     }
-
-    Wh_Log(L"Failed for %p", func);
-    return defValue;
+    return ptr;
 }
 
-HDPA* EV_MM_TASKLIST_BUTTON_GROUPS_HDPA(LONG_PTR lp) {
-    static size_t offset = OffsetFromAssembly(CTaskListWnd_GetFocusedBtn, 0xE0);
-
-    return (HDPA*)(lp + offset);
+void* QueryViaVtableBackwards(void* object, void* vtable) {
+    void* ptr = object;
+    while (*(void**)ptr != vtable) {
+        ptr = (void**)ptr - 1;
+    }
+    return ptr;
 }
-
-LONG_PTR** EV_MM_TASKLIST_ACTIVE_BUTTON_GROUP(LONG_PTR lp) {
-    static size_t offset =
-        OffsetFromAssembly(CTaskListWnd__FixupTaskIndicies, 0x130, "cmp");
-
-    return (LONG_PTR**)(lp + offset);
-}
-
-int* EV_MM_TASKLIST_ACTIVE_BUTTON_INDEX(LONG_PTR lp) {
-    return (int*)(EV_MM_TASKLIST_ACTIVE_BUTTON_GROUP(lp) + 1);
-}
-
-#pragma endregion  // offsets
 
 #pragma region scroll
 
-PVOID GetTaskBand() {
-    static PVOID taskBand = nullptr;
-    if (taskBand) {
-        return taskBand;
-    }
+void SwitchToTaskItem(LONG_PTR lpMMTaskListLongPtr, void* taskItem) {
+    void* pThis_ITaskListSite = QueryViaVtable(
+        (void*)lpMMTaskListLongPtr, CTaskListWnd_vftable_ITaskListSite);
 
-    HWND hTaskbarWnd = FindWindow(L"Shell_TrayWnd", nullptr);
-    DWORD processId = 0;
-    if (hTaskbarWnd && GetWindowThreadProcessId(hTaskbarWnd, &processId) &&
-        processId == GetCurrentProcessId()) {
-        HWND hTaskSwWnd = (HWND)GetProp(hTaskbarWnd, L"TaskbandHWND");
-        if (hTaskSwWnd) {
-            taskBand = (PVOID)GetWindowLongPtr(hTaskSwWnd, 0);
-        }
-    }
-
-    return taskBand;
-}
-
-void SwitchToTaskItem(PVOID taskItem) {
-    PVOID taskBand = GetTaskBand();
-    if (!taskBand) {
-        return;
-    }
-
-    CTaskBand_SwitchTo_Original((BYTE*)taskBand + 0x48, taskItem, TRUE);
+    CTaskListWnd_SwitchToItem_Original(pThis_ITaskListSite, taskItem);
 }
 
 HWND GetTaskItemWnd(PVOID taskItem) {
@@ -379,6 +385,36 @@ LONG_PTR* TaskbarScrollHelper(int button_groups_count,
         button_groups[button_group_index], button_index);
 }
 
+HDPA GetTaskBtnGroupsArray(void* taskList_ITaskListUI) {
+    // This is a horrible hack, but it's the best way I found to get the array
+    // of task button groups from a task list. It relies on the implementation
+    // of CTaskListWnd::GetButtonGroupCount being just this:
+    //
+    // return DPA_GetPtrCount(this->buttonGroupsArray);
+    //
+    // Or in other words:
+    //
+    // return *(int*)this[buttonGroupsArrayOffset];
+    //
+    // Instead of calling it with a real taskList object, we call it with an
+    // array of pointers to ints. The returned int value is actually the offset
+    // to the array member.
+
+    static size_t offset = []() {
+        constexpr int kIntArraySize = 256;
+        int arrayOfInts[kIntArraySize];
+        int* arrayOfIntPtrs[kIntArraySize];
+        for (int i = 0; i < kIntArraySize; i++) {
+            arrayOfInts[i] = i;
+            arrayOfIntPtrs[i] = &arrayOfInts[i];
+        }
+
+        return CTaskListWnd_GetButtonGroupCount(arrayOfIntPtrs);
+    }();
+
+    return (HDPA)((void**)taskList_ITaskListUI)[offset];
+}
+
 LONG_PTR* TaskbarScroll(LONG_PTR lpMMTaskListLongPtr,
                         int nRotates,
                         BOOL bSkipMinimized,
@@ -388,8 +424,10 @@ LONG_PTR* TaskbarScroll(LONG_PTR lpMMTaskListLongPtr,
         return nullptr;
     }
 
-    LONG_PTR* plp =
-        (LONG_PTR*)*EV_MM_TASKLIST_BUTTON_GROUPS_HDPA(lpMMTaskListLongPtr);
+    void* taskList_ITaskListUI = QueryViaVtable(
+        (void*)lpMMTaskListLongPtr, CTaskListWnd_vftable_ITaskListUI);
+
+    LONG_PTR* plp = (LONG_PTR*)GetTaskBtnGroupsArray(taskList_ITaskListUI);
     if (!plp) {
         return nullptr;
     }
@@ -397,57 +435,36 @@ LONG_PTR* TaskbarScroll(LONG_PTR lpMMTaskListLongPtr,
     int button_groups_count = (int)plp[0];
     LONG_PTR** button_groups = (LONG_PTR**)plp[1];
 
-    int button_group_index_active, button_index_active;
+    int button_group_index_active = -1;
+    int button_index_active = -1;
 
-    if (src_task_item) {
-        int i;
-        for (i = 0; i < button_groups_count; i++) {
+    LONG_PTR* taskItem = src_task_item;
+    if (!taskItem) {
+        auto it = g_lastTaskListActiveTaskItem.find((void*)lpMMTaskListLongPtr);
+        if (it != g_lastTaskListActiveTaskItem.end()) {
+            taskItem = (LONG_PTR*)it->second;
+        }
+    }
+
+    if (taskItem) {
+        for (int i = 0; i < button_groups_count; i++) {
             int button_group_type =
                 CTaskBtnGroup_GetGroupType(button_groups[i]);
             if (button_group_type == 1 || button_group_type == 3) {
                 int buttons_count = CTaskBtnGroup_GetNumItems(button_groups[i]);
-
-                int j;
-                for (j = 0; j < buttons_count; j++) {
-                    if ((LONG_PTR*)CTaskBtnGroup_GetTaskItem(
-                            button_groups[i], j) == src_task_item) {
+                for (int j = 0; j < buttons_count; j++) {
+                    if ((LONG_PTR*)CTaskBtnGroup_GetTaskItem(button_groups[i],
+                                                             j) == taskItem) {
                         button_group_index_active = i;
                         button_index_active = j;
                         break;
                     }
                 }
 
-                if (j < buttons_count) {
+                if (button_group_index_active != -1) {
                     break;
                 }
             }
-        }
-
-        if (i == button_groups_count) {
-            button_group_index_active = -1;
-            button_index_active = -1;
-        }
-    } else {
-        LONG_PTR* button_group_active =
-            *EV_MM_TASKLIST_ACTIVE_BUTTON_GROUP(lpMMTaskListLongPtr);
-        button_index_active =
-            *EV_MM_TASKLIST_ACTIVE_BUTTON_INDEX(lpMMTaskListLongPtr);
-
-        if (button_group_active && button_index_active >= 0) {
-            int i;
-            for (i = 0; i < button_groups_count; i++) {
-                if (button_groups[i] == button_group_active) {
-                    button_group_index_active = i;
-                    break;
-                }
-            }
-
-            if (i == button_groups_count) {
-                return nullptr;
-            }
-        } else {
-            button_group_index_active = -1;
-            button_index_active = -1;
         }
     }
 
@@ -477,7 +494,7 @@ void OnTaskListScroll(HWND hMMTaskListWnd, short delta) {
                                              g_settings.skipMinimizedWindows,
                                              g_settings.wrapAround, nullptr);
         if (targetTaskItem) {
-            SwitchToTaskItem(targetTaskItem);
+            SwitchToTaskItem(lpMMTaskListLongPtr, targetTaskItem);
         }
     }
 
@@ -512,6 +529,23 @@ HWND TaskListFromSecondaryTaskbarWnd(HWND hSecondaryTaskbarWnd) {
     return FindWindowEx(hWorkerWWnd, nullptr, L"MSTaskListWClass", nullptr);
 }
 
+HWND TaskListFromMMTaskbarWnd(HWND hMMTaskbarWnd) {
+    WCHAR szClassName[32];
+    if (!GetClassName(hMMTaskbarWnd, szClassName, ARRAYSIZE(szClassName))) {
+        return nullptr;
+    }
+
+    if (_wcsicmp(szClassName, L"Shell_TrayWnd") == 0) {
+        return TaskListFromTaskbarWnd(hMMTaskbarWnd);
+    }
+
+    if (_wcsicmp(szClassName, L"Shell_SecondaryTrayWnd") == 0) {
+        return TaskListFromSecondaryTaskbarWnd(hMMTaskbarWnd);
+    }
+
+    return nullptr;
+}
+
 HWND TaskListFromPoint(POINT pt) {
     HWND hPointWnd = WindowFromPoint(pt);
     if (!hPointWnd) {
@@ -523,140 +557,213 @@ HWND TaskListFromPoint(POINT pt) {
         return nullptr;
     }
 
-    WCHAR szClassName[32];
-    if (!GetClassName(hRootWnd, szClassName, ARRAYSIZE(szClassName))) {
+    return TaskListFromMMTaskbarWnd(hRootWnd);
+}
+
+#pragma region regions
+
+UINT GetDpiForWindowWithFallback(HWND hWnd) {
+    using GetDpiForWindow_t = UINT(WINAPI*)(HWND hwnd);
+    static GetDpiForWindow_t pGetDpiForWindow = []() {
+        HMODULE hUser32 = GetModuleHandle(L"user32.dll");
+        if (hUser32) {
+            return (GetDpiForWindow_t)GetProcAddress(hUser32,
+                                                     "GetDpiForWindow");
+        }
+
+        return (GetDpiForWindow_t) nullptr;
+    }();
+
+    int iDpi = 96;
+    if (pGetDpiForWindow) {
+        iDpi = pGetDpiForWindow(hWnd);
+    } else {
+        HDC hdc = GetDC(NULL);
+        if (hdc) {
+            iDpi = GetDeviceCaps(hdc, LOGPIXELSX);
+            ReleaseDC(NULL, hdc);
+        }
+    }
+
+    return iDpi;
+}
+
+// https://stackoverflow.com/a/54364173
+std::wstring_view TrimStringView(std::wstring_view s) {
+    s.remove_prefix(std::min(s.find_first_not_of(L" \t\r\v\n"), s.size()));
+    s.remove_suffix(
+        std::min(s.size() - s.find_last_not_of(L" \t\r\v\n") - 1, s.size()));
+    return s;
+}
+
+// https://stackoverflow.com/a/46931770
+std::vector<std::wstring_view> SplitStringView(std::wstring_view s,
+                                               std::wstring_view delimiter) {
+    size_t pos_start = 0, pos_end, delim_len = delimiter.length();
+    std::wstring_view token;
+    std::vector<std::wstring_view> res;
+
+    while ((pos_end = s.find(delimiter, pos_start)) !=
+           std::wstring_view::npos) {
+        token = s.substr(pos_start, pos_end - pos_start);
+        pos_start = pos_end + delim_len;
+        res.push_back(token);
+    }
+
+    res.push_back(s.substr(pos_start));
+    return res;
+}
+
+bool SvToInt(std::wstring_view s, int* result) {
+    if (s.empty()) {
+        return false;
+    }
+
+    int value = 0;
+    for (WCHAR c : s) {
+        if (c < L'0' || c > L'9') {
+            return false;
+        }
+        value = value * 10 + (c - L'0');
+    }
+
+    *result = value;
+    return true;
+}
+
+std::optional<Region> ParseRegion(std::wstring_view regionStr) {
+    auto parts = SplitStringView(regionStr, L"-");
+    if (parts.size() != 2) {
+        Wh_Log(L"Invalid region (expected start-end): %.*s",
+               (int)regionStr.size(), regionStr.data());
+        return std::nullopt;
+    }
+
+    auto startStr = TrimStringView(parts[0]);
+    auto endStr = TrimStringView(parts[1]);
+
+    bool startIsPercentage = !startStr.empty() && startStr.back() == L'%';
+    bool endIsPercentage = !endStr.empty() && endStr.back() == L'%';
+    if (startIsPercentage != endIsPercentage) {
+        Wh_Log(L"Invalid region (mixed percent and pixel): %.*s",
+               (int)regionStr.size(), regionStr.data());
+        return std::nullopt;
+    }
+
+    bool isPercentage = startIsPercentage;
+    if (isPercentage) {
+        startStr.remove_suffix(1);
+        endStr.remove_suffix(1);
+    }
+
+    int start;
+    int end;
+    if (!SvToInt(startStr, &start) || !SvToInt(endStr, &end)) {
+        Wh_Log(L"Invalid region (non-numeric values): %.*s",
+               (int)regionStr.size(), regionStr.data());
+        return std::nullopt;
+    }
+
+    if (start >= end) {
+        Wh_Log(L"Invalid region (start must be less than end): %.*s",
+               (int)regionStr.size(), regionStr.data());
+        return std::nullopt;
+    }
+
+    return Region{isPercentage, start, end};
+}
+
+bool HasCustomScrollRegions() {
+    return !g_settings.customScrollRegions.empty();
+}
+
+bool IsPointInsideCustomRegion(HWND hMMTaskbarWnd, POINT pt) {
+    RECT rc;
+    if (!GetWindowRect(hMMTaskbarWnd, &rc) || !PtInRect(&rc, pt)) {
+        return false;
+    }
+
+    bool isHorizontal = (rc.right - rc.left) >= (rc.bottom - rc.top);
+    int taskbarLength;
+    int cursorOffset;
+    if (isHorizontal) {
+        taskbarLength = rc.right - rc.left;
+        if (GetWindowLong(hMMTaskbarWnd, GWL_EXSTYLE) & WS_EX_LAYOUTRTL) {
+            cursorOffset = rc.right - pt.x;
+        } else {
+            cursorOffset = pt.x - rc.left;
+        }
+    } else {
+        taskbarLength = rc.bottom - rc.top;
+        cursorOffset = pt.y - rc.top;
+    }
+
+    UINT dpi = GetDpiForWindowWithFallback(hMMTaskbarWnd);
+
+    for (const auto& region : g_settings.customScrollRegions) {
+        int start, end;
+        if (region.isPercentage) {
+            start = MulDiv(taskbarLength, region.start, 100);
+            end = MulDiv(taskbarLength, region.end, 100);
+        } else {
+            start = MulDiv(region.start, dpi, 96);
+            end = MulDiv(region.end, dpi, 96);
+        }
+
+        if (cursorOffset >= start && cursorOffset <= end) {
+            return true;
+        }
+    }
+
+    return false;
+}
+
+#pragma endregion  // regions
+
+HWND GetTaskbarForMonitor(HWND hTaskbarWnd, HMONITOR monitor) {
+    DWORD taskbarThreadId = 0;
+    DWORD taskbarProcessId = 0;
+    if (!(taskbarThreadId =
+              GetWindowThreadProcessId(hTaskbarWnd, &taskbarProcessId)) ||
+        taskbarProcessId != GetCurrentProcessId()) {
         return nullptr;
     }
 
-    if (_wcsicmp(szClassName, L"Shell_TrayWnd") == 0) {
-        return TaskListFromTaskbarWnd(hRootWnd);
+    HMONITOR taskbarMonitor = (HMONITOR)GetProp(hTaskbarWnd, L"TaskbarMonitor");
+    if (taskbarMonitor == monitor) {
+        return hTaskbarWnd;
     }
 
-    if (_wcsicmp(szClassName, L"Shell_SecondaryTrayWnd") == 0) {
-        return TaskListFromSecondaryTaskbarWnd(hRootWnd);
-    }
+    HWND hResultWnd = nullptr;
 
-    return nullptr;
-}
+    auto enumWindowsProc = [monitor, &hResultWnd](HWND hWnd) -> BOOL {
+        WCHAR szClassName[32];
+        if (GetClassName(hWnd, szClassName, ARRAYSIZE(szClassName)) == 0) {
+            return TRUE;
+        }
 
-using TaskbarFrame_OnPointerWheelChanged_t = int(WINAPI*)(PVOID pThis,
-                                                          PVOID pArgs);
-TaskbarFrame_OnPointerWheelChanged_t
-    TaskbarFrame_OnPointerWheelChanged_Original;
-int TaskbarFrame_OnPointerWheelChanged_Hook(PVOID pThis, PVOID pArgs) {
-    Wh_Log(L">");
+        if (_wcsicmp(szClassName, L"Shell_SecondaryTrayWnd") != 0) {
+            return TRUE;
+        }
 
-    auto original = [&]() {
-        return TaskbarFrame_OnPointerWheelChanged_Original(pThis, pArgs);
-    };
+        HMONITOR taskbarMonitor = (HMONITOR)GetProp(hWnd, L"TaskbarMonitor");
+        if (taskbarMonitor != monitor) {
+            return TRUE;
+        }
 
-    winrt::Windows::Foundation::IInspectable taskbarFrame = nullptr;
-    ((IUnknown*)pThis)
-        ->QueryInterface(
-            winrt::guid_of<winrt::Windows::Foundation::IInspectable>(),
-            winrt::put_abi(taskbarFrame));
-
-    if (!taskbarFrame) {
-        return original();
-    }
-
-    auto className = winrt::get_class_name(taskbarFrame);
-    Wh_Log(L"%s", className.c_str());
-
-    if (className != L"Taskbar.TaskbarFrame") {
-        return original();
-    }
-
-    auto taskbarFrameElement = taskbarFrame.as<UIElement>();
-
-    Input::PointerRoutedEventArgs args = nullptr;
-    ((IUnknown*)pArgs)
-        ->QueryInterface(winrt::guid_of<Input::PointerRoutedEventArgs>(),
-                         winrt::put_abi(args));
-    if (!args) {
-        return original();
-    }
-
-    DWORD messagePos = GetMessagePos();
-    POINT pt = {GET_X_LPARAM(messagePos), GET_Y_LPARAM(messagePos)};
-    HWND hMMTaskListWnd = TaskListFromPoint(pt);
-    if (!hMMTaskListWnd) {
-        return original();
-    }
-
-    auto currentPoint = args.GetCurrentPoint(taskbarFrameElement);
-    double delta = currentPoint.Properties().MouseWheelDelta();
-    if (!delta) {
-        return original();
-    }
-
-    // Allows to steal focus.
-    INPUT input;
-    ZeroMemory(&input, sizeof(INPUT));
-    SendInput(1, &input, sizeof(INPUT));
-
-    OnTaskListScroll(hMMTaskListWnd, static_cast<short>(delta));
-
-    args.Handled(true);
-    return 0;
-}
-
-// wParam - TRUE to subclass, FALSE to unsubclass
-// lParam - subclass data
-UINT g_subclassRegisteredMsg = RegisterWindowMessage(
-    L"Windhawk_SetWindowSubclassFromAnyThread_" WH_MOD_ID);
-
-BOOL SetWindowSubclassFromAnyThread(HWND hWnd,
-                                    SUBCLASSPROC pfnSubclass,
-                                    UINT_PTR uIdSubclass,
-                                    DWORD_PTR dwRefData) {
-    struct SET_WINDOW_SUBCLASS_FROM_ANY_THREAD_PARAM {
-        SUBCLASSPROC pfnSubclass;
-        UINT_PTR uIdSubclass;
-        DWORD_PTR dwRefData;
-        BOOL result;
-    };
-
-    DWORD dwThreadId = GetWindowThreadProcessId(hWnd, nullptr);
-    if (dwThreadId == 0) {
+        hResultWnd = hWnd;
         return FALSE;
-    }
+    };
 
-    if (dwThreadId == GetCurrentThreadId()) {
-        return SetWindowSubclass(hWnd, pfnSubclass, uIdSubclass, dwRefData);
-    }
-
-    HHOOK hook = SetWindowsHookEx(
-        WH_CALLWNDPROC,
-        [](int nCode, WPARAM wParam, LPARAM lParam) WINAPI -> LRESULT {
-            if (nCode == HC_ACTION) {
-                const CWPSTRUCT* cwp = (const CWPSTRUCT*)lParam;
-                if (cwp->message == g_subclassRegisteredMsg && cwp->wParam) {
-                    SET_WINDOW_SUBCLASS_FROM_ANY_THREAD_PARAM* param =
-                        (SET_WINDOW_SUBCLASS_FROM_ANY_THREAD_PARAM*)cwp->lParam;
-                    param->result =
-                        SetWindowSubclass(cwp->hwnd, param->pfnSubclass,
-                                          param->uIdSubclass, param->dwRefData);
-                }
-            }
-
-            return CallNextHookEx(nullptr, nCode, wParam, lParam);
+    EnumThreadWindows(
+        taskbarThreadId,
+        [](HWND hWnd, LPARAM lParam) -> BOOL {
+            auto& proc = *reinterpret_cast<decltype(enumWindowsProc)*>(lParam);
+            return proc(hWnd);
         },
-        nullptr, dwThreadId);
-    if (!hook) {
-        return FALSE;
-    }
+        reinterpret_cast<LPARAM>(&enumWindowsProc));
 
-    SET_WINDOW_SUBCLASS_FROM_ANY_THREAD_PARAM param;
-    param.pfnSubclass = pfnSubclass;
-    param.uIdSubclass = uIdSubclass;
-    param.dwRefData = dwRefData;
-    param.result = FALSE;
-    SendMessage(hWnd, g_subclassRegisteredMsg, TRUE, (LPARAM)&param);
-
-    UnhookWindowsHookEx(hook);
-
-    return param.result;
+    return hResultWnd;
 }
 
 bool FromStringHotKey(std::wstring_view hotkeyString,
@@ -930,6 +1037,11 @@ void UnregisterHotkeys(HWND hWnd) {
 }
 
 void RegisterHotkeys(HWND hWnd) {
+    if (!*g_settings.cycleLeftKeyboardShortcut &&
+        !*g_settings.cycleRightKeyboardShortcut) {
+        return;
+    }
+
     UINT modifiers;
     UINT vk;
 
@@ -963,65 +1075,118 @@ void RegisterHotkeys(HWND hWnd) {
 bool OnTaskbarHotkey(HWND hWnd, int hotkeyId) {
     Wh_Log(L">");
 
-    HWND hTaskListWnd = TaskListFromTaskbarWnd(hWnd);
-    if (!hTaskListWnd) {
+    DWORD messagePos = GetMessagePos();
+    POINT pt{
+        GET_X_LPARAM(messagePos),
+        GET_Y_LPARAM(messagePos),
+    };
+
+    HMONITOR monitor = MonitorFromPoint(pt, MONITOR_DEFAULTTONEAREST);
+
+    HWND hTaskbarForMonitor = GetTaskbarForMonitor(hWnd, monitor);
+
+    HWND hMMTaskListWnd = TaskListFromMMTaskbarWnd(
+        hTaskbarForMonitor ? hTaskbarForMonitor : hWnd);
+    if (!hMMTaskListWnd) {
         return false;
     }
 
     int clicks = hotkeyId == kHotkeyIdLeft ? -1 : 1;
 
-    LONG_PTR lpTaskListLongPtr = GetWindowLongPtr(hTaskListWnd, 0);
+    LONG_PTR lpTaskListLongPtr = GetWindowLongPtr(hMMTaskListWnd, 0);
     PVOID targetTaskItem = TaskbarScroll(lpTaskListLongPtr, clicks,
                                          g_settings.skipMinimizedWindows,
                                          g_settings.wrapAround, nullptr);
     if (targetTaskItem) {
-        SwitchToTaskItem(targetTaskItem);
+        SwitchToTaskItem(lpTaskListLongPtr, targetTaskItem);
     }
 
     return true;
 }
 
-UINT g_hotkeyUpdatedRegisteredMsg =
-    RegisterWindowMessage(L"Windhawk_hotkeyUpdated_" WH_MOD_ID);
+UINT g_hotkeyRegisteredMsg =
+    RegisterWindowMessage(L"Windhawk_hotkey_" WH_MOD_ID);
 
-LRESULT CALLBACK TaskbarWindowSubclassProc(HWND hWnd,
-                                           UINT uMsg,
-                                           WPARAM wParam,
-                                           LPARAM lParam,
-                                           UINT_PTR uIdSubclass,
-                                           DWORD_PTR dwRefData) {
-    if (uMsg == WM_NCDESTROY || (uMsg == g_subclassRegisteredMsg && !wParam)) {
-        RemoveWindowSubclass(hWnd, TaskbarWindowSubclassProc, 0);
-    }
+enum {
+    HOTKEY_REGISTER,
+    HOTKEY_UNREGISTER,
+    HOTKEY_UPDATE,
+};
 
+using CTaskListWnd__SetActiveItem_t = void(WINAPI*)(void* pThis,
+                                                    void* taskBtnGroup,
+                                                    int buttonIndex);
+CTaskListWnd__SetActiveItem_t CTaskListWnd__SetActiveItem_Original;
+void WINAPI CTaskListWnd__SetActiveItem_Hook(void* pThis,
+                                             void* taskBtnGroup,
+                                             int buttonIndex) {
+    Wh_Log(L">");
+
+    g_lastTaskListActiveTaskItem[pThis] =
+        taskBtnGroup ? CTaskBtnGroup_GetTaskItem(taskBtnGroup, buttonIndex)
+                     : nullptr;
+
+    CTaskListWnd__SetActiveItem_Original(pThis, taskBtnGroup, buttonIndex);
+}
+
+using CTaskBand_v_WndProc_t = LRESULT(
+    WINAPI*)(void* pThis, HWND hWnd, UINT Msg, WPARAM wParam, LPARAM lParam);
+CTaskBand_v_WndProc_t CTaskBand_v_WndProc_Original;
+LRESULT WINAPI CTaskBand_v_WndProc_Hook(void* pThis,
+                                        HWND hWnd,
+                                        UINT Msg,
+                                        WPARAM wParam,
+                                        LPARAM lParam) {
     LRESULT result = 0;
 
-    switch (uMsg) {
+    auto originalProc = [pThis](HWND hWnd, UINT Msg, WPARAM wParam,
+                                LPARAM lParam) {
+        return CTaskBand_v_WndProc_Original(pThis, hWnd, Msg, wParam, lParam);
+    };
+
+    switch (Msg) {
         case WM_HOTKEY:
             switch (wParam) {
                 case kHotkeyIdLeft:
                 case kHotkeyIdRight:
-                    OnTaskbarHotkey(hWnd, static_cast<int>(wParam));
+                    OnTaskbarHotkey(GetAncestor(hWnd, GA_ROOT),
+                                    static_cast<int>(wParam));
                     break;
 
                 default:
-                    result = DefSubclassProc(hWnd, uMsg, wParam, lParam);
+                    result = originalProc(hWnd, Msg, wParam, lParam);
                     break;
             }
             break;
 
+        case WM_CREATE:
+            result = originalProc(hWnd, Msg, wParam, lParam);
+            RegisterHotkeys(hWnd);
+            break;
+
+        case WM_DESTROY:
+            UnregisterHotkeys(hWnd);
+            result = originalProc(hWnd, Msg, wParam, lParam);
+            break;
+
         default:
-            if (uMsg == g_subclassRegisteredMsg) {
-                if (wParam) {
-                    RegisterHotkeys(hWnd);
-                } else {
-                    UnregisterHotkeys(hWnd);
+            if (Msg == g_hotkeyRegisteredMsg) {
+                switch (wParam) {
+                    case HOTKEY_REGISTER:
+                        RegisterHotkeys(hWnd);
+                        break;
+
+                    case HOTKEY_UNREGISTER:
+                        UnregisterHotkeys(hWnd);
+                        break;
+
+                    case HOTKEY_UPDATE:
+                        UnregisterHotkeys(hWnd);
+                        RegisterHotkeys(hWnd);
+                        break;
                 }
-            } else if (uMsg == g_hotkeyUpdatedRegisteredMsg) {
-                UnregisterHotkeys(hWnd);
-                RegisterHotkeys(hWnd);
             } else {
-                result = DefSubclassProc(hWnd, uMsg, wParam, lParam);
+                result = originalProc(hWnd, Msg, wParam, lParam);
             }
             break;
     }
@@ -1029,409 +1194,159 @@ LRESULT CALLBACK TaskbarWindowSubclassProc(HWND hWnd,
     return result;
 }
 
-void SubclassTaskbarWindow(HWND hWnd) {
-    SetWindowSubclassFromAnyThread(hWnd, TaskbarWindowSubclassProc, 0, 0);
-}
+using TrayUI_WndProc_t = LRESULT(WINAPI*)(void* pThis,
+                                          HWND hWnd,
+                                          UINT Msg,
+                                          WPARAM wParam,
+                                          LPARAM lParam,
+                                          bool* flag);
+TrayUI_WndProc_t TrayUI_WndProc_Original;
+LRESULT WINAPI TrayUI_WndProc_Hook(void* pThis,
+                                   HWND hWnd,
+                                   UINT Msg,
+                                   WPARAM wParam,
+                                   LPARAM lParam,
+                                   bool* flag) {
+    if (Msg == WM_MOUSEWHEEL && g_settings.enableMouseWheelCycling) {
+        HWND hTaskListWnd = TaskListFromTaskbarWnd(hWnd);
 
-void UnsubclassTaskbarWindow(HWND hWnd) {
-    SendMessage(hWnd, g_subclassRegisteredMsg, FALSE, 0);
-}
+        RECT rc{};
+        GetWindowRect(hTaskListWnd, &rc);
 
-void HandleIdentifiedTaskbarWindow(HWND hWnd) {
-    g_hTaskbarWnd = hWnd;
-    SubclassTaskbarWindow(hWnd);
-}
+        POINT pt{
+            .x = GET_X_LPARAM(lParam),
+            .y = GET_Y_LPARAM(lParam),
+        };
 
-using CreateWindowExW_t = decltype(&CreateWindowExW);
-CreateWindowExW_t CreateWindowExW_Original;
-HWND WINAPI CreateWindowExW_Hook(DWORD dwExStyle,
-                                 LPCWSTR lpClassName,
-                                 LPCWSTR lpWindowName,
-                                 DWORD dwStyle,
-                                 int X,
-                                 int Y,
-                                 int nWidth,
-                                 int nHeight,
-                                 HWND hWndParent,
-                                 HMENU hMenu,
-                                 HINSTANCE hInstance,
-                                 LPVOID lpParam) {
-    HWND hWnd = CreateWindowExW_Original(dwExStyle, lpClassName, lpWindowName,
-                                         dwStyle, X, Y, nWidth, nHeight,
-                                         hWndParent, hMenu, hInstance, lpParam);
-    if (!hWnd) {
-        return hWnd;
-    }
+        if (HasCustomScrollRegions() ? IsPointInsideCustomRegion(hWnd, pt)
+                                     : PtInRect(&rc, pt)) {
+            short delta = GET_WHEEL_DELTA_WPARAM(wParam);
 
-    BOOL bTextualClassName = ((ULONG_PTR)lpClassName & ~(ULONG_PTR)0xffff) != 0;
+            // Allows to steal focus.
+            INPUT input{};
+            SendInput(1, &input, sizeof(INPUT));
 
-    if (bTextualClassName && _wcsicmp(lpClassName, L"Shell_TrayWnd") == 0) {
-        Wh_Log(L"Taskbar window created: %08X", (DWORD)(ULONG_PTR)hWnd);
-        HandleIdentifiedTaskbarWindow(hWnd);
-    }
+            OnTaskListScroll(hTaskListWnd, delta);
 
-    return hWnd;
-}
-
-struct SYMBOL_HOOK {
-    std::vector<std::wstring_view> symbols;
-    void** pOriginalFunction;
-    void* hookFunction = nullptr;
-    bool optional = false;
-};
-
-bool HookSymbols(HMODULE module,
-                 const SYMBOL_HOOK* symbolHooks,
-                 size_t symbolHooksCount,
-                 bool cacheOnly = false) {
-    const WCHAR cacheVer = L'1';
-    const WCHAR cacheSep = L'#';
-    constexpr size_t cacheMaxSize = 10240;
-
-    WCHAR moduleFilePath[MAX_PATH];
-    if (!GetModuleFileName(module, moduleFilePath, ARRAYSIZE(moduleFilePath))) {
-        Wh_Log(L"GetModuleFileName failed");
-        return false;
-    }
-
-    PCWSTR moduleFileName = wcsrchr(moduleFilePath, L'\\');
-    if (!moduleFileName) {
-        Wh_Log(L"GetModuleFileName returned an unsupported path");
-        return false;
-    }
-
-    moduleFileName++;
-
-    WCHAR cacheBuffer[cacheMaxSize + 1];
-    std::wstring cacheStrKey = std::wstring(L"symbol-cache-") + moduleFileName;
-    Wh_GetStringValue(cacheStrKey.c_str(), cacheBuffer, ARRAYSIZE(cacheBuffer));
-
-    std::wstring_view cacheBufferView(cacheBuffer);
-
-    // https://stackoverflow.com/a/46931770
-    auto splitStringView = [](std::wstring_view s, WCHAR delimiter) {
-        size_t pos_start = 0, pos_end;
-        std::wstring_view token;
-        std::vector<std::wstring_view> res;
-
-        while ((pos_end = s.find(delimiter, pos_start)) !=
-               std::wstring_view::npos) {
-            token = s.substr(pos_start, pos_end - pos_start);
-            pos_start = pos_end + 1;
-            res.push_back(token);
+            *flag = false;
+            return 0;
         }
+    }
 
-        res.push_back(s.substr(pos_start));
-        return res;
+    LRESULT ret =
+        TrayUI_WndProc_Original(pThis, hWnd, Msg, wParam, lParam, flag);
+
+    return ret;
+}
+
+using CSecondaryTray_v_WndProc_t = LRESULT(
+    WINAPI*)(void* pThis, HWND hWnd, UINT Msg, WPARAM wParam, LPARAM lParam);
+CSecondaryTray_v_WndProc_t CSecondaryTray_v_WndProc_Original;
+LRESULT WINAPI CSecondaryTray_v_WndProc_Hook(void* pThis,
+                                             HWND hWnd,
+                                             UINT Msg,
+                                             WPARAM wParam,
+                                             LPARAM lParam) {
+    if (Msg == WM_MOUSEWHEEL && g_settings.enableMouseWheelCycling) {
+        HWND hSecondaryTaskListWnd = TaskListFromSecondaryTaskbarWnd(hWnd);
+
+        RECT rc{};
+        GetWindowRect(hSecondaryTaskListWnd, &rc);
+
+        POINT pt{
+            .x = GET_X_LPARAM(lParam),
+            .y = GET_Y_LPARAM(lParam),
+        };
+
+        if (HasCustomScrollRegions() ? IsPointInsideCustomRegion(hWnd, pt)
+                                     : PtInRect(&rc, pt)) {
+            short delta = GET_WHEEL_DELTA_WPARAM(wParam);
+
+            // Allows to steal focus.
+            INPUT input{};
+            SendInput(1, &input, sizeof(INPUT));
+
+            OnTaskListScroll(hSecondaryTaskListWnd, delta);
+
+            return 0;
+        }
+    }
+
+    LRESULT ret =
+        CSecondaryTray_v_WndProc_Original(pThis, hWnd, Msg, wParam, lParam);
+
+    return ret;
+}
+
+using TaskbarFrame_OnPointerWheelChanged_t = int(WINAPI*)(PVOID pThis,
+                                                          PVOID pArgs);
+TaskbarFrame_OnPointerWheelChanged_t
+    TaskbarFrame_OnPointerWheelChanged_Original;
+int TaskbarFrame_OnPointerWheelChanged_Hook(PVOID pThis, PVOID pArgs) {
+    Wh_Log(L">");
+
+    auto original = [=]() {
+        return TaskbarFrame_OnPointerWheelChanged_Original(pThis, pArgs);
     };
 
-    auto cacheParts = splitStringView(cacheBufferView, cacheSep);
-
-    std::vector<bool> symbolResolved(symbolHooksCount, false);
-    std::wstring newSystemCacheStr;
-
-    auto onSymbolResolved = [symbolHooks, symbolHooksCount, &symbolResolved,
-                             &newSystemCacheStr,
-                             module](std::wstring_view symbol, void* address) {
-        for (size_t i = 0; i < symbolHooksCount; i++) {
-            if (symbolResolved[i]) {
-                continue;
-            }
-
-            bool match = false;
-            for (auto hookSymbol : symbolHooks[i].symbols) {
-                if (hookSymbol == symbol) {
-                    match = true;
-                    break;
-                }
-            }
-
-            if (!match) {
-                continue;
-            }
-
-            if (symbolHooks[i].hookFunction) {
-                Wh_SetFunctionHook(address, symbolHooks[i].hookFunction,
-                                   symbolHooks[i].pOriginalFunction);
-                Wh_Log(L"Hooked %p: %.*s", address, symbol.length(),
-                       symbol.data());
-            } else {
-                *symbolHooks[i].pOriginalFunction = address;
-                Wh_Log(L"Found %p: %.*s", address, symbol.length(),
-                       symbol.data());
-            }
-
-            symbolResolved[i] = true;
-
-            newSystemCacheStr += cacheSep;
-            newSystemCacheStr += symbol;
-            newSystemCacheStr += cacheSep;
-            newSystemCacheStr +=
-                std::to_wstring((ULONG_PTR)address - (ULONG_PTR)module);
-
-            break;
-        }
-    };
-
-    IMAGE_DOS_HEADER* dosHeader = (IMAGE_DOS_HEADER*)module;
-    IMAGE_NT_HEADERS* header =
-        (IMAGE_NT_HEADERS*)((BYTE*)dosHeader + dosHeader->e_lfanew);
-    auto timeStamp = std::to_wstring(header->FileHeader.TimeDateStamp);
-    auto imageSize = std::to_wstring(header->OptionalHeader.SizeOfImage);
-
-    newSystemCacheStr += cacheVer;
-    newSystemCacheStr += cacheSep;
-    newSystemCacheStr += timeStamp;
-    newSystemCacheStr += cacheSep;
-    newSystemCacheStr += imageSize;
-
-    if (cacheParts.size() >= 3 &&
-        cacheParts[0] == std::wstring_view(&cacheVer, 1) &&
-        cacheParts[1] == timeStamp && cacheParts[2] == imageSize) {
-        for (size_t i = 3; i + 1 < cacheParts.size(); i += 2) {
-            auto symbol = cacheParts[i];
-            auto address = cacheParts[i + 1];
-            if (address.length() == 0) {
-                continue;
-            }
-
-            void* addressPtr =
-                (void*)(std::stoull(std::wstring(address), nullptr, 10) +
-                        (ULONG_PTR)module);
-
-            onSymbolResolved(symbol, addressPtr);
-        }
-
-        for (size_t i = 0; i < symbolHooksCount; i++) {
-            if (symbolResolved[i] || !symbolHooks[i].optional) {
-                continue;
-            }
-
-            size_t noAddressMatchCount = 0;
-            for (size_t j = 3; j + 1 < cacheParts.size(); j += 2) {
-                auto symbol = cacheParts[j];
-                auto address = cacheParts[j + 1];
-                if (address.length() != 0) {
-                    continue;
-                }
-
-                for (auto hookSymbol : symbolHooks[i].symbols) {
-                    if (hookSymbol == symbol) {
-                        noAddressMatchCount++;
-                        break;
-                    }
-                }
-            }
-
-            if (noAddressMatchCount == symbolHooks[i].symbols.size()) {
-                Wh_Log(L"Optional symbol %d doesn't exist (from cache)", i);
-
-                symbolResolved[i] = true;
-
-                for (auto hookSymbol : symbolHooks[i].symbols) {
-                    newSystemCacheStr += cacheSep;
-                    newSystemCacheStr += hookSymbol;
-                    newSystemCacheStr += cacheSep;
-                }
-            }
-        }
-
-        if (std::all_of(symbolResolved.begin(), symbolResolved.end(),
-                        [](bool b) { return b; })) {
-            return true;
-        }
+    if (!g_settings.enableMouseWheelCycling) {
+        return original();
     }
 
-    Wh_Log(L"Couldn't resolve all symbols from cache");
+    winrt::Windows::Foundation::IInspectable taskbarFrame = nullptr;
+    ((IUnknown*)pThis)
+        ->QueryInterface(
+            winrt::guid_of<winrt::Windows::Foundation::IInspectable>(),
+            winrt::put_abi(taskbarFrame));
 
-    if (cacheOnly) {
-        return false;
+    if (!taskbarFrame) {
+        return original();
     }
 
-    WH_FIND_SYMBOL findSymbol;
-    HANDLE findSymbolHandle = Wh_FindFirstSymbol(module, nullptr, &findSymbol);
-    if (!findSymbolHandle) {
-        Wh_Log(L"Wh_FindFirstSymbol failed");
-        return false;
+    auto className = winrt::get_class_name(taskbarFrame);
+    Wh_Log(L"%s", className.c_str());
+
+    if (className != L"Taskbar.TaskbarFrame") {
+        return original();
     }
 
-    do {
-        onSymbolResolved(findSymbol.symbol, findSymbol.address);
-    } while (Wh_FindNextSymbol(findSymbolHandle, &findSymbol));
+    auto taskbarFrameElement = taskbarFrame.as<UIElement>();
 
-    Wh_FindCloseSymbol(findSymbolHandle);
-
-    for (size_t i = 0; i < symbolHooksCount; i++) {
-        if (symbolResolved[i]) {
-            continue;
-        }
-
-        if (!symbolHooks[i].optional) {
-            Wh_Log(L"Unresolved symbol: %d", i);
-            return false;
-        }
-
-        Wh_Log(L"Optional symbol %d doesn't exist", i);
-
-        for (auto hookSymbol : symbolHooks[i].symbols) {
-            newSystemCacheStr += cacheSep;
-            newSystemCacheStr += hookSymbol;
-            newSystemCacheStr += cacheSep;
-        }
+    Input::PointerRoutedEventArgs args = nullptr;
+    ((IUnknown*)pArgs)
+        ->QueryInterface(winrt::guid_of<Input::PointerRoutedEventArgs>(),
+                         winrt::put_abi(args));
+    if (!args) {
+        return original();
     }
 
-    if (newSystemCacheStr.length() <= cacheMaxSize) {
-        Wh_SetStringValue(cacheStrKey.c_str(), newSystemCacheStr.c_str());
-    } else {
-        Wh_Log(L"Cache is too large (%zu)", newSystemCacheStr.length());
+    DWORD messagePos = GetMessagePos();
+    POINT pt = {GET_X_LPARAM(messagePos), GET_Y_LPARAM(messagePos)};
+    HWND hMMTaskListWnd = TaskListFromPoint(pt);
+    if (!hMMTaskListWnd) {
+        return original();
     }
 
-    return true;
-}
-
-std::optional<std::wstring> GetUrlContent(PCWSTR lpUrl) {
-    HINTERNET hOpenHandle = InternetOpen(
-        L"WindhawkMod", INTERNET_OPEN_TYPE_PRECONFIG, nullptr, nullptr, 0);
-    if (!hOpenHandle) {
-        return std::nullopt;
+    if (HasCustomScrollRegions() &&
+        !IsPointInsideCustomRegion(GetAncestor(hMMTaskListWnd, GA_ROOT), pt)) {
+        return original();
     }
 
-    HINTERNET hUrlHandle =
-        InternetOpenUrl(hOpenHandle, lpUrl, nullptr, 0,
-                        INTERNET_FLAG_NO_AUTH | INTERNET_FLAG_NO_CACHE_WRITE |
-                            INTERNET_FLAG_NO_COOKIES | INTERNET_FLAG_NO_UI |
-                            INTERNET_FLAG_PRAGMA_NOCACHE | INTERNET_FLAG_RELOAD,
-                        0);
-    if (!hUrlHandle) {
-        InternetCloseHandle(hOpenHandle);
-        return std::nullopt;
+    auto currentPoint = args.GetCurrentPoint(taskbarFrameElement);
+    double delta = currentPoint.Properties().MouseWheelDelta();
+    if (!delta) {
+        return original();
     }
 
-    DWORD dwStatusCode = 0;
-    DWORD dwStatusCodeSize = sizeof(dwStatusCode);
-    if (!HttpQueryInfo(hUrlHandle,
-                       HTTP_QUERY_STATUS_CODE | HTTP_QUERY_FLAG_NUMBER,
-                       &dwStatusCode, &dwStatusCodeSize, nullptr) ||
-        dwStatusCode != 200) {
-        InternetCloseHandle(hUrlHandle);
-        InternetCloseHandle(hOpenHandle);
-        return std::nullopt;
-    }
+    // Allows to steal focus.
+    INPUT input;
+    ZeroMemory(&input, sizeof(INPUT));
+    SendInput(1, &input, sizeof(INPUT));
 
-    LPBYTE pUrlContent = (LPBYTE)HeapAlloc(GetProcessHeap(), 0, 0x400);
-    if (!pUrlContent) {
-        InternetCloseHandle(hUrlHandle);
-        InternetCloseHandle(hOpenHandle);
-        return std::nullopt;
-    }
+    OnTaskListScroll(hMMTaskListWnd, static_cast<short>(delta));
 
-    DWORD dwNumberOfBytesRead;
-    InternetReadFile(hUrlHandle, pUrlContent, 0x400, &dwNumberOfBytesRead);
-    DWORD dwLength = dwNumberOfBytesRead;
-
-    while (dwNumberOfBytesRead) {
-        LPBYTE pNewUrlContent = (LPBYTE)HeapReAlloc(
-            GetProcessHeap(), 0, pUrlContent, dwLength + 0x400);
-        if (!pNewUrlContent) {
-            InternetCloseHandle(hUrlHandle);
-            InternetCloseHandle(hOpenHandle);
-            HeapFree(GetProcessHeap(), 0, pUrlContent);
-            return std::nullopt;
-        }
-
-        pUrlContent = pNewUrlContent;
-        InternetReadFile(hUrlHandle, pUrlContent + dwLength, 0x400,
-                         &dwNumberOfBytesRead);
-        dwLength += dwNumberOfBytesRead;
-    }
-
-    InternetCloseHandle(hUrlHandle);
-    InternetCloseHandle(hOpenHandle);
-
-    // Assume UTF-8.
-    int charsNeeded = MultiByteToWideChar(CP_UTF8, 0, (PCSTR)pUrlContent,
-                                          dwLength, nullptr, 0);
-    std::wstring unicodeContent(charsNeeded, L'\0');
-    MultiByteToWideChar(CP_UTF8, 0, (PCSTR)pUrlContent, dwLength,
-                        unicodeContent.data(), unicodeContent.size());
-
-    HeapFree(GetProcessHeap(), 0, pUrlContent);
-
-    return unicodeContent;
-}
-
-bool HookSymbolsWithOnlineCacheFallback(HMODULE module,
-                                        const SYMBOL_HOOK* symbolHooks,
-                                        size_t symbolHooksCount) {
-    constexpr WCHAR kModIdForCache[] = L"taskbar-wheel-cycle";
-
-    if (HookSymbols(module, symbolHooks, symbolHooksCount,
-                    /*cacheOnly=*/true)) {
-        return true;
-    }
-
-    Wh_Log(L"HookSymbols() from cache failed, trying to get an online cache");
-
-    WCHAR moduleFilePath[MAX_PATH];
-    DWORD moduleFilePathLen =
-        GetModuleFileName(module, moduleFilePath, ARRAYSIZE(moduleFilePath));
-    if (!moduleFilePathLen || moduleFilePathLen == ARRAYSIZE(moduleFilePath)) {
-        Wh_Log(L"GetModuleFileName failed");
-        return false;
-    }
-
-    PWSTR moduleFileName = wcsrchr(moduleFilePath, L'\\');
-    if (!moduleFileName) {
-        Wh_Log(L"GetModuleFileName returned unsupported path");
-        return false;
-    }
-
-    moduleFileName++;
-
-    DWORD moduleFileNameLen =
-        moduleFilePathLen - (moduleFileName - moduleFilePath);
-
-    LCMapStringEx(LOCALE_NAME_USER_DEFAULT, LCMAP_LOWERCASE, moduleFileName,
-                  moduleFileNameLen, moduleFileName, moduleFileNameLen, nullptr,
-                  nullptr, 0);
-
-    IMAGE_DOS_HEADER* dosHeader = (IMAGE_DOS_HEADER*)module;
-    IMAGE_NT_HEADERS* header =
-        (IMAGE_NT_HEADERS*)((BYTE*)dosHeader + dosHeader->e_lfanew);
-    auto timeStamp = std::to_wstring(header->FileHeader.TimeDateStamp);
-    auto imageSize = std::to_wstring(header->OptionalHeader.SizeOfImage);
-
-    std::wstring cacheStrKey =
-#if defined(_M_IX86)
-        L"symbol-x86-cache-";
-#elif defined(_M_X64)
-        L"symbol-cache-";
-#else
-#error "Unsupported architecture"
-#endif
-    cacheStrKey += moduleFileName;
-
-    std::wstring onlineCacheUrl =
-        L"https://ramensoftware.github.io/windhawk-mod-symbol-cache/";
-    onlineCacheUrl += kModIdForCache;
-    onlineCacheUrl += L'/';
-    onlineCacheUrl += cacheStrKey;
-    onlineCacheUrl += L'/';
-    onlineCacheUrl += timeStamp;
-    onlineCacheUrl += L'-';
-    onlineCacheUrl += imageSize;
-    onlineCacheUrl += L".txt";
-
-    Wh_Log(L"Looking for an online cache at %s", onlineCacheUrl.c_str());
-
-    auto onlineCache = GetUrlContent(onlineCacheUrl.c_str());
-    if (onlineCache) {
-        Wh_SetStringValue(cacheStrKey.c_str(), onlineCache->c_str());
-    } else {
-        Wh_Log(L"Failed to get online cache");
-    }
-
-    return HookSymbols(module, symbolHooks, symbolHooksCount);
+    args.Handled(true);
+    return 0;
 }
 
 void LoadSettings() {
@@ -1439,117 +1354,363 @@ void LoadSettings() {
     g_settings.wrapAround = Wh_GetIntSetting(L"wrapAround");
     g_settings.reverseScrollingDirection =
         Wh_GetIntSetting(L"reverseScrollingDirection");
-    g_settings.cycleLeftKeyboardShortcut.reset(
-        Wh_GetStringSetting(L"cycleLeftKeyboardShortcut"));
-    g_settings.cycleRightKeyboardShortcut.reset(
-        Wh_GetStringSetting(L"cycleRightKeyboardShortcut"));
+    g_settings.enableMouseWheelCycling =
+        Wh_GetIntSetting(L"enableMouseWheelCycling");
+
+    g_settings.customScrollRegions.clear();
+    PCWSTR customScrollRegions = Wh_GetStringSetting(L"customScrollRegions");
+    for (auto regionStr : SplitStringView(customScrollRegions, L",")) {
+        regionStr = TrimStringView(regionStr);
+        if (regionStr.empty()) {
+            continue;
+        }
+        if (auto region = ParseRegion(regionStr)) {
+            g_settings.customScrollRegions.push_back(*region);
+        }
+    }
+    Wh_FreeStringSetting(customScrollRegions);
+
+    g_settings.cycleLeftKeyboardShortcut =
+        WindhawkUtils::StringSetting::make(L"cycleLeftKeyboardShortcut");
+    g_settings.cycleRightKeyboardShortcut =
+        WindhawkUtils::StringSetting::make(L"cycleRightKeyboardShortcut");
+    g_settings.oldTaskbarOnWin11 = Wh_GetIntSetting(L"oldTaskbarOnWin11");
 }
 
-bool GetTaskbarViewDllPath(WCHAR path[MAX_PATH]) {
-    WCHAR szWindowsDirectory[MAX_PATH];
-    if (!GetWindowsDirectory(szWindowsDirectory,
-                             ARRAYSIZE(szWindowsDirectory))) {
-        Wh_Log(L"GetWindowsDirectory failed");
+bool HookTaskbarViewDllSymbols(HMODULE module) {
+    // Taskbar.View.dll, ExplorerExtensions.dll
+    WindhawkUtils::SYMBOL_HOOK symbolHooks[] = {
+        {
+            {LR"(public: virtual int __cdecl winrt::impl::produce<struct winrt::Taskbar::implementation::TaskbarFrame,struct winrt::Windows::UI::Xaml::Controls::IControlOverrides>::OnPointerWheelChanged(void *))"},
+            &TaskbarFrame_OnPointerWheelChanged_Original,
+            TaskbarFrame_OnPointerWheelChanged_Hook,
+        },
+    };
+
+    if (!HookSymbols(module, symbolHooks, ARRAYSIZE(symbolHooks))) {
+        Wh_Log(L"HookSymbols failed");
         return false;
     }
 
-    // Windows 11 version 22H2.
-    wcscpy_s(path, MAX_PATH, szWindowsDirectory);
-    wcscat_s(
-        path, MAX_PATH,
-        LR"(\SystemApps\MicrosoftWindows.Client.Core_cw5n1h2txyewy\Taskbar.View.dll)");
-    if (GetFileAttributes(path) != INVALID_FILE_ATTRIBUTES) {
+    return true;
+}
+
+HMODULE GetTaskbarViewModuleHandle() {
+    HMODULE module = GetModuleHandle(L"Taskbar.View.dll");
+    if (!module) {
+        module = GetModuleHandle(L"ExplorerExtensions.dll");
+    }
+
+    return module;
+}
+
+void HandleLoadedModuleIfTaskbarView(HMODULE module, LPCWSTR lpLibFileName) {
+    if (g_winVersion >= WinVersion::Win11 && !g_taskbarViewDllLoaded &&
+        GetTaskbarViewModuleHandle() == module &&
+        !g_taskbarViewDllLoaded.exchange(true)) {
+        Wh_Log(L"Loaded %s", lpLibFileName);
+
+        if (HookTaskbarViewDllSymbols(module)) {
+            Wh_ApplyHookOperations();
+        }
+    }
+}
+
+bool HookTaskbarSymbols() {
+    HMODULE module;
+    if (g_winVersion <= WinVersion::Win10) {
+        module = GetModuleHandle(nullptr);
+    } else {
+        module = LoadLibraryEx(L"taskbar.dll", nullptr,
+                               LOAD_LIBRARY_SEARCH_SYSTEM32);
+        if (!module) {
+            Wh_Log(L"Couldn't load taskbar.dll");
+            return false;
+        }
+    }
+
+    // Taskbar.dll, explorer.exe
+    WindhawkUtils::SYMBOL_HOOK symbolHooks[] = {
+        {
+            {LR"(const CTaskListWnd::`vftable'{for `ITaskListUI'})"},
+            &CTaskListWnd_vftable_ITaskListUI,
+        },
+        {
+            {LR"(const CTaskListWnd::`vftable'{for `ITaskListSite'})"},
+            &CTaskListWnd_vftable_ITaskListSite,
+        },
+        {
+            {LR"(const CImmersiveTaskItem::`vftable'{for `ITaskItem'})"},
+            &CImmersiveTaskItem_vftable,
+        },
+        {
+            {LR"(public: virtual int __cdecl CTaskListWnd::GetButtonGroupCount(void))"},
+            &CTaskListWnd_GetButtonGroupCount,
+        },
+        {
+            {LR"(protected: struct ITaskBtnGroup * __cdecl CTaskListWnd::_GetTBGroupFromGroup(struct ITaskGroup *,int *))"},
+            &CTaskListWnd__GetTBGroupFromGroup,
+        },
+        {
+            {LR"(public: virtual enum eTBGROUPTYPE __cdecl CTaskBtnGroup::GetGroupType(void))"},
+            &CTaskBtnGroup_GetGroupType,
+        },
+        {
+            {LR"(public: virtual int __cdecl CTaskBtnGroup::GetNumItems(void))"},
+            &CTaskBtnGroup_GetNumItems,
+        },
+        {
+            {LR"(public: virtual struct ITaskItem * __cdecl CTaskBtnGroup::GetTaskItem(int))"},
+            &CTaskBtnGroup_GetTaskItem,
+        },
+        {
+            {LR"(public: virtual struct HWND__ * __cdecl CWindowTaskItem::GetWindow(void))"},
+            &CWindowTaskItem_GetWindow_Original,
+        },
+        {
+            {LR"(public: virtual struct HWND__ * __cdecl CImmersiveTaskItem::GetWindow(void))"},
+            &CImmersiveTaskItem_GetWindow_Original,
+        },
+        {
+            {LR"(public: virtual void __cdecl CTaskListWnd::SwitchToItem(struct ITaskItem *))"},
+            &CTaskListWnd_SwitchToItem_Original,
+        },
+        {
+            {LR"(protected: void __cdecl CTaskListWnd::_SetActiveItem(struct ITaskBtnGroup *,int))"},
+            &CTaskListWnd__SetActiveItem_Original,
+            CTaskListWnd__SetActiveItem_Hook,
+        },
+        {
+            {LR"(protected: virtual __int64 __cdecl CTaskBand::v_WndProc(struct HWND__ *,unsigned int,unsigned __int64,__int64))"},
+            &CTaskBand_v_WndProc_Original,
+            CTaskBand_v_WndProc_Hook,
+        },
+        {
+            {LR"(public: virtual __int64 __cdecl TrayUI::WndProc(struct HWND__ *,unsigned int,unsigned __int64,__int64,bool *))"},
+            &TrayUI_WndProc_Original,
+            TrayUI_WndProc_Hook,
+        },
+        {
+            {LR"(private: virtual __int64 __cdecl CSecondaryTray::v_WndProc(struct HWND__ *,unsigned int,unsigned __int64,__int64))"},
+            &CSecondaryTray_v_WndProc_Original,
+            CSecondaryTray_v_WndProc_Hook,
+        },
+    };
+
+    if (!HookSymbols(module, symbolHooks, ARRAYSIZE(symbolHooks))) {
+        Wh_Log(L"HookSymbols failed");
+        return false;
+    }
+
+    return true;
+}
+
+VS_FIXEDFILEINFO* GetModuleVersionInfo(HMODULE hModule, UINT* puPtrLen) {
+    void* pFixedFileInfo = nullptr;
+    UINT uPtrLen = 0;
+
+    HRSRC hResource =
+        FindResource(hModule, MAKEINTRESOURCE(VS_VERSION_INFO), RT_VERSION);
+    if (hResource) {
+        HGLOBAL hGlobal = LoadResource(hModule, hResource);
+        if (hGlobal) {
+            void* pData = LockResource(hGlobal);
+            if (pData) {
+                if (!VerQueryValue(pData, L"\\", &pFixedFileInfo, &uPtrLen) ||
+                    uPtrLen == 0) {
+                    pFixedFileInfo = nullptr;
+                    uPtrLen = 0;
+                }
+            }
+        }
+    }
+
+    if (puPtrLen) {
+        *puPtrLen = uPtrLen;
+    }
+
+    return (VS_FIXEDFILEINFO*)pFixedFileInfo;
+}
+
+WinVersion GetExplorerVersion() {
+    VS_FIXEDFILEINFO* fixedFileInfo = GetModuleVersionInfo(nullptr, nullptr);
+    if (!fixedFileInfo) {
+        return WinVersion::Unsupported;
+    }
+
+    WORD major = HIWORD(fixedFileInfo->dwFileVersionMS);
+    WORD minor = LOWORD(fixedFileInfo->dwFileVersionMS);
+    WORD build = HIWORD(fixedFileInfo->dwFileVersionLS);
+    WORD qfe = LOWORD(fixedFileInfo->dwFileVersionLS);
+
+    Wh_Log(L"Version: %u.%u.%u.%u", major, minor, build, qfe);
+
+    switch (major) {
+        case 10:
+            if (build < 22000) {
+                return WinVersion::Win10;
+            } else if (build < 26100) {
+                return WinVersion::Win11;
+            } else {
+                return WinVersion::Win11_24H2;
+            }
+            break;
+    }
+
+    return WinVersion::Unsupported;
+}
+
+struct EXPLORER_PATCHER_HOOK {
+    PCSTR symbol;
+    void** pOriginalFunction;
+    void* hookFunction = nullptr;
+    bool optional = false;
+
+    template <typename Prototype>
+    EXPLORER_PATCHER_HOOK(
+        PCSTR symbol,
+        Prototype** originalFunction,
+        std::type_identity_t<Prototype*> hookFunction = nullptr,
+        bool optional = false)
+        : symbol(symbol),
+          pOriginalFunction(reinterpret_cast<void**>(originalFunction)),
+          hookFunction(reinterpret_cast<void*>(hookFunction)),
+          optional(optional) {}
+};
+
+bool HookExplorerPatcherSymbols(HMODULE explorerPatcherModule) {
+    if (g_explorerPatcherInitialized.exchange(true)) {
         return true;
     }
 
-    // Windows 11 version 21H2.
-    wcscpy_s(path, MAX_PATH, szWindowsDirectory);
-    wcscat_s(
-        path, MAX_PATH,
-        LR"(\SystemApps\MicrosoftWindows.Client.CBS_cw5n1h2txyewy\ExplorerExtensions.dll)");
-    if (GetFileAttributes(path) != INVALID_FILE_ATTRIBUTES) {
+    if (g_winVersion >= WinVersion::Win11) {
+        g_winVersion = WinVersion::Win10;
+    }
+
+    EXPLORER_PATCHER_HOOK hooks[] = {
+        {R"(??_7CTaskListWnd@@6BITaskListUI@@@)",
+         &CTaskListWnd_vftable_ITaskListUI},
+        {R"(??_7CTaskListWnd@@6BITaskListSite@@@)",
+         &CTaskListWnd_vftable_ITaskListSite},
+        {R"(??_7CImmersiveTaskItem@@6BITaskItem@@@)",
+         &CImmersiveTaskItem_vftable},
+        {R"(?GetButtonGroupCount@CTaskListWnd@@UEAAHXZ)",
+         &CTaskListWnd_GetButtonGroupCount},
+        {R"(?_GetTBGroupFromGroup@CTaskListWnd@@IEAAPEAUITaskBtnGroup@@PEAUITaskGroup@@PEAH@Z)",
+         &CTaskListWnd__GetTBGroupFromGroup},
+        {R"(?GetGroupType@CTaskBtnGroup@@UEAA?AW4eTBGROUPTYPE@@XZ)",
+         &CTaskBtnGroup_GetGroupType},
+        {R"(?GetNumItems@CTaskBtnGroup@@UEAAHXZ)", &CTaskBtnGroup_GetNumItems},
+        {R"(?GetTaskItem@CTaskBtnGroup@@UEAAPEAUITaskItem@@H@Z)",
+         &CTaskBtnGroup_GetTaskItem},
+        {R"(?GetWindow@CWindowTaskItem@@UEAAPEAUHWND__@@XZ)",
+         &CWindowTaskItem_GetWindow_Original},
+        {R"(?GetWindow@CImmersiveTaskItem@@UEAAPEAUHWND__@@XZ)",
+         &CImmersiveTaskItem_GetWindow_Original},
+        {R"(?SwitchToItem@CTaskListWnd@@UEAAXPEAUITaskItem@@@Z)",
+         &CTaskListWnd_SwitchToItem_Original},
+        {R"(?_SetActiveItem@CTaskListWnd@@IEAAXPEAUITaskBtnGroup@@H@Z)",
+         &CTaskListWnd__SetActiveItem_Original,
+         CTaskListWnd__SetActiveItem_Hook},
+        {R"(?v_WndProc@CTaskBand@@MEAA_JPEAUHWND__@@I_K_J@Z)",
+         &CTaskBand_v_WndProc_Original, CTaskBand_v_WndProc_Hook},
+        {R"(?WndProc@TrayUI@@UEAA_JPEAUHWND__@@I_K_JPEA_N@Z)",
+         &TrayUI_WndProc_Original, TrayUI_WndProc_Hook},
+        // Exported after 67.1:
+        {R"(?v_WndProc@CSecondaryTray@@EEAA_JPEAUHWND__@@I_K_J@Z)",
+         &CSecondaryTray_v_WndProc_Original, CSecondaryTray_v_WndProc_Hook,
+         true},
+    };
+
+    bool succeeded = true;
+
+    for (const auto& hook : hooks) {
+        void* ptr = (void*)GetProcAddress(explorerPatcherModule, hook.symbol);
+        if (!ptr) {
+            Wh_Log(L"ExplorerPatcher symbol%s doesn't exist: %S",
+                   hook.optional ? L" (optional)" : L"", hook.symbol);
+            if (!hook.optional) {
+                succeeded = false;
+            }
+            continue;
+        }
+
+        if (hook.hookFunction) {
+            Wh_SetFunctionHook(ptr, hook.hookFunction, hook.pOriginalFunction);
+        } else {
+            *hook.pOriginalFunction = ptr;
+        }
+    }
+
+    if (!succeeded) {
+        Wh_Log(L"HookExplorerPatcherSymbols failed");
+    } else if (g_initialized) {
+        Wh_ApplyHookOperations();
+    }
+
+    return succeeded;
+}
+
+bool IsExplorerPatcherModule(HMODULE module) {
+    WCHAR moduleFilePath[MAX_PATH];
+    switch (
+        GetModuleFileName(module, moduleFilePath, ARRAYSIZE(moduleFilePath))) {
+        case 0:
+        case ARRAYSIZE(moduleFilePath):
+            return false;
+    }
+
+    PCWSTR moduleFileName = wcsrchr(moduleFilePath, L'\\');
+    if (!moduleFileName) {
+        return false;
+    }
+
+    moduleFileName++;
+
+    if (_wcsnicmp(L"ep_taskbar.", moduleFileName, sizeof("ep_taskbar.") - 1) ==
+        0) {
+        Wh_Log(L"ExplorerPatcher taskbar module: %s", moduleFileName);
         return true;
     }
 
     return false;
 }
 
-bool HookTaskbarViewDllSymbols() {
-    WCHAR dllPath[MAX_PATH];
-    if (!GetTaskbarViewDllPath(dllPath)) {
-        Wh_Log(L"Taskbar view module not found");
-        return false;
+bool HandleLoadedExplorerPatcher() {
+    HMODULE hMods[1024];
+    DWORD cbNeeded;
+    if (EnumProcessModules(GetCurrentProcess(), hMods, sizeof(hMods),
+                           &cbNeeded)) {
+        for (size_t i = 0; i < cbNeeded / sizeof(HMODULE); i++) {
+            if (IsExplorerPatcherModule(hMods[i])) {
+                return HookExplorerPatcherSymbols(hMods[i]);
+            }
+        }
     }
 
-    HMODULE module =
-        LoadLibraryEx(dllPath, nullptr, LOAD_WITH_ALTERED_SEARCH_PATH);
-    if (!module) {
-        Wh_Log(L"Taskbar view module couldn't be loaded");
-        return false;
-    }
-
-    // Taskbar.View.dll, ExplorerExtensions.dll
-    SYMBOL_HOOK symbolHooks[] = {
-        {
-            {LR"(public: virtual int __cdecl winrt::impl::produce<struct winrt::Taskbar::implementation::TaskbarFrame,struct winrt::Windows::UI::Xaml::Controls::IControlOverrides>::OnPointerWheelChanged(void *))"},
-            (void**)&TaskbarFrame_OnPointerWheelChanged_Original,
-            (void*)TaskbarFrame_OnPointerWheelChanged_Hook,
-        },
-    };
-
-    return HookSymbolsWithOnlineCacheFallback(module, symbolHooks,
-                                              ARRAYSIZE(symbolHooks));
+    return true;
 }
 
-BOOL HookTaskbarDllSymbols() {
-    HMODULE module = LoadLibrary(L"taskbar.dll");
-    if (!module) {
-        Wh_Log(L"Failed to load taskbar.dll");
-        return FALSE;
+void HandleLoadedModuleIfExplorerPatcher(HMODULE module) {
+    if (module && !((ULONG_PTR)module & 3) && !g_explorerPatcherInitialized) {
+        if (IsExplorerPatcherModule(module)) {
+            HookExplorerPatcherSymbols(module);
+        }
+    }
+}
+
+using LoadLibraryExW_t = decltype(&LoadLibraryExW);
+LoadLibraryExW_t LoadLibraryExW_Original;
+HMODULE WINAPI LoadLibraryExW_Hook(LPCWSTR lpLibFileName,
+                                   HANDLE hFile,
+                                   DWORD dwFlags) {
+    HMODULE module = LoadLibraryExW_Original(lpLibFileName, hFile, dwFlags);
+    if (module) {
+        HandleLoadedModuleIfExplorerPatcher(module);
+        HandleLoadedModuleIfTaskbarView(module, lpLibFileName);
     }
 
-    SYMBOL_HOOK taskbarDllHooks[] = {
-        {
-            {LR"(public: virtual enum eTBGROUPTYPE __cdecl CTaskBtnGroup::GetGroupType(void))"},
-            (void**)&CTaskBtnGroup_GetGroupType,
-        },
-        {
-            {LR"(public: virtual int __cdecl CTaskBtnGroup::GetNumItems(void))"},
-            (void**)&CTaskBtnGroup_GetNumItems,
-        },
-        {
-            {LR"(public: virtual struct ITaskItem * __cdecl CTaskBtnGroup::GetTaskItem(int))"},
-            (void**)&CTaskBtnGroup_GetTaskItem,
-        },
-        {
-            {LR"(public: virtual struct HWND__ * __cdecl CWindowTaskItem::GetWindow(void))"},
-            (void**)&CWindowTaskItem_GetWindow_Original,
-        },
-        {
-            {LR"(public: virtual struct HWND__ * __cdecl CImmersiveTaskItem::GetWindow(void))"},
-            (void**)&CImmersiveTaskItem_GetWindow_Original,
-        },
-        {
-            {LR"(const CImmersiveTaskItem::`vftable'{for `ITaskItem'})"},
-            (void**)&CImmersiveTaskItem_vftable,
-        },
-        {
-            {LR"(public: virtual long __cdecl CTaskBand::SwitchTo(struct ITaskItem *,int))"},
-            (void**)&CTaskBand_SwitchTo_Original,
-        },
-        // For offsets:
-        {
-            {LR"(public: virtual long __cdecl CTaskListWnd::GetFocusedBtn(struct ITaskGroup * *,int *))"},
-            (void**)&CTaskListWnd_GetFocusedBtn,
-        },
-        {
-            {LR"(protected: void __cdecl CTaskListWnd::_FixupTaskIndicies(struct ITaskBtnGroup *,int,int))"},
-            (void**)&CTaskListWnd__FixupTaskIndicies,
-        },
-    };
-
-    return HookSymbolsWithOnlineCacheFallback(module, taskbarDllHooks,
-                                              ARRAYSIZE(taskbarDllHooks));
+    return module;
 }
 
 BOOL Wh_ModInit() {
@@ -1557,16 +1718,54 @@ BOOL Wh_ModInit() {
 
     LoadSettings();
 
-    if (!HookTaskbarViewDllSymbols()) {
+    g_winVersion = GetExplorerVersion();
+    if (g_winVersion == WinVersion::Unsupported) {
+        Wh_Log(L"Unsupported Windows version");
         return FALSE;
     }
 
-    if (!HookTaskbarDllSymbols()) {
+    if (g_settings.oldTaskbarOnWin11) {
+        bool hasWin10Taskbar = g_winVersion < WinVersion::Win11_24H2;
+
+        if (g_winVersion >= WinVersion::Win11) {
+            g_winVersion = WinVersion::Win10;
+        }
+
+        if (hasWin10Taskbar && !HookTaskbarSymbols()) {
+            return FALSE;
+        }
+    } else if (g_winVersion >= WinVersion::Win11) {
+        if (HMODULE taskbarViewModule = GetTaskbarViewModuleHandle()) {
+            g_taskbarViewDllLoaded = true;
+            if (!HookTaskbarViewDllSymbols(taskbarViewModule)) {
+                return FALSE;
+            }
+        } else {
+            Wh_Log(L"Taskbar view module not loaded yet");
+        }
+
+        if (!HookTaskbarSymbols()) {
+            return FALSE;
+        }
+    } else {
+        if (!HookTaskbarSymbols()) {
+            return FALSE;
+        }
+    }
+
+    if (!HandleLoadedExplorerPatcher()) {
+        Wh_Log(L"HandleLoadedExplorerPatcher failed");
         return FALSE;
     }
 
-    Wh_SetFunctionHook((void*)CreateWindowExW, (void*)CreateWindowExW_Hook,
-                       (void**)&CreateWindowExW_Original);
+    HMODULE kernelBaseModule = GetModuleHandle(L"kernelbase.dll");
+    auto pKernelBaseLoadLibraryExW = (decltype(&LoadLibraryExW))GetProcAddress(
+        kernelBaseModule, "LoadLibraryExW");
+    WindhawkUtils::Wh_SetFunctionHookT(pKernelBaseLoadLibraryExW,
+                                       LoadLibraryExW_Hook,
+                                       &LoadLibraryExW_Original);
+
+    g_initialized = true;
 
     return TRUE;
 }
@@ -1574,31 +1773,52 @@ BOOL Wh_ModInit() {
 void Wh_ModAfterInit() {
     Wh_Log(L">");
 
-    DWORD dwProcessId;
-    DWORD dwCurrentProcessId = GetCurrentProcessId();
+    if (g_winVersion >= WinVersion::Win11 && !g_taskbarViewDllLoaded) {
+        if (HMODULE taskbarViewModule = GetTaskbarViewModuleHandle()) {
+            if (!g_taskbarViewDllLoaded.exchange(true)) {
+                Wh_Log(L"Got Taskbar.View.dll");
 
-    HWND hTaskbarWnd = FindWindow(L"Shell_TrayWnd", nullptr);
-    if (hTaskbarWnd && GetWindowThreadProcessId(hTaskbarWnd, &dwProcessId) &&
-        dwProcessId == dwCurrentProcessId) {
-        Wh_Log(L"Taskbar window found: %08X", (DWORD)(ULONG_PTR)hTaskbarWnd);
-        HandleIdentifiedTaskbarWindow(hTaskbarWnd);
+                if (HookTaskbarViewDllSymbols(taskbarViewModule)) {
+                    Wh_ApplyHookOperations();
+                }
+            }
+        }
+    }
+
+    // Try again in case there's a race between the previous attempt and the
+    // LoadLibraryExW hook.
+    if (!g_explorerPatcherInitialized) {
+        HandleLoadedExplorerPatcher();
+    }
+
+    if (HWND hTaskBandWnd = GetTaskBandWnd()) {
+        SendMessage(hTaskBandWnd, g_hotkeyRegisteredMsg, HOTKEY_REGISTER, 0);
     }
 }
 
-void Wh_ModUninit() {
-    if (g_hTaskbarWnd) {
-        UnsubclassTaskbarWindow(g_hTaskbarWnd);
-    }
-
+void Wh_ModBeforeUninit() {
     Wh_Log(L">");
+
+    if (HWND hTaskBandWnd = GetTaskBandWnd()) {
+        SendMessage(hTaskBandWnd, g_hotkeyRegisteredMsg, HOTKEY_UNREGISTER, 0);
+    }
 }
 
-void Wh_ModSettingsChanged() {
+BOOL Wh_ModSettingsChanged(BOOL* bReload) {
     Wh_Log(L">");
+
+    bool prevOldTaskbarOnWin11 = g_settings.oldTaskbarOnWin11;
 
     LoadSettings();
 
-    if (g_hTaskbarWnd) {
-        PostMessage(g_hTaskbarWnd, g_hotkeyUpdatedRegisteredMsg, 0, 0);
+    *bReload = g_settings.oldTaskbarOnWin11 != prevOldTaskbarOnWin11;
+    if (*bReload) {
+        return TRUE;
     }
+
+    if (HWND hTaskBandWnd = GetTaskBandWnd()) {
+        SendMessage(hTaskBandWnd, g_hotkeyRegisteredMsg, HOTKEY_UPDATE, 0);
+    }
+
+    return TRUE;
 }
