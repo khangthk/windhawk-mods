@@ -2,7 +2,7 @@
 // @id              classic-explorer-treeview
 // @name            Classic Explorer Treeview
 // @description     Modifies Folder Treeview in file explorer so as to make it look more classic.
-// @version         1.1.1
+// @version         1.1.3
 // @author          Waldemar
 // @github          https://github.com/CyprinusCarpio
 // @include         explorer.exe
@@ -18,6 +18,9 @@
 - DrawLines: true
   $name: Draw Dotted Lines
   $description: Use TVS_HASLINES style. Disable for a more XP-like look.
+- HotTracking: false
+  $name: Item Hot Tracking
+  $description: Use TVS_TRACKSELECT style. Enable for a more XP-like look.
 - LinesAtRoot: false
   $name: Lines At Root
   $description: Use TVS_LINESATROOT style.
@@ -63,6 +66,13 @@ For issue reports, contact waldemar3194 on Discord, or file a report at my [gith
 
 
 # Changelog:
+## 1.1.3
+- Use Microsoft::WRL::ComPtr instead of winrt::com_ptr
+- Symbol hooks made compatible with Win7
+
+## 1.1.2
+- Added a option to enable item hot tracking
+
 ## 1.1.1
 - Added a option to draw a gradient background for the header for XP-like looks
 - Added a context menu for the header like in real InfoBands
@@ -154,7 +164,8 @@ are enabled.
 #include <windhawk_utils.h>
 
 #include <wingdi.h>
-#include <winrt/base.h>
+#include <wrl.h>
+#include <vector>
 #include <shlwapi.h>
 #include <shdeprecated.h>
 #include <uxtheme.h>
@@ -165,6 +176,7 @@ bool g_settingDrawDottedLines = true;
 bool g_settingLinesAtRoot = false;
 bool g_settingDrawButtons = true;
 bool g_settingsGradientBackground = false;
+bool g_settingsHotTracking = false;
 WindhawkUtils::StringSetting g_settingLineColorOption;
 WindhawkUtils::StringSetting g_settingFoldersPaneText;
 int g_settingCloseButtonXOffset = 0;
@@ -187,25 +199,26 @@ enum FEWExtraFlags
     TREEVIEW_VIS = 1 << 4
 };
 
-class FEWExtra //File Explorer Window Extra things
+class FEWExtra // File Explorer Window Extra things
 {
-    winrt::com_ptr<IShellBrowser> pShellBrowser;
-    winrt::com_ptr<IPropertyBag> pPropertyBag;
-    //winrt::com_ptr<IWebBrowser2> pWebBrowser;
+    Microsoft::WRL::ComPtr<IShellBrowser> pShellBrowser;
+    Microsoft::WRL::ComPtr<IPropertyBag> pPropertyBag;
+    // Microsoft::WRL::ComPtr<IWebBrowser2> pWebBrowser;
+
 public:
-    HWND hSTWC = nullptr; //ShellTabWindowClass
-    HWND hCNS = nullptr; //CtrlNotifySink
-    HWND hNSTC = nullptr; //NamespaceTreeControl
-    HWND hTV = nullptr; //Treeview
+    HWND hSTWC = nullptr; // ShellTabWindowClass
+    HWND hCNS = nullptr;  // CtrlNotifySink
+    HWND hNSTC = nullptr; // NamespaceTreeControl
+    HWND hTV = nullptr;   // Treeview
     int eFlags = 0;
-    void* csb = nullptr; //Ptr to 'this' of the CShellBrowser
+    void* csb = nullptr; // Ptr to 'this' of the CShellBrowser
 
     FEWExtra(HWND hS, IShellBrowser* psb)
     {
         hSTWC = hS;
-        pShellBrowser.copy_from(psb);
-        csb = pShellBrowser.get();
-        csb = static_cast<char *>(csb) - CSB_PTHIS_OFFSET;
+        pShellBrowser = psb;
+        csb = pShellBrowser.Get();
+        csb = static_cast<char*>(csb) - CSB_PTHIS_OFFSET;
     }
 
     void populateCOMPointers()
@@ -232,17 +245,20 @@ public:
             {0xc0,0x00, 0x00,0x00,0x00,0x00,0x00,0x46}
         };*/
 
-        winrt::com_ptr<IUnknown> frame;
-        pShellBrowser.as<IServiceProvider>()->QueryService(SID_FrameManager, IID_PPV_ARGS(&frame));
-        frame.as<IServiceProvider>()->QueryService(SID_PerBrowserPropertyBag, IID_PPV_ARGS(&pPropertyBag));
-        //pShellBrowser.as<IServiceProvider>()->QueryService(SID_IWebBrowserApp, IID_PPV_ARGS(&pWebBrowser));
+        Microsoft::WRL::ComPtr<IUnknown> frame;
+        Microsoft::WRL::ComPtr<IServiceProvider> serviceProvider;
+        pShellBrowser.As(&serviceProvider);
+        serviceProvider->QueryService(SID_FrameManager, IID_PPV_ARGS(&frame));
+        frame.As(&serviceProvider);
+        serviceProvider->QueryService(SID_PerBrowserPropertyBag, IID_PPV_ARGS(&pPropertyBag));
+        // serviceProvider->QueryService(SID_IWebBrowserApp, IID_PPV_ARGS(&pWebBrowser));
 
         eFlags |= COM_POINTERS;
     }
 
     void SetTreeviewVisible(bool visible)
     {
-        if((eFlags & COM_POINTERS) == 0)
+        if ((eFlags & COM_POINTERS) == 0)
         {
             populateCOMPointers();
         }
@@ -257,7 +273,7 @@ public:
     {
         // The menu entry disappears on navigation to a new folder, so we need to check
         // if it still exists.
-        if(!hMenu) return;
+        if (!hMenu) return;
         size_t itemIndex = GetMenuItemCount(hMenu);
         for (size_t i = 0; i < itemIndex; i++)
         {
@@ -268,7 +284,7 @@ public:
                 return;
             }
         }
-        AppendMenu(hMenu, MF_STRING | (eFlags & TREEVIEW_VIS) ? MF_CHECKED : MF_UNCHECKED, TV_MENUITEM_ID, g_menuTreeviewText);
+        AppendMenu(hMenu, MF_STRING | ((eFlags & TREEVIEW_VIS) ? MF_CHECKED : MF_UNCHECKED), TV_MENUITEM_ID, g_menuTreeviewText);
     }
 };
 
@@ -1061,6 +1077,8 @@ HWND __cdecl NSCCreateTreeviewHook(void* pThis, HWND hWnd)
                 dwStyle |= TVS_LINESATROOT;
             if(g_settingDrawDottedLines)
                 dwStyle |= TVS_HASLINES;
+            if(g_settingsHotTracking)
+                dwStyle |= TVS_TRACKSELECT;
 
             SetWindowLongPtrW(treeview, GWL_STYLE, dwStyle);
 
@@ -1184,12 +1202,13 @@ BOOL Wh_ModInit()
             (void*)NSCCreateTreeviewHook,
             FALSE
         },
+        // This one is optional because it doesn't exist on Win7
         {   {
                 L"public: virtual long __cdecl CNscTree::SetStateImageList(struct _IMAGELIST *)"
             },
             (void**)&NSCASetStateImageListOriginal,
             (void*)NSCSetStateImageListHook,
-            FALSE
+            TRUE
         },
         {   {
                 L"long __cdecl FileCabinet_CreateViewWindow2(struct IShellBrowser *,struct tagFolderSetDataBase *,struct IShellView *,struct IShellView *,struct tagRECT *,struct HWND__ * *)"
@@ -1213,7 +1232,7 @@ BOOL Wh_ModInit()
             FALSE
         },
         {   {
-                L"private: __int64 __cdecl CShellBrowser::_OnViewCommand(unsigned __int64,__int64)"
+                L"private: __int64 __cdecl CShellBrowser::_OnCommand(unsigned __int64,__int64)"
             },
             (void**)&CSBOnViewCommandOriginal,
             (void*)CSBOnViewCommandHook,
@@ -1232,6 +1251,7 @@ BOOL Wh_ModInit()
     g_settingLinesAtRoot = Wh_GetIntSetting(L"LinesAtRoot");
     g_settingDrawButtons = Wh_GetIntSetting(L"DrawButtons");
     g_settingsGradientBackground = Wh_GetIntSetting(L"GradientBackground");
+    g_settingsHotTracking = Wh_GetIntSetting(L"HotTracking");
     g_settingLineColorOption =
         WindhawkUtils::StringSetting::make(L"AlternateLineColor");
     g_settingFoldersPaneText =
@@ -1275,9 +1295,9 @@ BOOL Wh_ModInit()
             std::wstring def = L"toolbar";
             def.copy(g_toolBandText, 32);
         }
-        if (LoadStringW(hIeFrame, 53810, g_closeText, 32) == 0)
+        if (LoadStringW(hIeFrame, 12719, g_closeText, 32) == 0)
         {
-            Wh_Log(L"Unable to load localized text resource: ieframe 53810");
+            Wh_Log(L"Unable to load localized text resource: ieframe 12719");
             std::wstring def = L"Close";
             def.copy(g_closeText, 32);
         }
@@ -1311,6 +1331,7 @@ void Wh_ModSettingsChanged()
     g_settingLinesAtRoot = Wh_GetIntSetting(L"LinesAtRoot");
     g_settingDrawButtons = Wh_GetIntSetting(L"DrawButtons");
     g_settingsGradientBackground = Wh_GetIntSetting(L"GradientBackground");
+    g_settingsHotTracking = Wh_GetIntSetting(L"HotTracking");
     g_settingLineColorOption =
         WindhawkUtils::StringSetting::make(L"AlternateLineColor");
     g_settingFoldersPaneText =
